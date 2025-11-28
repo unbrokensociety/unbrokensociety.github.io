@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bohdan | Profile</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-color: #161b22;
+            --text-color: #c9d1d9;
+            --accent-color: #58a6ff;
+            --border-color: #30363d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Карточка профиля */
+        .profile-card {
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .avatar-placeholder {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #2b3137, #58a6ff);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        h1 { margin: 0; color: #ffffff; font-size: 24px; }
+        .info { font-size: 14px; color: #8b949e; margin-top: 5px; }
+        
+        /* Ссылки-кнопки */
+        .btn {
+            display: block;
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            color: var(--accent-color);
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #1f242c;
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-donate {
+            color: #7ee787; /* Зеленый для доната */
+            border-color: rgba(63, 185, 80, 0.4);
+        }
+
+        /* Блоки с текстом */
+        .text-block {
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .lang-title {
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: #484f58;
+            margin-top: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="profile-card">
+            <div class="avatar-placeholder">B</div> 
+            
+            <h1>Bohdan</h1>
+            <div class="info">
+                🎂 03.02 • 🇺🇦 Kyiv, Ukraine
+            </div>
+
+            <a href="https://t.me/qelry" class="btn">
+                ✈️ My only account: @qelry
+            </a>
+            
+            <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">
+                💸 Donate
+            </a>
+        </div>
+
+        <div class="text-block">
+            <span class="lang-title">🇺🇸 English</span>
+            I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.
+        </div>
+
+        <div class="text-block">
+            <span class="lang-title">🇺🇦 Ukrainian</span>
+            Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя. Мої вчинки керуються повагою до закону та особистою чесністю.
+        </div>
+
+        <div class="text-block">
+            <span class="lang-title">🏳️ Russian</span>
+            Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный, честный образ жизни. Мои поступки основаны на уважении к закону и личной честности.
+        </div>
+
+        <div class="text-block" style="border-left: 3px solid #58a6ff;">
+            ⏺ Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение к другим участникам. Осознаю важность безопасного и конструктивного взаимодействия в цифровом пространстве.
+        </div>
+
+        <div class="footer-note">
+            © 2025 Bohdan. All rights reserved.
+        </div>
+
+    </div>
+
+</body>
+</html>
