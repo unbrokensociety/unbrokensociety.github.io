@@ -8,7 +8,8 @@
         :root {
             /* Новогодняя палитра */
             --bg-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            --card-bg: rgba(22, 27, 34, 0.75); /* Полупрозрачный темный */
+            /* ОПТИМИЗАЦИЯ: Чуть более непрозрачный фон вместо блюра */
+            --card-bg: rgba(22, 27, 34, 0.9); 
             --text-color: #e6edf3;
             --accent-red: #ff4757;
             --accent-green: #2ed573;
@@ -24,13 +25,13 @@
             padding: 20px;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Изменено для длинного контента */
+            align-items: flex-start;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* --- ЭФФЕКТ СНЕГА --- */
+        /* --- ЭФФЕКТ СНЕГА (ОПТИМИЗИРОВАННЫЙ) --- */
         .snowflake {
             position: absolute;
             top: 0;
@@ -48,6 +49,9 @@
             background-size: 500px 500px;
             animation: snow 10s linear infinite;
             opacity: 0.6;
+            /* ОПТИМИЗАЦИЯ: Подсказка браузеру и включение GPU */
+            will-change: background-position;
+            transform: translateZ(0); 
         }
         .snowflake:nth-child(2) {
             background-size: 400px 400px;
@@ -80,6 +84,9 @@
             animation: flash 2s infinite alternate;
             box-shadow: 0 5px 20px rgba(255,255,255,0.5);
             position: relative;
+            /* ОПТИМИЗАЦИЯ */
+            will-change: opacity, transform;
+            transform: translateZ(0);
         }
         .light::before {
             content: '';
@@ -108,15 +115,15 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            z-index: 1; /* Чтобы быть над снегом */
-            margin-top: 40px; /* Отступ от гирлянды */
+            z-index: 1; 
+            margin-top: 40px;
         }
 
         /* Карточка профиля */
         .profile-card {
             background-color: var(--card-bg);
-            backdrop-filter: blur(10px); /* Эффект матового стекла */
-            -webkit-backdrop-filter: blur(10px);
+            /* ОПТИМИЗАЦИЯ: Убран backdrop-filter, вызывающий лаги */
+            /* backdrop-filter: blur(10px); */
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 30px;
@@ -124,9 +131,9 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
+            transform: translateZ(0); /* Включение GPU */
         }
         
-        /* Декоративная полоска сверху карточки */
         .profile-card::before {
             content: '';
             position: absolute;
@@ -156,7 +163,6 @@
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
-        /* Шапочка Санты на аву */
         .santa-hat {
             position: absolute;
             top: -25px;
@@ -193,7 +199,6 @@
             border-color: #79c0ff;
         }
 
-        /* Кнопка доната - как подарок */
         .btn-donate {
             color: #fff;
             background: linear-gradient(90deg, #238636, #2ea043);
@@ -213,8 +218,8 @@
         /* Блоки с текстом */
         .text-block {
             background-color: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            /* ОПТИМИЗАЦИЯ: Убран backdrop-filter */
+            /* backdrop-filter: blur(10px); */
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
@@ -222,6 +227,7 @@
             font-size: 14px;
             line-height: 1.6;
             transition: border-color 0.3s;
+            transform: translateZ(0);
         }
         
         .text-block:hover {
@@ -230,7 +236,7 @@
 
         .lang-title {
             font-weight: bold;
-            color: var(--accent-gold); /* Золотой заголовок */
+            color: var(--accent-gold);
             margin-bottom: 5px;
             display: block;
             text-transform: uppercase;
@@ -247,7 +253,6 @@
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
-        /* Спец. стиль для блока правил */
         .rules-block {
             border-left: 3px solid var(--accent-red) !important;
             background: linear-gradient(90deg, rgba(255, 71, 87, 0.1), transparent);
@@ -317,10 +322,11 @@
 
         <div class="footer-note">
             ❄️ Happy New Year 2026! ❄️<br>
-            © Filipov. All rights reserved.
+            © Bohdan. All rights reserved.
         </div>
 
     </div>
 
 </body>
 </html>
+
