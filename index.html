@@ -49,7 +49,6 @@
             background-size: 500px 500px;
             animation: snow 10s linear infinite;
             opacity: 0.6;
-            /* ОПТИМИЗАЦИЯ: Подсказка браузеру и включение GPU */
             will-change: background-position;
             transform: translateZ(0); 
         }
@@ -84,7 +83,6 @@
             animation: flash 2s infinite alternate;
             box-shadow: 0 5px 20px rgba(255,255,255,0.5);
             position: relative;
-            /* ОПТИМИЗАЦИЯ */
             will-change: opacity, transform;
             transform: translateZ(0);
         }
@@ -122,8 +120,6 @@
         /* Карточка профиля */
         .profile-card {
             background-color: var(--card-bg);
-            /* ОПТИМИЗАЦИЯ: Убран backdrop-filter, вызывающий лаги */
-            /* backdrop-filter: blur(10px); */
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 30px;
@@ -131,7 +127,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
-            transform: translateZ(0); /* Включение GPU */
+            transform: translateZ(0);
         }
         
         .profile-card::before {
@@ -147,20 +143,24 @@
         .avatar-container {
             position: relative;
             width: 100px;
+            height: 100px;
             margin: 0 auto 15px;
         }
 
-        .avatar-placeholder {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #2b3137, #3e5065);
+        /* Стиль для фото */
+        .avatar-img {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
+            object-fit: cover; /* Чтобы фото не сплющило */
             border: 3px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Если фото нет, будет показан этот фон (резерв) */
+        .avatar-img:not([src]), .avatar-img[src=""] {
+            background: linear-gradient(135deg, #2b3137, #3e5065);
+            display: block; 
         }
 
         .santa-hat {
@@ -170,6 +170,7 @@
             font-size: 50px;
             transform: rotate(15deg);
             filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+            z-index: 2;
         }
 
         h1 { margin: 0; color: #ffffff; font-size: 26px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
@@ -218,8 +219,6 @@
         /* Блоки с текстом */
         .text-block {
             background-color: var(--card-bg);
-            /* ОПТИМИЗАЦИЯ: Убран backdrop-filter */
-            /* backdrop-filter: blur(10px); */
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
@@ -283,13 +282,13 @@
         
         <div class="profile-card">
             <div class="avatar-container">
-                <div class="avatar-placeholder">B</div> 
+                <img src="avatar.jpg" alt="Avatar" class="avatar-img">
                 <div class="santa-hat">🎅</div>
             </div>
             
             <h1>Bohdan <span style="font-size: 20px;">🎄</span></h1>
             <div class="info">
-                🎂 03.02 • 🇺🇦 Kyiv, Ukraine • ❄️ Winter Edition
+                🎂 03.02 • 🇺🇦 Kyiv, Ukraine
             </div>
 
             <a href="https://t.me/qelry" class="btn">
@@ -322,7 +321,7 @@
 
         <div class="footer-note">
             ❄️ Happy New Year 2026! ❄️<br>
-            © Bohdan. All rights reserved.
+            © Filipov. All rights reserved.
         </div>
 
     </div>
