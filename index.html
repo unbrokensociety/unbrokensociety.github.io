@@ -30,9 +30,7 @@
             overflow-x: hidden;
             position: relative;
             
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+            -webkit-user-select: none; /* Защита от выделения */
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
@@ -118,7 +116,7 @@
 
         .profile-card {
             border-radius: 16px; padding: 30px; text-align: center;
-            position: relative; overflow: visible;
+            position: relative; overflow: visible; /* Чтобы меню могло выходить за границы */
         }
         .profile-card::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
@@ -126,18 +124,61 @@
             border-radius: 16px 16px 0 0;
         }
 
-        /* --- СЕЛЕКТ ЯЗЫКА --- */
-        .lang-switch-container {
-            position: absolute; top: 20px; right: 20px; z-index: 20;
+        /* --- НОВОЕ МЕНЮ ЯЗЫКОВ (КАСТОМНОЕ) --- */
+        .lang-dropdown {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            z-index: 100;
         }
-        .lang-switch {
-            appearance: none; background: rgba(0,0,0,0.4); color: var(--accent-gold);
-            border: 1px solid var(--border-color); border-radius: 8px;
-            padding: 6px 12px; padding-right: 25px; outline: none; cursor: pointer;
-            font-size: 13px; font-weight: bold; text-align: center;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat; background-position: right 2px center; background-size: 16px;
+
+        .lang-btn {
+            background: rgba(0,0,0,0.5);
+            color: var(--accent-gold);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 0;
+            width: 100%;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.2s;
         }
+        .lang-btn:active { background: rgba(0,0,0,0.7); }
+
+        .lang-list {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            top: 110%; /* Сразу под кнопкой */
+            left: 0;
+            width: 100%;
+            background: rgba(22, 27, 34, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .lang-list.show {
+            display: flex; /* Показываем при нажатии */
+        }
+
+        .lang-item {
+            padding: 10px 0;
+            color: #fff;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s;
+        }
+        .lang-item:last-child { border-bottom: none; }
+        .lang-item:active { background: rgba(255,255,255,0.1); color: var(--accent-gold); }
+
 
         .avatar-container {
             position: relative; width: 100px; height: 100px; margin: 0 auto 15px;
@@ -200,12 +241,14 @@
     <div class="container">
         
         <div class="profile-card glass-effect">
-            <div class="lang-switch-container">
-                <select class="lang-switch" id="langSelect" onchange="changeLanguage()">
-                    <option value="en">EN</option>
-                    <option value="ua">UA</option>
-                    <option value="ru">RU</option>
-                </select>
+            
+            <div class="lang-dropdown">
+                <div class="lang-btn" onclick="toggleLangMenu()" id="currentLangBtn">EN ▾</div>
+                <div class="lang-list" id="langList">
+                    <div class="lang-item" onclick="selectLang('en')">EN</div>
+                    <div class="lang-item" onclick="selectLang('ua')">UA</div>
+                    <div class="lang-item" onclick="selectLang('ru')">RU</div>
+                </div>
             </div>
 
             <div class="avatar-container">
@@ -236,7 +279,7 @@
 
         <div class="text-block rules-block glass-effect">
             <span id="rules-desc">
-                ⏺ I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.
+                I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.
             </span>
         </div>
 
@@ -258,7 +301,7 @@
                 footer: "❄️ Happy New Year 2026! ❄️<br>© Filipov. All rights reserved."
             },
             ua: {
-                title: "🇺🇦 Українська",
+                title: "Українська",
                 desc: "Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя. Мої вчинки керуються повагою до закону та особистою чесністю.",
                 btnAccount: "✈️ Мій єдиний акаунт: @qelry",
                 btnDonate: "🎁 Донат на свята",
@@ -275,18 +318,42 @@
             }
         };
 
-        function changeLanguage() {
-            const lang = document.getElementById('langSelect').value;
+        // Открыть/закрыть меню
+        function toggleLangMenu() {
+            document.getElementById("langList").classList.toggle("show");
+        }
+
+        // Выбор языка
+        function selectLang(lang) {
             const data = translations[lang];
 
+            // Обновляем тексты
             document.getElementById('main-title').innerText = data.title;
             document.getElementById('main-desc').innerText = data.desc;
             document.getElementById('btn-account').innerText = data.btnAccount;
             document.getElementById('btn-donate').innerText = data.btnDonate;
             document.getElementById('rules-desc').innerText = data.rules;
             document.getElementById('footer-text').innerHTML = data.footer;
+
+            // Обновляем кнопку и закрываем меню
+            document.getElementById('currentLangBtn').innerText = lang.toUpperCase() + " ▾";
+            document.getElementById("langList").classList.remove("show");
+        }
+
+        // Закрыть меню, если кликнули в другое место
+        window.onclick = function(event) {
+            if (!event.target.matches('.lang-btn')) {
+                var dropdowns = document.getElementsByClassName("lang-list");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
         }
     </script>
 
 </body>
 </html>
+
