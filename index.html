@@ -1,53 +1,46 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en" style="height: 100%;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bohdan | New Year Profile</title>
     <style>
         :root {
-            /* Новогодняя палитра */
             --bg-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            --card-bg: rgba(22, 27, 34, 0.95); /* Почти непрозрачный для скорости */
+            --card-bg: rgba(22, 27, 34, 0.85); 
             --text-color: #e6edf3;
             --accent-red: #ff4757;
             --accent-green: #2ed573;
             --accent-gold: #ffa502;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(255, 255, 255, 0.15);
         }
 
-        /* ЗАЩИТА ОТ КОПИРОВАНИЯ (user-select: none) */
         body {
-            background: var(--bg-gradient);
+            height: 100%;
+            background: var(--bg-gradient) no-repeat center center fixed;
+            background-size: cover;
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 20px;
+            box-sizing: border-box;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            min-height: 100vh;
             overflow-x: hidden;
             position: relative;
             
-            /* Запрет выделения текста */
-            -webkit-user-select: none; /* Safari/Chrome */
-            -moz-user-select: none;    /* Firefox */
-            -ms-user-select: none;     /* IE/Edge */
-            user-select: none;         /* Standard */
-            -webkit-tap-highlight-color: transparent; /* Убирает подсветку при клике */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- ЭФФЕКТ СНЕГА (СУПЕР ЛЕГКИЙ) --- */
+        /* --- СНЕГ --- */
         .snowflake {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            /* Упрощенный градиент - меньше точек, меньше лагов */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
             background-image: 
                 radial-gradient(3px 3px at 10% 10%, #fff, transparent),
                 radial-gradient(4px 4px at 30% 40%, #fff, transparent),
@@ -56,8 +49,7 @@
             background-size: 400px 400px;
             animation: snow 12s linear infinite;
             opacity: 0.5;
-            will-change: transform; /* Работает только видеокарта */
-            transform: translateZ(0); 
+            will-change: transform;
         }
         .snowflake:nth-child(2) {
             background-size: 300px 300px;
@@ -65,258 +57,236 @@
             animation-direction: reverse; 
             opacity: 0.3;
         }
+        @keyframes snow { from { transform: translateY(0); } to { transform: translateY(400px); } }
 
-        @keyframes snow {
-            from { transform: translateY(0); }
-            to { transform: translateY(400px); }
-        }
-
-        /* --- ГИРЛЯНДА (ОПТИМИЗИРОВАННАЯ) --- */
+        /* --- ГИРЛЯНДА --- */
         .garland-container {
-            position: fixed;
-            top: -10px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            pointer-events: none;
-            z-index: 10;
+            position: fixed; top: -10px; left: 0; width: 100%;
+            display: flex; justify-content: space-around;
+            pointer-events: none; z-index: 10;
         }
         .light {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: #fff;
-            /* Убрана анимация тени (box-shadow), только прозрачность */
-            animation: flash 2s infinite alternate;
-            position: relative;
-            will-change: opacity;
-            transform: translateZ(0);
+            width: 15px; height: 15px; border-radius: 50%; background: #fff;
+            animation: flash 2s infinite alternate; position: relative; will-change: opacity;
         }
         .light::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 6px;
-            background: #222;
+            content: ''; position: absolute; top: -5px; left: 50%;
+            transform: translateX(-50%); width: 4px; height: 6px; background: #222;
         }
-        /* Статичные тени, чтобы не нагружать анимацию */
         .light:nth-child(4n+1) { background: var(--accent-red); box-shadow: 0 2px 5px var(--accent-red); animation-delay: 0s; }
         .light:nth-child(4n+2) { background: var(--accent-green); box-shadow: 0 2px 5px var(--accent-green); animation-delay: 0.5s; }
         .light:nth-child(4n+3) { background: var(--accent-gold); box-shadow: 0 2px 5px var(--accent-gold); animation-delay: 1s; }
         .light:nth-child(4n+4) { background: #1e90ff; box-shadow: 0 2px 5px #1e90ff; animation-delay: 1.5s; }
+        @keyframes flash { 0% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        @keyframes flash {
-            0% { opacity: 0.3; }
-            100% { opacity: 1; }
+        /* --- ШАРИКИ --- */
+        .baubles-container {
+            position: fixed; top: 0; width: 100%; pointer-events: none; z-index: 4;
+        }
+        .bauble {
+            position: absolute; top: -100px;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff, var(--accent-red) 50%, #330000 100%);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: hangDrop 2s ease-out forwards, gentleSwing 3s ease-in-out infinite alternate 2s;
+            will-change: transform;
+        }
+        .bauble::before { content: ''; position: absolute; top: -80px; left: 50%; width: 2px; height: 80px; background: rgba(255,255,255,0.3); }
+        
+        .b1 { left: 10%; animation-delay: 0.5s; background: radial-gradient(circle at 30% 30%, #fff, var(--accent-gold) 50%, #331a00 100%); }
+        .b2 { left: 25%; animation-delay: 0.2s; }
+        .b3 { right: 25%; animation-delay: 0.7s; background: radial-gradient(circle at 30% 30%, #fff, var(--accent-green) 50%, #003300 100%); }
+        .b4 { right: 10%; animation-delay: 1.0s; background: radial-gradient(circle at 30% 30%, #fff, #1e90ff 50%, #001a33 100%); }
+
+        @keyframes hangDrop { to { top: 35px; } }
+        @keyframes gentleSwing { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
+
+        /* --- КОНТЕНТ --- */
+        .container {
+            width: 100%; max-width: 600px;
+            display: flex; flex-direction: column; gap: 15px;
+            z-index: 5; margin-top: 70px; margin-bottom: 30px;
         }
 
-        /* --- ОСНОВНОЙ КОНТЕНТ --- */
-        .container {
-            width: 100%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 1; 
-            margin-top: 40px;
+        .glass-effect {
+            background-color: var(--card-bg);
+            background-image: linear-gradient(to bottom right, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.1) 100%);
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.02), 0 4px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: none; transform: translateZ(0);
         }
 
         .profile-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 30px;
-            text-align: center;
-            /* Легкая тень */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            transform: translateZ(0);
+            border-radius: 16px; padding: 30px; text-align: center;
+            position: relative; overflow: visible;
         }
-        
         .profile-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
             background: linear-gradient(90deg, var(--accent-red), var(--accent-green), var(--accent-gold));
+            border-radius: 16px 16px 0 0;
+        }
+
+        /* --- СЕЛЕКТ ЯЗЫКА --- */
+        .lang-switch-container {
+            position: absolute; top: 20px; right: 20px; z-index: 20;
+        }
+        .lang-switch {
+            appearance: none; background: rgba(0,0,0,0.4); color: var(--accent-gold);
+            border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 6px 12px; padding-right: 25px; outline: none; cursor: pointer;
+            font-size: 13px; font-weight: bold; text-align: center;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 2px center; background-size: 16px;
         }
 
         .avatar-container {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 15px;
+            position: relative; width: 100px; height: 100px; margin: 0 auto 15px;
         }
-
         .avatar-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            /* Защита картинки от перетаскивания */
-            pointer-events: none; 
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.2); pointer-events: none;
         }
-
-        /* Фон для аватарки, если фото нет */
         .avatar-img:not([src]), .avatar-img[src=""] {
-            background: linear-gradient(135deg, #2b3137, #3e5065);
-            display: block; 
+            background: linear-gradient(135deg, #2b3137, #3e5065); display: block; 
         }
-
         .santa-hat {
-            position: absolute;
-            top: -25px;
-            right: -10px;
-            font-size: 50px;
-            transform: rotate(15deg);
-            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
-            z-index: 2;
-            pointer-events: none;
+            position: absolute; top: -25px; right: -10px; font-size: 50px;
+            transform: rotate(15deg); filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+            z-index: 2; pointer-events: none;
         }
 
         h1 { margin: 0; color: #ffffff; font-size: 26px; }
         .info { font-size: 14px; color: #aebbc9; margin-top: 5px; }
         
         .btn {
-            display: block;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: #79c0ff;
-            text-decoration: none;
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 12px;
-            font-weight: 600;
-            transition: transform 0.1s, background 0.1s; /* Быстрая анимация */
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            display: block; text-decoration: none; padding: 15px;
+            border-radius: 12px; margin-top: 12px; font-weight: 600;
+            transition: transform 0.1s; text-align: center; color: #79c0ff;
         }
-
-        .btn:active {
-            transform: scale(0.98); /* Эффект нажатия на телефоне */
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-donate {
-            color: #fff;
-            background: #238636; /* Сплошной цвет быстрее градиента */
-            border: none;
-        }
-        .btn-donate::after {
-            content: '🎁';
-            margin-left: 8px;
-        }
-
-        .text-block {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 10px;
-            font-size: 14px;
-            line-height: 1.6;
-            transform: translateZ(0);
-        }
+        .btn:active { transform: scale(0.98); }
+        .btn-donate { color: #fff; background: linear-gradient(90deg, #238636, #2ea043) !important; border: none; }
         
+        .text-block {
+            border-radius: 12px; padding: 20px; margin-top: 10px;
+            font-size: 14px; line-height: 1.6;
+        }
         .lang-title {
-            font-weight: bold;
-            color: var(--accent-gold);
-            margin-bottom: 5px;
-            display: block;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 1px;
+            font-weight: bold; color: var(--accent-gold); margin-bottom: 5px;
+            display: block; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;
         }
-
         .footer-note {
-            text-align: center;
-            font-size: 12px;
-            color: #8b949e;
-            margin-top: 30px;
-            padding: 10px;
+            text-align: center; font-size: 12px; color: #8b949e;
+            margin-top: 30px; padding: 10px;
         }
-
-        .rules-block {
-            border-left: 3px solid var(--accent-red) !important;
-        }
+        .rules-block { border-left: 3px solid var(--accent-red) !important; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <div class="snowflake"></div>
-    <div class="snowflake"></div>
+    <div class="snowflake"></div><div class="snowflake"></div>
 
     <div class="garland-container">
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
+        <div class="light"></div><div class="light"></div><div class="light"></div>
+        <div class="light"></div><div class="light"></div><div class="light"></div>
+        <div class="light"></div><div class="light"></div><div class="light"></div>
+        <div class="light"></div><div class="light"></div><div class="light"></div>
+    </div>
+
+    <div class="baubles-container">
+        <div class="bauble b1"></div><div class="bauble b2"></div>
+        <div class="bauble b3"></div><div class="bauble b4"></div>
     </div>
 
     <div class="container">
         
-        <div class="profile-card">
+        <div class="profile-card glass-effect">
+            <div class="lang-switch-container">
+                <select class="lang-switch" id="langSelect" onchange="changeLanguage()">
+                    <option value="en">EN</option>
+                    <option value="ua">UA</option>
+                    <option value="ru">RU</option>
+                </select>
+            </div>
+
             <div class="avatar-container">
                 <img src="avatar.jpg" alt="Avatar" class="avatar-img">
                 <div class="santa-hat">🎅</div>
             </div>
             
             <h1>Bohdan <span style="font-size: 20px;">🎄</span></h1>
-            <div class="info">
-                🎂 03.02 • 🇺🇦 Kyiv, Ukraine
+            <div class="info" id="info-text">
+                🎂 03.02 • 🇺🇦 Kyiv, Ukraine • ❄️ Winter Edition
             </div>
 
-            <a href="https://t.me/qelry" class="btn">
+            <a href="https://t.me/qelry" class="btn glass-effect" id="btn-account">
                 ✈️ My only account: @qelry
             </a>
             
-            <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">
-                💸 Donate for Holidays
+            <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate" id="btn-donate">
+                🎁 Donate for Holidays
             </a>
         </div>
 
-        <div class="text-block">
-            <span class="lang-title">🇺🇸 English</span>
-            I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.
+        <div class="text-block glass-effect">
+            <span class="lang-title" id="main-title">🇺🇸 English</span>
+            <span id="main-desc">
+                I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.
+            </span>
         </div>
 
-        <div class="text-block">
-            <span class="lang-title">🇺🇦 Ukrainian</span>
-            Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя. Мої вчинки керуються повагою до закону та особистою чесністю.
+        <div class="text-block rules-block glass-effect">
+            <span id="rules-desc">
+                ⏺ I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.
+            </span>
         </div>
 
-        <div class="text-block">
-            <span class="lang-title">🏳️ Russian</span>
-            Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный, честный образ жизни. Мои поступки основаны на уважении к закону и личной честности.
-        </div>
-
-        <div class="text-block rules-block">
-            Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение к другим участникам. Осознаю важность безопасного и конструктивного взаимодействия в цифровом пространстве.
-        </div>
-
-        <div class="footer-note">
+        <div class="footer-note" id="footer-text">
             ❄️ Happy New Year 2026! ❄️<br>
             © Filipov. All rights reserved.
         </div>
 
     </div>
+
+    <script>
+        const translations = {
+            en: {
+                title: "🇺🇸 English",
+                desc: "I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.",
+                btnAccount: "✈️ My only account: @qelry",
+                btnDonate: "🎁 Donate for Holidays",
+                rules: "I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.",
+                footer: "❄️ Happy New Year 2026! ❄️<br>© Filipov. All rights reserved."
+            },
+            ua: {
+                title: "🇺🇦 Українська",
+                desc: "Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя. Мої вчинки керуються повагою до закону та особистою чесністю.",
+                btnAccount: "✈️ Мій єдиний акаунт: @qelry",
+                btnDonate: "🎁 Донат на свята",
+                rules: "Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших учасників. Усвідомлюю важливість безпечної та конструктивної взаємодії.",
+                footer: "❄️ З Новим Роком 2026! ❄️<br>© Filipov. All rights reserved."
+            },
+            ru: {
+                title: "🏳️ Русский",
+                desc: "Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный, честный образ жизни. Мои поступки основаны на уважении к закону и личной честности.",
+                btnAccount: "✈️ Мой единственный аккаунт: @qelry",
+                btnDonate: "🎁 Донат на праздники",
+                rules: "Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение к другим участникам. Осознаю важность безопасного и конструктивного взаимодействия в цифровом пространстве.",
+                footer: "❄️ С Новым Годом 2026! ❄️<br>© Filipov. All rights reserved."
+            }
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('langSelect').value;
+            const data = translations[lang];
+
+            document.getElementById('main-title').innerText = data.title;
+            document.getElementById('main-desc').innerText = data.desc;
+            document.getElementById('btn-account').innerText = data.btnAccount;
+            document.getElementById('btn-donate').innerText = data.btnDonate;
+            document.getElementById('rules-desc').innerText = data.rules;
+            document.getElementById('footer-text').innerHTML = data.footer;
+        }
+    </script>
 
 </body>
 </html>
