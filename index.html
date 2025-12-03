@@ -1,360 +1,359 @@
 <!DOCTYPE html>
-<html lang="en" style="height: 100%;">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bohdan | Liquid New Year</title>
+    <title>Bohdan | Winter 2026</title>
     <style>
         :root {
-            /* Более глубокий темный фон для контраста со стеклом */
-            --bg-gradient: radial-gradient(circle at center, #1a2a33 0%, #0d1216 100%);
+            --bg-color: #0f1115;
             --text-color: #e6edf3;
             --accent-red: #ff4757;
             --accent-green: #2ed573;
             --accent-gold: #ffa502;
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-highlight: rgba(255, 255, 255, 0.3);
+            
+            /* Стекло */
+            --glass-bg: rgba(22, 27, 34, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shine: rgba(255, 255, 255, 0.25);
         }
 
         body {
-            height: 100%;
-            background: #0f1115; /* Темная подложка */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            box-sizing: border-box;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             overflow-x: hidden;
-            position: relative;
             
+            /* --- ЗАЩИТА ОТ КОПИРОВАНИЯ --- */
             -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- НОВОГОДНИЙ ФОН (БОКЕ) --- */
-        /* Пятна света, чтобы стекло их красиво размывало */
+        /* --- ФОН (БОКЕ) --- */
         .bokeh-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; pointer-events: none; overflow: hidden;
         }
-        .bokeh-light {
+        .bokeh-blob {
             position: absolute; border-radius: 50%;
-            filter: blur(60px); opacity: 0.4;
-            animation: floatLight 10s infinite alternate ease-in-out;
+            filter: blur(80px); opacity: 0.4;
+            animation: float 15s infinite alternate ease-in-out;
         }
-        .bl-1 { top: 10%; left: 10%; width: 300px; height: 300px; background: var(--accent-red); animation-duration: 12s; }
-        .bl-2 { bottom: 20%; right: 10%; width: 250px; height: 250px; background: var(--accent-green); animation-duration: 15s; }
-        .bl-3 { top: 40%; left: 50%; width: 200px; height: 200px; background: var(--accent-gold); animation-duration: 18s; transform: translateX(-50%); }
-        .bl-4 { bottom: 5%; left: -50px; width: 350px; height: 350px; background: #1e90ff; animation-duration: 20s; opacity: 0.2; }
-
-        @keyframes floatLight {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(30px, -30px); }
-        }
+        .b1 { top: -10%; left: -10%; width: 400px; height: 400px; background: #3b82f6; }
+        .b2 { bottom: 10%; right: -10%; width: 350px; height: 350px; background: #2ed573; animation-delay: -5s; }
+        .b3 { top: 40%; left: 40%; width: 250px; height: 250px; background: #ffa502; animation-delay: -10s; opacity: 0.2; }
+        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, -40px); } }
 
         /* --- СНЕГ --- */
         .snowflake {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 1;
-            background-image: 
-                radial-gradient(3px 3px at 10% 10%, #fff, transparent),
-                radial-gradient(4px 4px at 30% 40%, #fff, transparent),
-                radial-gradient(3px 3px at 60% 70%, #fff, transparent),
-                radial-gradient(4px 4px at 80% 20%, #fff, transparent);
-            background-size: 400px 400px;
-            animation: snow 12s linear infinite;
-            opacity: 0.6;
+            position: fixed; top: -20px; color: #fff; font-size: 1.2em; opacity: 0.7;
+            pointer-events: none; z-index: 0; animation: fall linear infinite;
         }
-        .snowflake:nth-child(2) {
-            background-size: 300px 300px;
-            animation-duration: 18s; animation-direction: reverse; opacity: 0.4;
-        }
-        @keyframes snow { from { transform: translateY(0); } to { transform: translateY(400px); } }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
 
         /* --- ГИРЛЯНДА --- */
-        .garland-container {
+        .garland {
             position: fixed; top: -10px; left: 0; width: 100%;
             display: flex; justify-content: space-around; pointer-events: none; z-index: 10;
         }
         .light {
-            width: 15px; height: 15px; border-radius: 50%; background: #fff;
-            animation: flash 2s infinite alternate; position: relative;
+            width: 12px; height: 12px; border-radius: 50%; background: #fff;
+            position: relative; animation: flash 2s infinite alternate;
         }
-        .light::before {
-            content: ''; position: absolute; top: -5px; left: 50%;
-            transform: translateX(-50%); width: 4px; height: 6px; background: #222;
-        }
-        .light:nth-child(4n+1) { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); animation-delay: 0s; }
-        .light:nth-child(4n+2) { background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); animation-delay: 0.5s; }
-        .light:nth-child(4n+3) { background: var(--accent-gold); box-shadow: 0 0 10px var(--accent-gold); animation-delay: 1s; }
-        .light:nth-child(4n+4) { background: #1e90ff; box-shadow: 0 0 10px #1e90ff; animation-delay: 1.5s; }
+        .light::before { content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 2px; height: 6px; background: #444; }
+        .light:nth-child(3n+1) { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
+        .light:nth-child(3n+2) { background: var(--accent-gold); box-shadow: 0 0 10px var(--accent-gold); animation-delay: 0.5s; }
+        .light:nth-child(3n+3) { background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); animation-delay: 1s; }
         @keyframes flash { 0% { opacity: 0.4; } 100% { opacity: 1; } }
 
-        /* --- ШАРИКИ --- */
-        .baubles-container { position: fixed; top: 0; width: 100%; pointer-events: none; z-index: 4; }
-        .bauble {
-            position: absolute; top: -100px;
-            width: 40px; height: 40px; border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #fff, var(--accent-red) 50%, #330000 100%);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            animation: hangDrop 2s ease-out forwards, gentleSwing 3s ease-in-out infinite alternate 2s;
-        }
-        .bauble::before { content: ''; position: absolute; top: -80px; left: 50%; width: 2px; height: 80px; background: rgba(255,255,255,0.3); }
-        .b1 { left: 10%; animation-delay: 0.5s; background: radial-gradient(circle at 30% 30%, #fff, var(--accent-gold) 50%, #331a00 100%); }
-        .b2 { left: 25%; animation-delay: 0.2s; }
-        .b3 { right: 25%; animation-delay: 0.7s; background: radial-gradient(circle at 30% 30%, #fff, var(--accent-green) 50%, #003300 100%); }
-        .b4 { right: 10%; animation-delay: 1.0s; background: radial-gradient(circle at 30% 30%, #fff, #1e90ff 50%, #001a33 100%); }
-        @keyframes hangDrop { to { top: 35px; } }
-        @keyframes gentleSwing { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
-
-        /* --- КОНТЕНТ (Glassmorphism) --- */
+        /* --- КОНТЕЙНЕР --- */
         .container {
-            width: 100%; max-width: 600px;
-            display: flex; flex-direction: column; gap: 20px;
-            z-index: 5; margin-top: 70px; margin-bottom: 30px;
+            width: 100%; max-width: 550px;
+            margin-top: 50px; z-index: 2;
+            display: flex; flex-direction: column; gap: 25px;
         }
 
-        /* ЭФФЕКТ ЖИДКОГО СТЕКЛА */
-        .glass-effect {
-            background: rgba(22, 27, 34, 0.5); /* Более прозрачный фон */
-            backdrop-filter: blur(16px) saturate(180%); /* Сильное размытие и насыщенность */
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            
+        /* --- СТЕКЛО (ОСНОВА) --- */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(160%);
+            -webkit-backdrop-filter: blur(25px) saturate(160%);
             border: 1px solid var(--glass-border);
-            border-top: 1px solid var(--glass-highlight); /* Верхняя грань ярче (блик) */
-            border-radius: 24px; /* Более круглые углы для "жидкости" */
-            
-            box-shadow: 
-                0 8px 32px 0 rgba(0, 0, 0, 0.4), /* Глубокая тень */
-                inset 0 0 0 1px rgba(255, 255, 255, 0.05); /* Внутренняя обводка */
+            border-top: 1px solid var(--glass-shine);
+            border-radius: 28px;
+            padding: 35px 25px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .profile-card {
-            padding: 35px 30px; text-align: center;
-            position: relative; overflow: visible;
-            /* Внутренний градиент (замена полоске сверху) */
-            background-image: 
-                radial-gradient(circle at top, rgba(255, 71, 87, 0.15), transparent 70%),
-                linear-gradient(to bottom, rgba(22,27,34,0.4), rgba(22,27,34,0.6));
-        }
-
-        /* --- МЕНЮ ЯЗЫКОВ --- */
-        .lang-dropdown { position: absolute; top: 20px; right: 20px; width: 60px; z-index: 100; }
-        .lang-btn {
-            background: rgba(0,0,0,0.4); color: var(--accent-gold);
-            border: 1px solid var(--glass-border); border-radius: 12px;
-            padding: 8px 0; width: 100%; font-size: 13px; font-weight: bold;
-            cursor: pointer; text-align: center; backdrop-filter: blur(4px);
-            transition: all 0.2s;
-        }
-        .lang-btn:active { transform: scale(0.95); }
-
-        .lang-list {
-            display: none; position: absolute; top: 115%; left: 0; width: 100%;
-            background: rgba(15, 20, 25, 0.9);
+        /* --- КНОПКИ ЯЗЫКОВ (ТАБЫ) --- */
+        .lang-tabs {
+            display: flex; justify-content: center; gap: 8px;
+            background: rgba(0,0,0,0.25); padding: 6px;
+            border-radius: 18px; width: fit-content; margin: 0 auto 25px;
+            border: 1px solid rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); border-radius: 12px;
-            overflow: hidden; flex-direction: column;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
-        .lang-list.show { display: flex; }
-        .lang-item {
-            padding: 10px 0; color: #fff; font-size: 13px; font-weight: bold;
-            cursor: pointer; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05);
+        .lang-btn {
+            background: transparent; border: none; color: #8b949e;
+            padding: 10px 24px; border-radius: 14px; font-weight: 700; font-size: 14px;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden;
         }
-        .lang-item:last-child { border-bottom: none; }
-        .lang-item:active { background: rgba(255,255,255,0.1); color: var(--accent-gold); }
-
-        /* АВАТАР */
-        .avatar-container { position: relative; width: 110px; height: 110px; margin: 0 auto 15px; }
-        .avatar-img {
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: 0 0 20px rgba(255,255,255,0.1); /* Свечение аватара */
-        }
-        .avatar-img:not([src]), .avatar-img[src=""] { background: linear-gradient(135deg, #2b3137, #3e5065); display: block; }
-        .santa-hat {
-            position: absolute; top: -28px; right: -12px; font-size: 55px;
-            transform: rotate(15deg); filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
-            z-index: 2; pointer-events: none;
+        /* Анимация кнопок */
+        .lang-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+            transform: scale(1.05);
         }
 
-        h1 { margin: 0; color: #ffffff; font-size: 28px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        .info { font-size: 14px; color: #aebbc9; margin-top: 8px; font-weight: 500; }
+        /* --- АВАТАРКА С КОЛЬЦОМ --- */
+        .hero { text-align: center; position: relative; }
         
-        /* КНОПКИ */
-        .btn {
-            display: block; text-decoration: none; padding: 16px;
-            border-radius: 16px; margin-top: 15px; font-weight: 600;
-            transition: transform 0.1s, background 0.2s; text-align: center;
+        .avatar-wrap {
+            position: relative; width: 130px; height: 130px; margin: 0 auto 20px;
+            display: flex; justify-content: center; align-items: center;
         }
-        .btn-glass {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            color: #79c0ff;
+        
+        /* Вращающееся кольцо */
+        .avatar-ring {
+            position: absolute; width: 100%; height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-red), var(--accent-green), var(--accent-gold), #3b82f6);
+            z-index: 1;
+            animation: spin 3s linear infinite;
+            filter: blur(2px); /* Мягкое свечение */
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Подложка чтобы кольцо не просвечивало */
+        .avatar-bg {
+            position: absolute; width: 94%; height: 94%;
+            background: #161b22; border-radius: 50%; z-index: 2;
+        }
+
+        .avatar-img {
+            position: relative; z-index: 3;
+            width: 90%; height: 90%; border-radius: 50%; object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .santa-hat {
+            position: absolute; top: -35px; right: -20px; font-size: 60px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+            transform: rotate(12deg); z-index: 10; pointer-events: none;
+        }
+
+        /* Имя и Белая елка */
+        h1 { margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        /* Делаем елку белой через фильтр */
+        .white-tree {
+            filter: grayscale(100%) brightness(500%); /* Магия белого цвета */
+            font-size: 28px;
+        }
+
+        .subtitle { color: #aebbc9; font-size: 14px; margin-top: 8px; margin-bottom: 30px; font-weight: 500; }
+
+        /* Кнопки ссылок */
+        .actions { display: flex; flex-direction: column; gap: 14px; }
+        .btn {
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            padding: 18px; border-radius: 18px; text-decoration: none;
+            font-weight: 600; transition: transform 0.2s, background 0.2s;
         }
         .btn:active { transform: scale(0.97); }
+        
+        .btn-tg {
+            background: rgba(255,255,255,0.03); color: #79c0ff;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-tg:hover { background: rgba(255,255,255,0.08); }
+        
         .btn-donate {
-            color: #fff; 
-            background: linear-gradient(90deg, #238636 0%, #2ea043 100%); 
-            box-shadow: 0 4px 15px rgba(46, 160, 67, 0.4);
+            background: linear-gradient(90deg, #238636, #2ea043);
+            color: white; box-shadow: 0 4px 20px rgba(46, 160, 67, 0.3);
             border: none;
         }
+
+        /* Текстовые блоки */
+        .content-fade { transition: opacity 0.25s ease, transform 0.25s ease; opacity: 1; }
+        .content-fade.hidden { opacity: 0; transform: translateY(10px); }
+
+        .info-card {
+            margin-top: 15px;
+            background: rgba(0,0,0,0.2); border-radius: 18px; padding: 22px;
+            border: 1px solid rgba(255,255,255,0.03);
+            text-align: left;
+        }
+        .card-header {
+            display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+            color: var(--accent-gold); font-weight: 700; font-size: 13px; text-transform: uppercase;
+        }
+        .info-text { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.85); }
         
-        .text-block {
-            border-radius: 24px; padding: 25px; margin-top: 5px;
-            font-size: 15px; line-height: 1.6;
-            color: rgba(255, 255, 255, 0.9);
-        }
-        .lang-title {
-            font-weight: bold; color: var(--accent-gold); margin-bottom: 8px;
-            display: block; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;
-        }
-        .footer-note {
-            text-align: center; font-size: 12px; color: rgba(255,255,255,0.5);
-            margin-top: 20px; padding: 10px;
-        }
-        .rules-block { 
-            border-left: 3px solid var(--accent-red) !important; 
-            background: linear-gradient(to right, rgba(255, 71, 87, 0.05), rgba(22, 27, 34, 0.5));
+        .rules-card { border-left: 3px solid var(--accent-red); background: linear-gradient(90deg, rgba(255, 71, 87, 0.05), transparent); }
+
+        .footer {
+            text-align: center; margin-top: 10px; margin-bottom: 30px;
+            font-size: 13px; color: rgba(255,255,255,0.3);
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
-
-    <div class="bokeh-bg">
-        <div class="bokeh-light bl-1"></div>
-        <div class="bokeh-light bl-2"></div>
-        <div class="bokeh-light bl-3"></div>
-        <div class="bokeh-light bl-4"></div>
+<body oncontextmenu="return false;"> <div class="bokeh-bg">
+        <div class="bokeh-blob b1"></div><div class="bokeh-blob b2"></div><div class="bokeh-blob b3"></div>
     </div>
-
-    <div class="snowflake"></div><div class="snowflake"></div>
-
-    <div class="garland-container">
-        <div class="light"></div><div class="light"></div><div class="light"></div>
-        <div class="light"></div><div class="light"></div><div class="light"></div>
-        <div class="light"></div><div class="light"></div><div class="light"></div>
-        <div class="light"></div><div class="light"></div><div class="light"></div>
-    </div>
-
-    <div class="baubles-container">
-        <div class="bauble b1"></div><div class="bauble b2"></div>
-        <div class="bauble b3"></div><div class="bauble b4"></div>
+    <div id="snow-container"></div>
+    <div class="garland">
+        <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+        <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
     </div>
 
     <div class="container">
         
-        <div class="profile-card glass-effect">
+        <div class="glass-panel">
             
-            <div class="lang-dropdown">
-                <div class="lang-btn" onclick="toggleLangMenu()" id="currentLangBtn">EN ▾</div>
-                <div class="lang-list" id="langList">
-                    <div class="lang-item" onclick="selectLang('en')">EN</div>
-                    <div class="lang-item" onclick="selectLang('ua')">UA</div>
-                    <div class="lang-item" onclick="selectLang('ru')">RU</div>
+            <div class="lang-tabs">
+                <button class="lang-btn active" onclick="setLang('en')" id="btn-en">English</button>
+                <button class="lang-btn" onclick="setLang('ua')" id="btn-ua">UA</button>
+                <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">RU</button>
+            </div>
+
+            <div class="hero">
+                <div class="avatar-wrap">
+                    <div class="avatar-ring"></div> <div class="avatar-bg"></div> <img src="avatar.jpg" alt="Avatar" class="avatar-img" ondragstart="return false;">
+                    <div class="santa-hat">🎅</div>
+                </div>
+
+                <div id="dynamic-content" class="content-fade">
+                    <h1 id="t-name">Bohdan <span class="white-tree">🎄</span></h1>
+                    
+                    <div class="subtitle" id="t-info">
+                        🎂 03.02 • 🇺🇦 Kyiv, Ukraine • ❄️ Winter Edition
+                    </div>
+
+                    <div class="actions">
+                        <a href="https://t.me/qelry" class="btn btn-tg">
+                            <span>✈️</span> <span id="t-tg">My only account: @qelry</span>
+                        </a>
+                        <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">
+                            <span>🎁</span> <span id="t-donate">Donate for Holidays</span>
+                        </a>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-header"><span>👤</span> <span id="t-about-title">About Me</span></div>
+                        <div class="info-text" id="t-about-text">
+                            I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.
+                        </div>
+                    </div>
+
+                    <div class="info-card rules-card">
+                        <div class="card-header" style="color: var(--accent-red);"><span>⚠️</span> <span id="t-rules-title">Important Notice</span></div>
+                        <div class="info-text" id="t-rules-text">
+                            I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="avatar-container">
-                <img src="avatar.jpg" alt="Avatar" class="avatar-img">
-                <div class="santa-hat">🎅</div>
-            </div>
-            
-            <h1>Bohdan <span style="font-size: 24px;">🎄</span></h1>
-            <div class="info" id="info-text">
-                🎂 03.02 • 🇺🇦 Kyiv, Ukraine
-            </div>
-
-            <a href="https://t.me/qelry" class="btn btn-glass" id="btn-account">
-                ✈️ My only account: @qelry
-            </a>
-            
-            <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate" id="btn-donate">
-                🎁 Donate for Holidays
-            </a>
         </div>
 
-        <div class="text-block glass-effect">
-            <span class="lang-title" id="main-title">🇺🇸 English</span>
-            <span id="main-desc">
-                I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.
-            </span>
+        <div class="footer" id="t-footer">
+            ❄️ Happy New Year 2026! ❄️<br>© Filipov. All rights reserved.
         </div>
-
-        <div class="text-block rules-block glass-effect">
-            <span id="rules-desc">
-                I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.
-            </span>
-        </div>
-
-        <div class="footer-note" id="footer-text">
-            ❄️ Happy New Year 2026! ❄️<br>
-            © Filipov. All rights reserved.
-        </div>
-
     </div>
 
     <script>
-        const translations = {
-            en: {
-                title: "🇺🇸 English",
-                desc: "I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.",
-                btnAccount: "✈️ My only account: @qelry",
-                btnDonate: "🎁 Donate for Holidays",
-                rules: "I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.",
-                footer: "❄️ Happy New Year 2026! ❄️<br>© Filipov. All rights reserved."
-            },
-            ua: {
-                title: "🇺🇦 Українська",
-                desc: "Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя. Мої вчинки керуються повагою до закону та особистою чесністю.",
-                btnAccount: "✈️ Мій єдиний акаунт: @qelry",
-                btnDonate: "🎁 Донат на свята",
-                rules: "Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших учасників. Усвідомлюю важливість безпечної та конструктивної взаємодії.",
-                footer: "❄️ З Новим Роком 2026! ❄️<br>© Filipov. All rights reserved."
-            },
-            ru: {
-                title: "🏳️ Русский",
-                desc: "Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный, честный образ жизни. Мои поступки основаны на уважении к закону и личной честности.",
-                btnAccount: "✈️ Мой единственный аккаунт: @qelry",
-                btnDonate: "🎁 Донат на праздники",
-                rules: "Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение к другим участникам. Осознаю важность безопасного и конструктивного взаимодействия в цифровом пространстве.",
-                footer: "❄️ С Новым Годом 2026! ❄️<br>© Filipov. All rights reserved."
+        // Снег
+        const snowContainer = document.getElementById('snow-container');
+        const snowflakes = ['❄', '❅', '❆'];
+        for(let i=0; i<35; i++) {
+            const el = document.createElement('div');
+            el.className = 'snowflake';
+            el.innerText = snowflakes[Math.floor(Math.random()*snowflakes.length)];
+            el.style.left = Math.random()*100 + '%';
+            el.style.animationDuration = (Math.random()*5 + 5) + 's';
+            el.style.animationDelay = (Math.random()*5) + 's';
+            el.style.fontSize = (Math.random()*12 + 10) + 'px';
+            snowContainer.appendChild(el);
+        }
+
+        // Запрет клавиш (Ctrl+C, Ctrl+U и т.д.)
+        document.onkeydown = function(e) {
+            if(e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67)) {
+                return false;
             }
         };
 
-        function toggleLangMenu() {
-            document.getElementById("langList").classList.toggle("show");
-        }
-
-        function selectLang(lang) {
-            const data = translations[lang];
-            document.getElementById('main-title').innerText = data.title;
-            document.getElementById('main-desc').innerText = data.desc;
-            document.getElementById('btn-account').innerText = data.btnAccount;
-            document.getElementById('btn-donate').innerText = data.btnDonate;
-            document.getElementById('rules-desc').innerText = data.rules;
-            document.getElementById('footer-text').innerHTML = data.footer;
-            document.getElementById('currentLangBtn').innerText = lang.toUpperCase() + " ▾";
-            document.getElementById("langList").classList.remove("show");
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.matches('.lang-btn')) {
-                var dropdowns = document.getElementsByClassName("lang-list");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
+        // Перевод
+        const translations = {
+            en: {
+                name: 'Bohdan <span class="white-tree">🎄</span>',
+                info: '🎂 03.02 • 🇺🇦 Kyiv, Ukraine • ❄️ Winter Edition',
+                tg: 'My only account: @qelry',
+                donate: 'Donate for Holidays',
+                aboutTitle: 'About Me',
+                aboutText: 'I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.',
+                rulesTitle: 'Important Notice',
+                rulesText: 'I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.',
+                footer: '❄️ Happy New Year 2026! ❄️<br>© Filipov. All rights reserved.'
+            },
+            ua: {
+                name: 'Богдан <span class="white-tree">🎄</span>',
+                info: '🎂 03.02 • 🇺🇦 Київ, Україна • ❄️ Зимове видання',
+                tg: 'Мій єдиний акаунт: @qelry',
+                donate: 'Донат на свята',
+                aboutTitle: 'Про мене',
+                aboutText: 'Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя. Мої вчинки керуються повагою до закону та особистою чесністю.',
+                rulesTitle: 'Важливе повідомлення',
+                rulesText: 'Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших учасників. Усвідомлюю важливість безпечної та конструктивної взаємодії.',
+                footer: '❄️ З Новим Роком 2026! ❄️<br>© Filipov. All rights reserved.'
+            },
+            ru: {
+                name: 'Богдан <span class="white-tree">🎄</span>',
+                info: '🎂 03.02 • 🇺🇦 Киев, Украина • ❄️ Зимнее издание',
+                tg: 'Мой единственный аккаунт: @qelry',
+                donate: 'Донат на праздники',
+                aboutTitle: 'Обо мне',
+                aboutText: 'Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный, честный образ жизни. Мои поступки основаны на уважении к закону и личной честности.',
+                rulesTitle: 'Важное уведомление',
+                rulesText: 'Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение к другим участникам. Осознаю важность безопасного и конструктивного взаимодействия в цифровом пространстве.',
+                footer: '❄️ С Новым Годом 2026! ❄️<br>© Filipov. All rights reserved.'
             }
+        };
+
+        function setLang(lang) {
+            const content = document.getElementById('dynamic-content');
+            const data = translations[lang];
+
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + lang).classList.add('active');
+
+            content.classList.add('hidden');
+
+            setTimeout(() => {
+                document.getElementById('t-name').innerHTML = data.name; // Используем innerHTML для елки
+                document.getElementById('t-info').innerText = data.info;
+                document.getElementById('t-tg').innerText = data.tg;
+                document.getElementById('t-donate').innerText = data.donate;
+                document.getElementById('t-about-title').innerText = data.aboutTitle;
+                document.getElementById('t-about-text').innerText = data.aboutText;
+                document.getElementById('t-rules-title').innerText = data.rulesTitle;
+                document.getElementById('t-rules-text').innerText = data.rulesText;
+                document.getElementById('t-footer').innerHTML = data.footer;
+                content.classList.remove('hidden');
+            }, 250);
         }
     </script>
 </body>
 </html>
-
