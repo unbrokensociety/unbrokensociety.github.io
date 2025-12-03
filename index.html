@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bohdan | Winter 2026</title>
+    <title>Bohdan | New Year 2026</title>
     <style>
         :root {
             --bg-color: #0f1115;
@@ -12,7 +12,7 @@
             --accent-green: #2ed573;
             --accent-gold: #ffa502;
             
-            /* Стекло */
+            /* Налаштування скла */
             --glass-bg: rgba(22, 27, 34, 0.65);
             --glass-border: rgba(255, 255, 255, 0.12);
             --glass-shine: rgba(255, 255, 255, 0.25);
@@ -30,7 +30,7 @@
             align-items: flex-start;
             overflow-x: hidden;
             
-            /* --- ЗАЩИТА ОТ КОПИРОВАНИЯ --- */
+            /* --- ЗАХИСТ ВІД КОПІЮВАННЯ --- */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -53,14 +53,14 @@
         .b3 { top: 40%; left: 40%; width: 250px; height: 250px; background: #ffa502; animation-delay: -10s; opacity: 0.2; }
         @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, -40px); } }
 
-        /* --- СНЕГ --- */
+        /* --- СНІГ (основний фон) --- */
         .snowflake {
             position: fixed; top: -20px; color: #fff; font-size: 1.2em; opacity: 0.7;
             pointer-events: none; z-index: 0; animation: fall linear infinite;
         }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
 
-        /* --- ГИРЛЯНДА --- */
+        /* --- ГІРЛЯНДА --- */
         .garland {
             position: fixed; top: -10px; left: 0; width: 100%;
             display: flex; justify-content: space-around; pointer-events: none; z-index: 10;
@@ -82,7 +82,7 @@
             display: flex; flex-direction: column; gap: 25px;
         }
 
-        /* --- СТЕКЛО (ОСНОВА) --- */
+        /* --- СКЛО (ОСНОВА) --- */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(25px) saturate(160%);
@@ -94,7 +94,7 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        /* --- КНОПКИ ЯЗЫКОВ (ТАБЫ) --- */
+        /* --- КНОПКИ МОВ (ТАБИ) --- */
         .lang-tabs {
             display: flex; justify-content: center; gap: 8px;
             background: rgba(0,0,0,0.25); padding: 6px;
@@ -108,7 +108,7 @@
             cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative; overflow: hidden;
         }
-        /* Анимация кнопок */
+        /* Анімація кнопок */
         .lang-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
         .lang-btn.active {
             background: rgba(255, 255, 255, 0.15);
@@ -117,7 +117,7 @@
             transform: scale(1.05);
         }
 
-        /* --- АВАТАРКА С КОЛЬЦОМ --- */
+        /* --- АВАТАР З КІЛЬЦЕМ --- */
         .hero { text-align: center; position: relative; }
         
         .avatar-wrap {
@@ -125,18 +125,18 @@
             display: flex; justify-content: center; align-items: center;
         }
         
-        /* Вращающееся кольцо */
+        /* Кільце, що обертається */
         .avatar-ring {
             position: absolute; width: 100%; height: 100%;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent-red), var(--accent-green), var(--accent-gold), #3b82f6);
             z-index: 1;
             animation: spin 3s linear infinite;
-            filter: blur(2px); /* Мягкое свечение */
+            filter: blur(2px);
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Подложка чтобы кольцо не просвечивало */
+        /* Підкладка */
         .avatar-bg {
             position: absolute; width: 94%; height: 94%;
             background: #161b22; border-radius: 50%; z-index: 2;
@@ -147,25 +147,18 @@
             width: 90%; height: 90%; border-radius: 50%; object-fit: cover;
             border: 2px solid rgba(255,255,255,0.1);
         }
+        /* Шапку прибрано */
 
-        .santa-hat {
-            position: absolute; top: -35px; right: -20px; font-size: 60px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
-            transform: rotate(12deg); z-index: 10; pointer-events: none;
-        }
-
-        /* Имя и Белая елка */
+        /* Ім'я та БІЛА ялинка */
         h1 { margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        
-        /* Делаем елку белой через фильтр */
         .white-tree {
-            filter: grayscale(100%) brightness(500%); /* Магия белого цвета */
+            filter: grayscale(100%) brightness(500%);
             font-size: 28px;
         }
 
         .subtitle { color: #aebbc9; font-size: 14px; margin-top: 8px; margin-bottom: 30px; font-weight: 500; }
 
-        /* Кнопки ссылок */
+        /* Кнопки посилань */
         .actions { display: flex; flex-direction: column; gap: 14px; }
         .btn {
             display: flex; align-items: center; justify-content: center; gap: 12px;
@@ -186,7 +179,7 @@
             border: none;
         }
 
-        /* Текстовые блоки */
+        /* Текстові блоки */
         .content-fade { transition: opacity 0.25s ease, transform 0.25s ease; opacity: 1; }
         .content-fade.hidden { opacity: 0; transform: translateY(10px); }
 
@@ -204,13 +197,25 @@
         
         .rules-card { border-left: 3px solid var(--accent-red); background: linear-gradient(90deg, rgba(255, 71, 87, 0.05), transparent); }
 
+        /* --- ФУТЕР --- */
         .footer {
             text-align: center; margin-top: 10px; margin-bottom: 30px;
             font-size: 13px; color: rgba(255,255,255,0.3);
         }
+        /* Анімація сніжинок у футері */
+        .footer-snow {
+            display: inline-block;
+            animation: spin-slow 5s linear infinite;
+        }
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div class="bokeh-bg">
+<body oncontextmenu="return false;">
+
+    <div class="bokeh-bg">
         <div class="bokeh-blob b1"></div><div class="bokeh-blob b2"></div><div class="bokeh-blob b3"></div>
     </div>
     <div id="snow-container"></div>
@@ -231,15 +236,16 @@
 
             <div class="hero">
                 <div class="avatar-wrap">
-                    <div class="avatar-ring"></div> <div class="avatar-bg"></div> <img src="avatar.jpg" alt="Avatar" class="avatar-img" ondragstart="return false;">
-                    <div class="santa-hat">🎅</div>
+                    <div class="avatar-ring"></div>
+                    <div class="avatar-bg"></div>
+                    <img src="avatar.jpg" alt="Avatar" class="avatar-img" ondragstart="return false;">
                 </div>
 
                 <div id="dynamic-content" class="content-fade">
                     <h1 id="t-name">Bohdan <span class="white-tree">🎄</span></h1>
                     
                     <div class="subtitle" id="t-info">
-                        🎂 03.02 • 🇺🇦 Kyiv, Ukraine • ❄️ Winter Edition
+                        🎂 03.02 • 🇺🇦 Kyiv, Ukraine
                     </div>
 
                     <div class="actions">
@@ -269,12 +275,12 @@
         </div>
 
         <div class="footer" id="t-footer">
-            ❄️ Happy New Year 2026! ❄️<br>© Filipov. All rights reserved.
+            <span class="footer-snow">❄️</span> Happy New Year 2026! <span class="footer-snow">❄️</span><br>© Filipov. All rights reserved.
         </div>
     </div>
 
     <script>
-        // Снег
+        // Сніг (фон)
         const snowContainer = document.getElementById('snow-container');
         const snowflakes = ['❄', '❅', '❆'];
         for(let i=0; i<35; i++) {
@@ -288,47 +294,47 @@
             snowContainer.appendChild(el);
         }
 
-        // Запрет клавиш (Ctrl+C, Ctrl+U и т.д.)
+        // Заборона клавіш
         document.onkeydown = function(e) {
             if(e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67)) {
                 return false;
             }
         };
 
-        // Перевод
+        // Переклад (оновлений)
         const translations = {
             en: {
                 name: 'Bohdan <span class="white-tree">🎄</span>',
-                info: '🎂 03.02 • 🇺🇦 Kyiv, Ukraine • ❄️ Winter Edition',
+                info: '🎂 03.02 • 🇺🇦 Kyiv, Ukraine',
                 tg: 'My only account: @qelry',
                 donate: 'Donate for Holidays',
                 aboutTitle: 'About Me',
                 aboutText: 'I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.',
                 rulesTitle: 'Important Notice',
                 rulesText: 'I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.',
-                footer: '❄️ Happy New Year 2026! ❄️<br>© Filipov. All rights reserved.'
+                footer: '<span class="footer-snow">❄️</span> Happy New Year 2026! <span class="footer-snow">❄️</span><br>© Filipov. All rights reserved.'
             },
             ua: {
                 name: 'Богдан <span class="white-tree">🎄</span>',
-                info: '🎂 03.02 • 🇺🇦 Київ, Україна • ❄️ Зимове видання',
+                info: '🎂 03.02 • 🇺🇦 Київ, Україна',
                 tg: 'Мій єдиний акаунт: @qelry',
                 donate: 'Донат на свята',
                 aboutTitle: 'Про мене',
                 aboutText: 'Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя. Мої вчинки керуються повагою до закону та особистою чесністю.',
                 rulesTitle: 'Важливе повідомлення',
                 rulesText: 'Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших учасників. Усвідомлюю важливість безпечної та конструктивної взаємодії.',
-                footer: '❄️ З Новим Роком 2026! ❄️<br>© Filipov. All rights reserved.'
+                footer: '<span class="footer-snow">❄️</span> З Новим Роком 2026! <span class="footer-snow">❄️</span><br>© Filipov. All rights reserved.'
             },
             ru: {
                 name: 'Богдан <span class="white-tree">🎄</span>',
-                info: '🎂 03.02 • 🇺🇦 Киев, Украина • ❄️ Зимнее издание',
+                info: '🎂 03.02 • 🇺🇦 Киев, Украина',
                 tg: 'Мой единственный аккаунт: @qelry',
                 donate: 'Донат на праздники',
                 aboutTitle: 'Обо мне',
                 aboutText: 'Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный, честный образ жизни. Мои поступки основаны на уважении к закону и личной честности.',
                 rulesTitle: 'Важное уведомление',
                 rulesText: 'Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение к другим участникам. Осознаю важность безопасного и конструктивного взаимодействия в цифровом пространстве.',
-                footer: '❄️ С Новым Годом 2026! ❄️<br>© Filipov. All rights reserved.'
+                footer: '<span class="footer-snow">❄️</span> С Новым Годом 2026! <span class="footer-snow">❄️</span><br>© Filipov. All rights reserved.'
             }
         };
 
@@ -342,7 +348,7 @@
             content.classList.add('hidden');
 
             setTimeout(() => {
-                document.getElementById('t-name').innerHTML = data.name; // Используем innerHTML для елки
+                document.getElementById('t-name').innerHTML = data.name; 
                 document.getElementById('t-info').innerText = data.info;
                 document.getElementById('t-tg').innerText = data.tg;
                 document.getElementById('t-donate').innerText = data.donate;
