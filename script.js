@@ -1,62 +1,245 @@
-const translations = {
-    en: {
-        title: "🇺🇸 English",
-        desc: "I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.",
-        btnAccount: "✈️ My only account: @qelry",
-        btnDonate: "🎁 Donate for Holidays",
-        rules: "⏺ I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.",
-        footer: "❄️ Happy New Year 2026! ❄️<br>© Filipov. All rights reserved."
-    },
-    ua: {
-        title: "🇺🇦 Українська",
-        desc: "Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя. Мої вчинки керуються повагою до закону та особистою чесністю.",
-        btnAccount: "✈️ Мій єдиний акаунт: @qelry",
-        btnDonate: "🎁 Донат на свята",
-        rules: "⏺ Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших учасників. Усвідомлюю важливість безпечної та конструктивної взаємодії.",
-        footer: "❄️ З Новим Роком 2026! ❄️<br>© Filipov. All rights reserved."
-    },
-    ru: {
-        title: "🏳️ Русский",
-        desc: "Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный, честный образ жизни. Мои поступки основаны на уважении к закону и личной честности.",
-        btnAccount: "✈️ Мой единственный аккаунт: @qelry",
-        btnDonate: "🎁 Донат на праздники",
-        rules: "⏺ Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение к другим участникам. Осознаю важность безопасного и конструктивного взаимодействия в цифровом пространстве.",
-        footer: "❄️ С Новым Годом 2026! ❄️<br>© Filipov. All rights reserved."
-    }
-};
-
-// Функция открытия/закрытия меню
-function toggleLangMenu() {
-    document.getElementById("langList").classList.toggle("show");
+:root {
+    --bg-color: #0f1115;
+    --text-color: #e6edf3;
+    --accent-red: #ff4757;
+    --accent-green: #2ed573;
+    --accent-gold: #ffa502;
+    
+    /* Налаштування скла */
+    --glass-bg: rgba(22, 27, 34, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-shine: rgba(255, 255, 255, 0.25);
 }
 
-// Функция выбора языка
-function selectLang(lang) {
-    const data = translations[lang];
-
-    // Обновляем все тексты
-    document.getElementById('main-title').innerText = data.title;
-    document.getElementById('main-desc').innerText = data.desc;
-    document.getElementById('btn-account').innerText = data.btnAccount;
-    document.getElementById('btn-donate').innerText = data.btnDonate;
-    document.getElementById('rules-desc').innerText = data.rules;
-    document.getElementById('footer-text').innerHTML = data.footer;
-
-    // Обновляем текст на кнопке и закрываем меню
-    document.getElementById('currentLangBtn').innerText = lang.toUpperCase() + " ▾";
-    document.getElementById("langList").classList.remove("show");
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    
+    /* Блокуємо скрол поки йде "перевірка" */
+    overflow: hidden; 
+    
+    /* --- ЗАХИСТ ВІД КОПІЮВАННЯ --- */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
-// Закрываем меню, если кликнули в любое другое место
-window.onclick = function(event) {
-    if (!event.target.matches('.lang-btn')) {
-        var dropdowns = document.getElementsByClassName("lang-list");
-        for (var i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
-    }
+/* --- ЗАСТАВКА ЗАЩИТЫ (Fake Cloudflare) --- */
+#security-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #0f1115; z-index: 9999;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    transition: opacity 0.6s ease, visibility 0.6s;
+}
+
+.sec-spinner {
+    width: 50px; height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: #3b82f6; /* Синій колір завантаження */
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 25px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.sec-text {
+    font-family: -apple-system, monospace; font-size: 16px; color: #aebbc9;
+    margin-bottom: 10px;
+}
+
+.sec-status {
+    color: #2ed573; /* Зелений "Успішно" */
+    font-weight: bold; font-size: 14px;
+    opacity: 0; animation: fadeIn 0.5s forwards 1.5s;
+}
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* --- ФОН (БОКЕ) --- */
+.bokeh-bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1; pointer-events: none; overflow: hidden;
+}
+.bokeh-blob {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); opacity: 0.4;
+    animation: float 15s infinite alternate ease-in-out;
+}
+.b1 { top: -10%; left: -10%; width: 400px; height: 400px; background: #3b82f6; }
+.b2 { bottom: 10%; right: -10%; width: 350px; height: 350px; background: #2ed573; animation-delay: -5s; }
+.b3 { top: 40%; left: 40%; width: 250px; height: 250px; background: #ffa502; animation-delay: -10s; opacity: 0.2; }
+@keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, -40px); } }
+
+/* --- СНІГ (основний фон) --- */
+.snowflake {
+    position: fixed; top: -20px; color: #fff; font-size: 1.2em; opacity: 0.7;
+    pointer-events: none; z-index: 0; animation: fall linear infinite;
+}
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+/* --- ГІРЛЯНДА --- */
+.garland {
+    position: fixed; top: -10px; left: 0; width: 100%;
+    display: flex; justify-content: space-around; pointer-events: none; z-index: 10;
+}
+.light {
+    width: 12px; height: 12px; border-radius: 50%; background: #fff;
+    position: relative; animation: flash 2s infinite alternate;
+}
+.light::before { content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 2px; height: 6px; background: #444; }
+.light:nth-child(3n+1) { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
+.light:nth-child(3n+2) { background: var(--accent-gold); box-shadow: 0 0 10px var(--accent-gold); animation-delay: 0.5s; }
+.light:nth-child(3n+3) { background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); animation-delay: 1s; }
+@keyframes flash { 0% { opacity: 0.4; } 100% { opacity: 1; } }
+
+/* --- КОНТЕЙНЕР --- */
+.container {
+    width: 100%; max-width: 550px;
+    margin-top: 50px; z-index: 2;
+    display: flex; flex-direction: column; gap: 25px;
+    
+    /* Приховано до завантаження */
+    opacity: 0; transform: scale(0.95);
+    transition: opacity 1s ease, transform 1s ease;
+}
+.container.loaded { opacity: 1; transform: scale(1); }
+
+/* --- СКЛО (ОСНОВА) --- */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px) saturate(160%);
+    -webkit-backdrop-filter: blur(25px) saturate(160%);
+    border: 1px solid var(--glass-border);
+    border-top: 1px solid var(--glass-shine);
+    border-radius: 28px;
+    padding: 35px 25px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* --- КНОПКИ МОВ (ТАБИ) --- */
+.lang-tabs {
+    display: flex; justify-content: center; gap: 8px;
+    background: rgba(0,0,0,0.25); padding: 6px;
+    border-radius: 18px; width: fit-content; margin: 0 auto 25px;
+    border: 1px solid rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+}
+.lang-btn {
+    background: transparent; border: none; color: #8b949e;
+    padding: 10px 24px; border-radius: 14px; font-weight: 700; font-size: 14px;
+    cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; overflow: hidden;
+}
+/* Анімація кнопок */
+.lang-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
+.lang-btn.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+    transform: scale(1.05);
+}
+
+/* --- АВАТАР З КІЛЬЦЕМ --- */
+.hero { text-align: center; position: relative; }
+
+.avatar-wrap {
+    position: relative; width: 130px; height: 130px; margin: 0 auto 20px;
+    display: flex; justify-content: center; align-items: center;
+}
+
+/* Кільце, що обертається */
+.avatar-ring {
+    position: absolute; width: 100%; height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-red), var(--accent-green), var(--accent-gold), #3b82f6);
+    z-index: 1;
+    animation: spin 3s linear infinite;
+    filter: blur(2px);
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* Підкладка */
+.avatar-bg {
+    position: absolute; width: 94%; height: 94%;
+    background: #161b22; border-radius: 50%; z-index: 2;
+}
+
+.avatar-img {
+    position: relative; z-index: 3;
+    width: 90%; height: 90%; border-radius: 50%; object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+/* Ім'я та БІЛА ялинка */
+h1 { margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.white-tree {
+    filter: grayscale(100%) brightness(500%);
+    font-size: 28px;
+}
+
+.subtitle { color: #aebbc9; font-size: 14px; margin-top: 8px; margin-bottom: 30px; font-weight: 500; }
+
+/* Кнопки посилань */
+.actions { display: flex; flex-direction: column; gap: 14px; }
+.btn {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 18px; border-radius: 18px; text-decoration: none;
+    font-weight: 600; transition: transform 0.2s, background 0.2s;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-tg {
+    background: rgba(255,255,255,0.03); color: #79c0ff;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.btn-tg:hover { background: rgba(255,255,255,0.08); }
+
+.btn-donate {
+    background: linear-gradient(90deg, #238636, #2ea043);
+    color: white; box-shadow: 0 4px 20px rgba(46, 160, 67, 0.3);
+    border: none;
+}
+
+/* Текстові блоки */
+.content-fade { transition: opacity 0.25s ease, transform 0.25s ease; opacity: 1; }
+.content-fade.hidden { opacity: 0; transform: translateY(10px); }
+
+.info-card {
+    margin-top: 15px;
+    background: rgba(0,0,0,0.2); border-radius: 18px; padding: 22px;
+    border: 1px solid rgba(255,255,255,0.03);
+    text-align: left;
+}
+.card-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+    color: var(--accent-gold); font-weight: 700; font-size: 13px; text-transform: uppercase;
+}
+.info-text { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.85); }
+
+.rules-card { border-left: 3px solid var(--accent-red); background: linear-gradient(90deg, rgba(255, 71, 87, 0.05), transparent); }
+
+/* --- ФУТЕР --- */
+.footer {
+    text-align: center; margin-top: 10px; margin-bottom: 30px;
+    font-size: 13px; color: rgba(255,255,255,0.3);
+}
+/* Анімація сніжинок у футері */
+.footer-snow {
+    display: inline-block;
+    animation: spin-slow 5s linear infinite;
+}
+@keyframes spin-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
