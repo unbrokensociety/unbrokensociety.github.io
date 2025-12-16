@@ -1,82 +1,83 @@
 <!DOCTYPE html>
-<html lang="en" style="height: 100%;">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bohdan | New Year Profile</title>
-    
+    <title>Bohdan | New Year 2026</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body oncontextmenu="return false;">
 
-    <div class="snowflake"></div><div class="snowflake"></div>
-    
-    <div class="garland-container">
-        <div class="light"></div><div class="light"></div><div class="light"></div>
-        <div class="light"></div><div class="light"></div><div class="light"></div>
-        <div class="light"></div><div class="light"></div><div class="light"></div>
-        <div class="light"></div><div class="light"></div><div class="light"></div>
+    <div id="security-screen">
+        <div class="sec-spinner"></div>
+        <div class="sec-text">Checking connection...</div>
+        <div class="sec-status">Secure Connection Verified ✓</div>
     </div>
 
-    <div class="baubles-container">
-        <div class="bauble b1"></div><div class="bauble b2"></div>
-        <div class="bauble b3"></div><div class="bauble b4"></div>
+    <div class="bokeh-bg">
+        <div class="bokeh-blob b1"></div><div class="bokeh-blob b2"></div><div class="bokeh-blob b3"></div>
+    </div>
+    <div id="snow-container"></div>
+    <div class="garland">
+        <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+        <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
     </div>
 
-    <div class="container">
+    <div class="container" id="main-container">
         
-        <div class="profile-card glass-effect">
+        <div class="glass-panel">
             
-            <div class="lang-dropdown">
-                <div class="lang-btn" onclick="toggleLangMenu()" id="currentLangBtn">EN ▾</div>
-                <div class="lang-list" id="langList">
-                    <div class="lang-item" onclick="selectLang('en')">EN</div>
-                    <div class="lang-item" onclick="selectLang('ua')">UA</div>
-                    <div class="lang-item" onclick="selectLang('ru')">RU</div>
+            <div class="lang-tabs">
+                <button class="lang-btn active" onclick="setLang('en')" id="btn-en">English</button>
+                <button class="lang-btn" onclick="setLang('ua')" id="btn-ua">UA</button>
+                <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">RU</button>
+            </div>
+
+            <div class="hero">
+                <div class="avatar-wrap">
+                    <div class="avatar-ring"></div>
+                    <div class="avatar-bg"></div>
+                    <img src="avatar.jpg" alt="Avatar" class="avatar-img" ondragstart="return false;">
+                </div>
+
+                <div id="dynamic-content" class="content-fade">
+                    <h1 id="t-name">Bohdan <span class="white-tree">🎄</span></h1>
+                    
+                    <div class="subtitle" id="t-info">
+                        🎂 03.02 • 🇺🇦 Kyiv, Ukraine
+                    </div>
+
+                    <div class="actions">
+                        <a href="https://t.me/qelry" class="btn btn-tg">
+                            <span>✈️</span> <span id="t-tg">My only account: @qelry</span>
+                        </a>
+                        <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">
+                            <span>🎁</span> <span id="t-donate">Donate for Holidays</span>
+                        </a>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-header"><span>👤</span> <span id="t-about-title">About Me</span></div>
+                        <div class="info-text" id="t-about-text">
+                            I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.
+                        </div>
+                    </div>
+
+                    <div class="info-card rules-card">
+                        <div class="card-header" style="color: var(--accent-red);"><span>⚠️</span> <span id="t-rules-title">Important Notice</span></div>
+                        <div class="info-text" id="t-rules-text">
+                            I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="avatar-container">
-                <img src="avatar.jpg" alt="Avatar" class="avatar-img">
-                <div class="santa-hat">🎅</div>
-            </div>
-            
-            <h1>Bohdan <span style="font-size: 20px;">🎄</span></h1>
-            <div class="info" id="info-text">
-                🎂 03.02 • 🇺🇦 Kyiv, Ukraine • ❄️ Winter Edition
-            </div>
-
-            <a href="https://t.me/qelry" class="btn glass-effect" id="btn-account">
-                ✈️ My only account: @qelry
-            </a>
-            
-            <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate" id="btn-donate">
-                🎁 Donate for Holidays
-            </a>
         </div>
 
-        <div class="text-block glass-effect">
-            <span class="lang-title" id="main-title">🇺🇸 English</span>
-            <span id="main-desc">
-                I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.
-            </span>
+        <div class="footer" id="t-footer">
+            <span class="footer-snow">❄️</span> Happy New Year 2026! <span class="footer-snow">❄️</span><br>© Filipov. All rights reserved.
         </div>
-
-        <div class="text-block rules-block glass-effect">
-            <span id="rules-desc">
-                ⏺ I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.
-            </span>
-        </div>
-
-        <div class="footer-note" id="footer-text">
-            ❄️ Happy New Year 2026! ❄️<br>
-            © Filipov. All rights reserved.
-        </div>
-
     </div>
 
     <script src="script.js"></script>
-
 </body>
 </html>
-
