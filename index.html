@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bohdan | Winter 2026</title>
     <style>
         :root {
@@ -28,12 +28,10 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            overflow-x: hidden; /* Убрал блокировку скролла */
+            overflow-x: hidden;
             
-            /* --- ЗАЩИТА ОТ КОПИРОВАНИЯ --- */
+            /* Защита и тач */
             -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
@@ -53,7 +51,7 @@
         .b3 { top: 40%; left: 40%; width: 250px; height: 250px; background: #ffa502; animation-delay: -10s; opacity: 0.2; }
         @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, -40px); } }
 
-        /* --- СНЕГ (основной фон) --- */
+        /* --- СНЕГ --- */
         .snowflake {
             position: fixed; top: -20px; color: #fff; font-size: 1.2em; opacity: 0.7;
             pointer-events: none; z-index: 0; animation: fall linear infinite;
@@ -82,82 +80,102 @@
             display: flex; flex-direction: column; gap: 25px;
         }
 
-        /* --- СКЛО (ОСНОВА) --- */
+        /* --- ГЛАВНОЕ СТЕКЛО --- */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(25px) saturate(160%);
             -webkit-backdrop-filter: blur(25px) saturate(160%);
             border: 1px solid var(--glass-border);
             border-top: 1px solid var(--glass-shine);
-            border-radius: 28px;
+            border-radius: 32px;
             padding: 35px 25px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
         }
 
-        /* --- КНОПКИ МОВ (ТАБИ) --- */
-        .lang-tabs {
-            display: flex; justify-content: center; gap: 8px;
-            background: rgba(0,0,0,0.25); padding: 6px;
-            border-radius: 18px; width: fit-content; margin: 0 auto 25px;
-            border: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
+        /* --- IOS 26 LIQUID SWITCHER (НОВЫЙ) --- */
+        .ios-nav-container {
+            display: flex; justify-content: center; margin-bottom: 25px;
+            position: relative; z-index: 20;
         }
-        .lang-btn {
-            background: transparent; border: none; color: #8b949e;
-            padding: 10px 24px; border-radius: 14px; font-weight: 700; font-size: 14px;
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; overflow: hidden;
+
+        .ios-nav {
+            position: relative;
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 40px; /* Сильное скругление */
+            padding: 6px;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(15px);
+            /* Анимация увеличения при нажатии */
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); 
         }
-        /* Анимация кнопок */
-        .lang-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
-        .lang-btn.active {
+
+        /* Эффект нажатия (Scale) */
+        .ios-nav:active {
+            transform: scale(1.05); 
+        }
+
+        /* Бегающая пилюля (фон) */
+        .nav-pill {
+            position: absolute;
+            top: 6px; left: 6px; bottom: 6px;
             background: rgba(255, 255, 255, 0.15);
-            color: #fff;
+            border-radius: 30px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
-            transform: scale(1.05);
+            z-index: 0;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); /* Очень плавная физика */
+            width: 0; /* JS задаст ширину */
         }
 
-        /* --- АВАТАР З КІЛЬЦЕМ --- */
+        .nav-item {
+            position: relative;
+            z-index: 1;
+            border: none;
+            background: transparent;
+            color: #8b949e;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            /* Чтобы текст не прыгал */
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .nav-item.active {
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* --- АВАТАР --- */
         .hero { text-align: center; position: relative; }
-        
         .avatar-wrap {
             position: relative; width: 130px; height: 130px; margin: 0 auto 20px;
             display: flex; justify-content: center; align-items: center;
         }
-        
-        /* Кільце, що обертається */
         .avatar-ring {
-            position: absolute; width: 100%; height: 100%;
-            border-radius: 50%;
+            position: absolute; width: 100%; height: 100%; border-radius: 50%;
             background: linear-gradient(135deg, var(--accent-red), var(--accent-green), var(--accent-gold), #3b82f6);
-            z-index: 1;
-            animation: spin 3s linear infinite;
-            filter: blur(2px);
+            z-index: 1; animation: spin 3s linear infinite; filter: blur(2px);
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* Подкладка */
         .avatar-bg {
-            position: absolute; width: 94%; height: 94%;
-            background: #161b22; border-radius: 50%; z-index: 2;
+            position: absolute; width: 94%; height: 94%; background: #161b22; border-radius: 50%; z-index: 2;
         }
-
         .avatar-img {
-            position: relative; z-index: 3;
-            width: 90%; height: 90%; border-radius: 50%; object-fit: cover;
+            position: relative; z-index: 3; width: 90%; height: 90%; border-radius: 50%; object-fit: cover;
             border: 2px solid rgba(255,255,255,0.1);
         }
 
-        /* Ім'я та БІЛА ялинка */
+        /* --- ТЕКСТ --- */
         h1 { margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .white-tree {
-            filter: grayscale(100%) brightness(500%);
-            font-size: 28px;
-        }
-
+        .white-tree { filter: grayscale(100%) brightness(500%); font-size: 28px; }
         .subtitle { color: #aebbc9; font-size: 14px; margin-top: 8px; margin-bottom: 30px; font-weight: 500; }
 
-        /* Кнопки посилань */
+        /* --- КНОПКИ --- */
         .actions { display: flex; flex-direction: column; gap: 14px; }
         .btn {
             display: flex; align-items: center; justify-content: center; gap: 12px;
@@ -165,51 +183,24 @@
             font-weight: 600; transition: transform 0.2s, background 0.2s;
         }
         .btn:active { transform: scale(0.97); }
-        
-        .btn-tg {
-            background: rgba(255,255,255,0.03); color: #79c0ff;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+        .btn-tg { background: rgba(255,255,255,0.03); color: #79c0ff; border: 1px solid rgba(255,255,255,0.1); }
         .btn-tg:hover { background: rgba(255,255,255,0.08); }
-        
-        .btn-donate {
-            background: linear-gradient(90deg, #238636, #2ea043);
-            color: white; box-shadow: 0 4px 20px rgba(46, 160, 67, 0.3);
-            border: none;
-        }
+        .btn-donate { background: linear-gradient(90deg, #238636, #2ea043); color: white; border: none; box-shadow: 0 4px 20px rgba(46, 160, 67, 0.3); }
 
-        /* Текстові блоки */
-        .content-fade { transition: opacity 0.25s ease, transform 0.25s ease; opacity: 1; }
+        /* --- КОНТЕНТ --- */
+        .content-fade { transition: opacity 0.25s ease, transform 0.25s ease; opacity: 1; transform: translateY(0); }
         .content-fade.hidden { opacity: 0; transform: translateY(10px); }
-
         .info-card {
-            margin-top: 15px;
-            background: rgba(0,0,0,0.2); border-radius: 18px; padding: 22px;
-            border: 1px solid rgba(255,255,255,0.03);
-            text-align: left;
+            margin-top: 15px; background: rgba(0,0,0,0.2); border-radius: 18px; padding: 22px;
+            border: 1px solid rgba(255,255,255,0.03); text-align: left;
         }
-        .card-header {
-            display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
-            color: var(--accent-gold); font-weight: 700; font-size: 13px; text-transform: uppercase;
-        }
+        .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: var(--accent-gold); font-weight: 700; font-size: 13px; text-transform: uppercase; }
         .info-text { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.85); }
-        
         .rules-card { border-left: 3px solid var(--accent-red); background: linear-gradient(90deg, rgba(255, 71, 87, 0.05), transparent); }
 
-        /* --- ФУТЕР --- */
-        .footer {
-            text-align: center; margin-top: 10px; margin-bottom: 30px;
-            font-size: 13px; color: rgba(255,255,255,0.3);
-        }
-        /* Анімація сніжинок у футері */
-        .footer-snow {
-            display: inline-block;
-            animation: spin-slow 5s linear infinite;
-        }
-        @keyframes spin-slow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .footer { text-align: center; margin-top: 10px; margin-bottom: 30px; font-size: 13px; color: rgba(255,255,255,0.3); }
+        .footer-snow { display: inline-block; animation: spin-slow 5s linear infinite; }
+        @keyframes spin-slow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -223,14 +214,16 @@
         <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
     </div>
 
-    <div class="container" id="main-container">
-        
+    <div class="container">
         <div class="glass-panel">
             
-            <div class="lang-tabs">
-                <button class="lang-btn active" onclick="setLang('en')" id="btn-en">English</button>
-                <button class="lang-btn" onclick="setLang('ua')" id="btn-ua">UA</button>
-                <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">RU</button>
+            <div class="ios-nav-container">
+                <div class="ios-nav" id="nav-wrapper">
+                    <div class="nav-pill" id="nav-pill"></div>
+                    <button class="nav-item active" onclick="setLang('en')" id="btn-en">English</button>
+                    <button class="nav-item" onclick="setLang('ua')" id="btn-ua">UA</button>
+                    <button class="nav-item" onclick="setLang('ru')" id="btn-ru">RU</button>
+                </div>
             </div>
 
             <div class="hero">
@@ -242,18 +235,11 @@
 
                 <div id="dynamic-content" class="content-fade">
                     <h1 id="t-name">Bohdan <span class="white-tree">🎄</span></h1>
-                    
-                    <div class="subtitle" id="t-info">
-                        🎂 03.02 • 🇺🇦 Kyiv, Ukraine
-                    </div>
+                    <div class="subtitle" id="t-info">🎂 03.02 • 🇺🇦 Kyiv, Ukraine</div>
 
                     <div class="actions">
-                        <a href="https://t.me/qelry" class="btn btn-tg">
-                            <span>✈️</span> <span id="t-tg">My only account: @qelry</span>
-                        </a>
-                        <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">
-                            <span>🎁</span> <span id="t-donate">Donate for Holidays</span>
-                        </a>
+                        <a href="https://t.me/qelry" class="btn btn-tg"><span>✈️</span> <span id="t-tg">My only account: @qelry</span></a>
+                        <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate"><span>🎁</span> <span id="t-donate">Donate for Holidays</span></a>
                     </div>
 
                     <div class="info-card">
@@ -279,7 +265,7 @@
     </div>
 
     <script>
-        // Сніг (фон)
+        // Снег
         const snowContainer = document.getElementById('snow-container');
         const snowflakes = ['❄', '❅', '❆'];
         for(let i=0; i<35; i++) {
@@ -293,59 +279,73 @@
             snowContainer.appendChild(el);
         }
 
-        // Заборона клавіш
+        // Запрет клавиш
         document.onkeydown = function(e) {
-            if(e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67)) {
-                return false;
-            }
+            if(e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67)) return false;
         };
 
-        // Переклад
+        // Тексты
         const translations = {
             en: {
+                fullLang: 'English', short: 'EN',
                 name: 'Bohdan <span class="white-tree">🎄</span>',
                 info: '🎂 03.02 • 🇺🇦 Kyiv, Ukraine',
-                tg: 'My only account: @qelry',
-                donate: 'Donate for Holidays',
-                aboutTitle: 'About Me',
-                aboutText: 'I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.',
-                rulesTitle: 'Important Notice',
-                rulesText: 'I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.',
+                tg: 'My only account: @qelry', donate: 'Donate for Holidays',
+                aboutTitle: 'About Me', aboutText: 'I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life. My actions are guided by respect for the law and personal integrity.',
+                rulesTitle: 'Important Notice', rulesText: 'I am a compliant Telegram user who adheres to communication rules and shows respect to other participants. I recognize the importance of safe and constructive interaction.',
                 footer: '<span class="footer-snow">❄️</span> Happy New Year 2026! <span class="footer-snow">❄️</span><br>© Filipov. All rights reserved.'
             },
             ua: {
+                fullLang: 'Українська', short: 'UA',
                 name: 'Богдан <span class="white-tree">🎄</span>',
                 info: '🎂 03.02 • 🇺🇦 Київ, Україна',
-                tg: 'Мій єдиний акаунт: @qelry',
-                donate: 'Донат на свята',
-                aboutTitle: 'Про мене',
-                aboutText: 'Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя. Мої вчинки керуються повагою до закону та особистою чесністю.',
-                rulesTitle: 'Важливе повідомлення',
-                rulesText: 'Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших учасників. Усвідомлюю важливість безпечної та конструктивної взаємодії.',
+                tg: 'Мій єдиний акаунт: @qelry', donate: 'Донат на свята',
+                aboutTitle: 'Про мене', aboutText: 'Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя. Мої вчинки керуються повагою до закону та особистою чесністю.',
+                rulesTitle: 'Важливе повідомлення', rulesText: 'Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших учасників. Усвідомлюю важливість безпечної та конструктивної взаємодії.',
                 footer: '<span class="footer-snow">❄️</span> З Новим Роком 2026! <span class="footer-snow">❄️</span><br>© Filipov. All rights reserved.'
             },
             ru: {
+                fullLang: 'Русский', short: 'RU',
                 name: 'Богдан <span class="white-tree">🎄</span>',
                 info: '🎂 03.02 • 🇺🇦 Киев, Украина',
-                tg: 'Мой единственный аккаунт: @qelry',
-                donate: 'Донат на праздники',
-                aboutTitle: 'Обо мне',
-                aboutText: 'Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный, честный образ жизни. Мои поступки основаны на уважении к закону и личной честности.',
-                rulesTitle: 'Важное уведомление',
-                rulesText: 'Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение к другим участникам. Осознаю важность безопасного и конструктивного взаимодействия в цифровом пространстве.',
+                tg: 'Мой единственный аккаунт: @qelry', donate: 'Донат на праздники',
+                aboutTitle: 'Обо мне', aboutText: 'Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный, честный образ жизни. Мои поступки основаны на уважении к закону и личной честности.',
+                rulesTitle: 'Важное уведомление', rulesText: 'Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение к другим участникам. Осознаю важность безопасного и конструктивного взаимодействия в цифровом пространстве.',
                 footer: '<span class="footer-snow">❄️</span> С Новым Годом 2026! <span class="footer-snow">❄️</span><br>© Filipov. All rights reserved.'
             }
         };
 
+        // Инициализация при загрузке
+        window.addEventListener('load', () => {
+            movePill(document.getElementById('btn-en'));
+        });
+
+        // Функция смены языка и анимации
         function setLang(lang) {
-            const content = document.getElementById('dynamic-content');
             const data = translations[lang];
+            const activeBtn = document.getElementById('btn-' + lang);
 
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + lang).classList.add('active');
+            // 1. Сбрасываем текст у ВСЕХ кнопок на короткий
+            document.getElementById('btn-en').innerText = "EN";
+            document.getElementById('btn-ua').innerText = "UA";
+            document.getElementById('btn-ru').innerText = "RU";
 
+            // 2. Активной кнопке даем ПОЛНЫЙ текст
+            activeBtn.innerText = data.fullLang;
+
+            // 3. Обновляем классы active
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            activeBtn.classList.add('active');
+
+            // 4. Двигаем пилюлю на новое место (с учетом нового размера текста)
+            // Небольшая задержка, чтобы браузер успел отрисовать ширину текста
+            requestAnimationFrame(() => {
+                movePill(activeBtn);
+            });
+
+            // 5. Меняем контент сайта
+            const content = document.getElementById('dynamic-content');
             content.classList.add('hidden');
-
             setTimeout(() => {
                 document.getElementById('t-name').innerHTML = data.name; 
                 document.getElementById('t-info').innerText = data.info;
@@ -358,6 +358,23 @@
                 document.getElementById('t-footer').innerHTML = data.footer;
                 content.classList.remove('hidden');
             }, 250);
+        }
+
+        // Логика движения "Жидкой пилюли"
+        function movePill(targetBtn) {
+            const wrapper = document.getElementById('nav-wrapper');
+            const pill = document.getElementById('nav-pill');
+            
+            // Получаем координаты относительно родителя
+            const wrapperRect = wrapper.getBoundingClientRect();
+            const targetRect = targetBtn.getBoundingClientRect();
+            
+            const left = targetRect.left - wrapperRect.left;
+            const width = targetRect.width;
+
+            // Применяем стили
+            pill.style.width = `${width}px`;
+            pill.style.transform = `translateX(${left}px)`;
         }
     </script>
 </body>
