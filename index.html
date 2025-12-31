@@ -6,262 +6,394 @@
     <title>Bohdan | Winter 2026</title>
     <style>
         :root {
-            --bg-color: #05070a;
-            --glass-bg: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --accent-red: #ff4757;
-            --accent-green: #2ed573;
-            --accent-gold: #ffa502;
+            --bg-color: #0f1115;
+            --text-color: #e6edf3;
+            --accent-red: #ff3e3e;
+            --accent-green: #2ecc71;
+            --accent-gold: #f1c40f;
+            
+            /* Настройки стекла */
+            --glass-bg: rgba(22, 27, 34, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shine: rgba(255, 255, 255, 0.05);
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
-            color: #fff;
+            color: var(--text-color);
             margin: 0;
-            padding: 15px;
+            padding: 10px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-start; /* Начинаем сверху */
             overflow-x: hidden;
-            -webkit-user-select: none; user-select: none;
-            background-image: radial-gradient(circle at 50% 50%, #1a202c 0%, #05070a 100%);
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- Стеклянный фон сайта --- */
-        .main-glass-wrapper {
-            width: 100%;
-            max-width: 480px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 25px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            margin-top: 20px;
-            position: relative;
-            z-index: 2;
+        /* --- ФОНОВЫЕ ЭФФЕКТЫ --- */
+        .bokeh-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; overflow: hidden;
         }
+        .bokeh-blob {
+            position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.3;
+        }
+        .b1 { top: -10%; left: -10%; width: 300px; height: 300px; background: #2980b9; }
+        .b2 { bottom: 10%; right: -10%; width: 250px; height: 250px; background: #27ae60; }
+        
+        .mandarin {
+            position: absolute; font-size: 32px; opacity: 0.6;
+            animation: floatUp 15s linear infinite;
+        }
+        @keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg); } 100% { transform: translateY(-20vh) rotate(360deg); } }
 
-        /* --- Меню "Три точки" --- */
-        .top-nav {
-            position: absolute; top: 25px; right: 25px; z-index: 100;
+        .snowflake {
+            position: fixed; color: #fff; font-size: 1.2em; opacity: 0.8;
+            pointer-events: none; z-index: 0; animation: fall linear infinite;
         }
-        .dots-btn {
-            font-size: 28px; cursor: pointer; color: white; opacity: 0.6; padding: 5px;
-        }
-
-        /* --- Игра "Поймай Гринча" --- */
-        #game-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .game-canvas {
-            width: 90%; height: 60%; background: var(--glass-bg); border: 2px solid var(--accent-green);
-            border-radius: 20px; position: relative; overflow: hidden; touch-action: none;
-        }
-        #grinch-obj {
-            position: absolute; font-size: 45px; cursor: pointer; transition: 0.1s;
-            display: flex; align-items: center; justify-content: center; width: 60px; height: 60px;
-        }
-        .game-ui { color: white; font-weight: 800; margin-bottom: 15px; font-size: 20px; text-align: center; }
-
-        /* --- Таймер --- */
-        .timer-badge {
-            background: rgba(255, 71, 87, 0.2);
-            border: 1px solid rgba(255, 71, 87, 0.3);
-            padding: 10px 25px; border-radius: 50px;
-            font-family: 'Monaco', monospace; font-size: 20px;
-            font-weight: 700; color: #fff; margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(255, 71, 87, 0.2);
-        }
-
-        /* --- Декор (Мандаринки и снег) --- */
-        .mandarin { position: fixed; font-size: 30px; opacity: 0.3; z-index: 1; pointer-events: none; animation: float 15s infinite linear; }
-        @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(30px, -100vh) rotate(360deg); } }
-        .snowflake { position: fixed; color: white; pointer-events: none; z-index: 1; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(110vh); } }
 
-        /* --- Контент --- */
-        .avatar-box { position: relative; width: 110px; height: 110px; margin: 0 auto 15px; }
-        .avatar-img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--accent-gold); object-fit: cover; }
+        /* --- ТРИ ТОЧКИ (МЕНЮ) --- */
+        .top-menu {
+            position: fixed; top: 15px; right: 20px; z-index: 50;
+        }
+        .dots-btn {
+            font-size: 26px; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s;
+            background: rgba(0,0,0,0.2); padding: 2px 10px; border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+        .dots-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+        /* --- ИГРА (ГРИНЧ) --- */
+        #game-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 2000;
+            flex-direction: column; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .game-header { text-align: center; margin-bottom: 20px; }
+        .game-title { font-size: 24px; font-weight: 800; color: var(--accent-green); margin-bottom: 5px; }
+        .game-score { font-size: 16px; color: #fff; }
         
-        .lang-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
-        .lang-btn { background: rgba(255,255,255,0.08); border: none; color: #fff; padding: 8px 16px; border-radius: 12px; font-size: 13px; font-weight: 600; transition: 0.3s; }
-        .lang-btn.active { background: var(--accent-red); box-shadow: 0 0 15px var(--accent-red); }
+        .game-area {
+            width: 300px; height: 300px;
+            background: rgba(255,255,255,0.05); border: 2px solid var(--accent-red);
+            border-radius: 20px; position: relative; overflow: hidden;
+            touch-action: none; /* Важно для телефона */
+        }
+        #grinch {
+            position: absolute; font-size: 40px; cursor: pointer;
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.1s; user-select: none;
+        }
+        .close-game {
+            margin-top: 20px; padding: 10px 30px; border-radius: 20px; border: none;
+            background: #fff; color: #000; font-weight: bold; cursor: pointer;
+        }
 
-        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: 18px; text-decoration: none; font-weight: 700; margin-bottom: 12px; transition: 0.3s; }
-        .btn-tg { background: rgba(255,255,255,0.05); color: #79c0ff; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-donate { background: linear-gradient(135deg, #2ed573, #1db954); color: white; }
+        /* --- ТАЙМЕР (ОТДЕЛЬНЫЙ БЛОК) --- */
+        .timer-box {
+            margin-top: 40px; margin-bottom: 15px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 15px 30px; border-radius: 24px;
+            text-align: center; width: auto; min-width: 200px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideDown 0.8s ease-out;
+        }
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        .card { background: rgba(0,0,0,0.2); padding: 18px; border-radius: 20px; border-left: 4px solid var(--accent-gold); text-align: left; margin-top: 15px; }
-        .card.red { border-left-color: var(--accent-red); }
-        .card-h { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-gold); margin-bottom: 6px; font-weight: 800; }
-        .card-p { font-size: 14px; line-height: 1.5; color: rgba(255,255,255,0.8); }
+        .timer-label {
+            font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--accent-gold); margin-bottom: 5px; font-weight: 700;
+        }
+        .timer-val {
+            font-family: 'Courier New', monospace; font-size: 22px; font-weight: 800;
+            background: linear-gradient(90deg, #fff, #e6e6e6);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
 
-        .footer { margin-top: 25px; font-size: 12px; opacity: 0.4; text-align: center; }
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР (КАРТОЧКА) --- */
+        .main-card {
+            width: 100%; max-width: 440px; /* Ограничиваем ширину чтобы было компактно */
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid var(--glass-shine);
+            border-radius: 28px;
+            padding: 30px 20px;
+            box-sizing: border-box;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        /* Языки */
+        .lang-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; }
+        .lang-btn {
+            background: rgba(255,255,255,0.05); border: none; color: #8b949e;
+            padding: 8px 16px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .lang-btn.active { background: var(--accent-red); color: white; box-shadow: 0 0 12px rgba(255, 62, 62, 0.4); }
+
+        /* Аватар */
+        .avatar-wrap {
+            position: relative; width: 110px; height: 110px; margin: 0 auto 15px;
+        }
+        .avatar-img {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 3px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Тексты */
+        h1 { margin: 0; font-size: 26px; font-weight: 800; display: flex; justify-content: center; gap: 8px; }
+        .subtitle { color: #aebbc9; font-size: 13px; margin: 5px 0 25px; }
+
+        /* Кнопки */
+        .btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 15px; border-radius: 16px; text-decoration: none; font-weight: 600; font-size: 15px;
+            margin-bottom: 12px; transition: transform 0.2s;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-tg { background: rgba(255,255,255,0.04); color: #79c0ff; border: 1px solid rgba(255,255,255,0.08); }
+        .btn-donate { background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2); }
+
+        /* Инфо блоки */
+        .info-box {
+            background: rgba(0,0,0,0.25); border-radius: 16px; padding: 18px;
+            text-align: left; margin-top: 15px; border-left: 3px solid var(--accent-gold);
+        }
+        .info-box.red { border-left-color: var(--accent-red); }
+        .ib-title { font-size: 11px; text-transform: uppercase; color: rgba(255,255,255,0.6); font-weight: 700; margin-bottom: 5px; }
+        .ib-text { font-size: 14px; line-height: 1.5; color: rgba(255,255,255,0.9); }
+
+        .footer { margin-top: 25px; font-size: 12px; color: rgba(255,255,255,0.3); padding-bottom: 20px; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <div id="snow-field"></div>
+    <div class="bokeh-bg">
+        <div class="bokeh-blob b1"></div>
+        <div class="bokeh-blob b2"></div>
+        <div id="mandarin-container"></div>
+    </div>
+    
+    <div class="top-menu">
+        <div class="dots-btn" onclick="toggleGame()">•••</div>
+    </div>
 
-    <div class="timer-badge" id="countdown">00:00:00:00</div>
-
-    <div class="main-glass-wrapper">
-        <div class="top-nav">
-            <div class="dots-btn" onclick="startGrinchGame()">•••</div>
+    <div id="game-overlay">
+        <div class="game-header">
+            <div class="game-title">CATCH THE GRINCH 🎄</div>
+            <div class="game-score">Score: <span id="score">0</span></div>
         </div>
+        <div class="game-area" id="game-area">
+            <div id="grinch">👹</div>
+        </div>
+        <button class="close-game" onclick="toggleGame()">Close Game</button>
+    </div>
 
+    <div class="timer-box">
+        <div class="timer-label" id="t-timer-label">New Year Countdown</div>
+        <div class="timer-val" id="countdown">Loading...</div>
+    </div>
+
+    <div class="main-card">
         <div class="lang-tabs">
             <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
             <button class="lang-btn" onclick="setLang('ua')" id="btn-ua">UA</button>
             <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">RU</button>
         </div>
 
-        <div class="avatar-box">
-            <img src="avatar.jpg" class="avatar-img" alt="Bohdan">
+        <div class="avatar-wrap">
+            <img src="avatar.jpg" alt="Avatar" class="avatar-img">
         </div>
 
-        <div style="text-align: center;">
-            <h1 id="t-name" style="margin: 0; font-size: 26px;">Bohdan 🎄</h1>
-            <p id="t-info" style="color: #aebbc9; font-size: 13px; margin: 8px 0 25px;">🎂 03.02 • 🇺🇦 Kyiv, Ukraine</p>
+        <h1 id="t-name">Bohdan <span>🎄</span></h1>
+        <div class="subtitle" id="t-info">🎂 03.02 • 🇺🇦 Kyiv, Ukraine</div>
 
-            <a href="https://t.me/qelry" class="btn btn-tg">✈️ <span id="t-tg">@qelry</span></a>
-            <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">🎁 <span id="t-donate">New Year Gift</span></a>
-
-            <div class="card">
-                <div class="card-h" id="t-about-h">About Me</div>
-                <div class="card-p" id="t-about-txt">I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.</div>
-            </div>
-
-            <div class="card red">
-                <div class="card-h" style="color: var(--accent-red);" id="t-rules-h">Telegram Policy</div>
-                <div class="card-p" id="t-rules-txt">I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.</div>
-            </div>
+        <div class="actions">
+            <a href="https://t.me/qelry" class="btn btn-tg">
+                <span>✈️</span> <span id="t-tg">@qelry</span>
+            </a>
+            <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">
+                <span>🎁</span> <span id="t-donate">New Year Gift</span>
+            </a>
         </div>
-    </div>
 
-    <div id="game-overlay">
-        <div class="game-ui">
-            <div>CATCH THE GRINCH! 😈</div>
-            <div style="font-size: 14px; color: var(--accent-gold); margin-top: 5px;">Score: <span id="score">0</span> | Time: <span id="game-time">30</span>s</div>
+        <div class="info-box">
+            <div class="ib-title" id="t-about-h">About Me</div>
+            <div class="ib-text" id="t-about-txt">I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.</div>
         </div>
-        <div class="game-canvas" id="canvas">
-            <div id="grinch-obj">👹</div>
+
+        <div class="info-box red">
+            <div class="ib-title" id="t-rules-h" style="color: var(--accent-red);">Telegram Policy</div>
+            <div class="ib-text" id="t-rules-txt">I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.</div>
         </div>
-        <button onclick="stopGame()" style="margin-top: 20px; background: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800;">CLOSE</button>
     </div>
 
     <div class="footer" id="t-footer">Happy New Year 2026 • © Filipov</div>
 
     <script>
-        // --- Снег и Мандаринки ---
-        function createDeco() {
-            for(let i=0; i<10; i++){
-                const m = document.createElement('div');
-                m.className = 'mandarin'; m.innerText = '🍊';
-                m.style.left = Math.random()*100 + '%';
-                m.style.top = '110vh';
-                m.style.animationDelay = Math.random()*15 + 's';
-                document.body.appendChild(m);
+        // --- 1. СНЕГ И МАНДАРИНЫ ---
+        const snowContainer = document.body;
+        const mandarinContainer = document.getElementById('mandarin-container');
+        
+        // Снежинки
+        setInterval(() => {
+            const el = document.createElement('div');
+            el.className = 'snowflake';
+            el.innerText = '❄';
+            el.style.left = Math.random() * 100 + '%';
+            el.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            el.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            snowContainer.appendChild(el);
+            setTimeout(() => el.remove(), 8000);
+        }, 500);
+
+        // Мандарины
+        for(let i=0; i<8; i++) {
+            const m = document.createElement('div');
+            m.className = 'mandarin';
+            m.innerText = '🍊';
+            m.style.left = Math.random() * 90 + '%';
+            m.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            m.style.animationDelay = (Math.random() * -20) + 's';
+            mandarinContainer.appendChild(m);
+        }
+
+        // --- 2. ТАЙМЕР ---
+        function updateTimer() {
+            const now = new Date();
+            const target = new Date("January 1, 2026 00:00:00");
+            const diff = target - now;
+
+            if (diff <= 0) {
+                document.getElementById('countdown').innerText = "HAPPY NEW YEAR!";
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').innerText = 
+                `${d}d ${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // --- 3. ИГРА (ГРИНЧ) ---
+        const gameOverlay = document.getElementById('game-overlay');
+        const grinch = document.getElementById('grinch');
+        const gameArea = document.getElementById('game-area');
+        const scoreEl = document.getElementById('score');
+        let score = 0;
+        let isPlaying = false;
+
+        function toggleGame() {
+            if (gameOverlay.style.display === 'flex') {
+                gameOverlay.style.display = 'none';
+                isPlaying = false;
+            } else {
+                gameOverlay.style.display = 'flex';
+                score = 0;
+                scoreEl.innerText = score;
+                isPlaying = true;
+                moveGrinch();
             }
         }
-        createDeco();
-
-        setInterval(() => {
-            const s = document.createElement('div');
-            s.className = 'snowflake'; s.innerText = '❄';
-            s.style.left = Math.random()*100 + '%';
-            s.style.fontSize = Math.random()*15 + 10 + 'px';
-            s.style.animationDuration = Math.random()*3 + 4 + 's';
-            s.style.opacity = Math.random();
-            document.body.appendChild(s);
-            setTimeout(() => s.remove(), 7000);
-        }, 400);
-
-        // --- Таймер ---
-        function updateTimer() {
-            const target = new Date("January 1, 2026 00:00:00").getTime();
-            const now = new Date().getTime();
-            const d = target - now;
-            if (d < 0) { document.getElementById('countdown').innerText = "HAPPY 2026!"; return; }
-            const days = Math.floor(d / 86400000);
-            const hours = Math.floor((d % 86400000) / 3600000);
-            const minutes = Math.floor((d % 3600000) / 60000);
-            const seconds = Math.floor((d % 60000) / 1000);
-            document.getElementById('countdown').innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-        }
-        setInterval(updateTimer, 1000); updateTimer();
-
-        // --- Игра "Поймай Гринча" ---
-        let score = 0;
-        let timeLeft = 30;
-        let gameActive = false;
-        let gameTimer;
-        const grinch = document.getElementById('grinch-obj');
-        const canvas = document.getElementById('canvas');
 
         function moveGrinch() {
-            if(!gameActive) return;
-            const maxX = canvas.clientWidth - 60;
-            const maxY = canvas.clientHeight - 60;
-            grinch.style.left = Math.random() * maxX + 'px';
-            grinch.style.top = Math.random() * maxY + 'px';
+            if(!isPlaying) return;
+            const maxLeft = gameArea.clientWidth - 50; // 50px - ширина гринча
+            const maxTop = gameArea.clientHeight - 50;
+            
+            const newLeft = Math.floor(Math.random() * maxLeft);
+            const newTop = Math.floor(Math.random() * maxTop);
+            
+            grinch.style.left = newLeft + 'px';
+            grinch.style.top = newTop + 'px';
         }
 
-        function startGrinchGame() {
-            score = 0; timeLeft = 30; gameActive = true;
-            document.getElementById('score').innerText = score;
-            document.getElementById('game-time').innerText = timeLeft;
-            document.getElementById('game-overlay').style.display = 'flex';
-            moveGrinch();
-            gameTimer = setInterval(() => {
-                timeLeft--;
-                document.getElementById('game-time').innerText = timeLeft;
-                if(timeLeft <= 0) stopGame();
-            }, 1000);
-        }
-
-        grinch.addEventListener('touchstart', (e) => { e.preventDefault(); handleHit(); });
-        grinch.addEventListener('mousedown', () => handleHit());
-
-        function handleHit() {
-            if(!gameActive) return;
+        function catchGrinch(e) {
+            e.preventDefault(); // Чтобы не было зума на телефоне
+            e.stopPropagation();
             score++;
-            document.getElementById('score').innerText = score;
+            scoreEl.innerText = score;
             grinch.innerText = '💥';
-            setTimeout(() => { grinch.innerText = '👹'; moveGrinch(); }, 150);
+            setTimeout(() => {
+                grinch.innerText = '👹';
+                moveGrinch();
+            }, 150);
         }
 
-        function stopGame() {
-            gameActive = false;
-            clearInterval(gameTimer);
-            document.getElementById('game-overlay').style.display = 'none';
-        }
+        // Поддержка и мыши, и тача
+        grinch.addEventListener('mousedown', catchGrinch);
+        grinch.addEventListener('touchstart', catchGrinch);
 
-        // --- Перевод ---
-        const langs = {
-            en: { name: "Bohdan 🎄", info: "🎂 03.02 • 🇺🇦 Kyiv, Ukraine", tg: "@qelry", donate: "New Year Gift", aboutH: "About Me", aboutTxt: "I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.", rulesH: "Telegram Policy", rulesTxt: "I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.", footer: "Happy New Year 2026 • © Filipov" },
-            ua: { name: "Богдан 🎄", info: "🎂 03.02 • 🇺🇦 Київ, Україна", tg: "@qelry", donate: "Донат на свята", aboutH: "Про мене", aboutTxt: "Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя.", rulesH: "Правила Telegram", rulesTxt: "Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших.", footer: "З Новим Роком 2026 • © Філіпов" },
-            ru: { name: "Богдан 🎄", info: "🎂 03.02 • 🇺🇦 Киев, Украина", tg: "@qelry", donate: "Донат на праздники", aboutH: "Обо мне", aboutTxt: "Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный образ жизни.", rulesH: "Политика Telegram", rulesTxt: "Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение.", footer: "С Новым Годом 2026 • © Филипов" }
+        // --- 4. ПЕРЕВОДЫ ---
+        const translations = {
+            en: {
+                timer: 'New Year Countdown',
+                donate: 'New Year Gift',
+                aboutH: 'About Me',
+                aboutTxt: 'I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.',
+                rulesH: 'Telegram Policy',
+                rulesTxt: 'I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.',
+                footer: 'Happy New Year 2026 • © Filipov'
+            },
+            ua: {
+                timer: 'До Нового Року',
+                donate: 'Донат на свята',
+                aboutH: 'Про мене',
+                aboutTxt: 'Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя.',
+                rulesH: 'Правила Telegram',
+                rulesTxt: 'Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших учасників.',
+                footer: 'З Новим Роком 2026 • © Філіпов'
+            },
+            ru: {
+                timer: 'До Нового Года',
+                donate: 'Донат на праздники',
+                aboutH: 'Обо мне',
+                aboutTxt: 'Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный образ жизни.',
+                rulesH: 'Политика Telegram',
+                rulesTxt: 'Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение.',
+                footer: 'С Новым Годом 2026 • © Филипов'
+            }
         };
 
-        function setLang(l) {
+        function setLang(lang) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + l).classList.add('active');
-            const d = langs[l];
-            document.getElementById('t-name').innerText = d.name;
-            document.getElementById('t-info').innerText = d.info;
-            document.getElementById('t-tg').innerText = d.tg;
-            document.getElementById('t-donate').innerText = d.donate;
-            document.getElementById('t-about-h').innerText = d.aboutH;
-            document.getElementById('t-about-txt').innerText = d.aboutTxt;
-            document.getElementById('t-rules-h').innerText = d.rulesH;
-            document.getElementById('t-rules-txt').innerText = d.rulesTxt;
-            document.getElementById('t-footer').innerText = d.footer;
+            document.getElementById('btn-' + lang).classList.add('active');
+            
+            const t = translations[lang];
+            document.getElementById('t-timer-label').innerText = t.timer;
+            document.getElementById('t-donate').innerText = t.donate;
+            document.getElementById('t-about-h').innerText = t.aboutH;
+            document.getElementById('t-about-txt').innerText = t.aboutTxt;
+            document.getElementById('t-rules-h').innerText = t.rulesH;
+            document.getElementById('t-rules-txt').innerText = t.rulesTxt;
+            document.getElementById('t-footer').innerText = t.footer;
+
+            // Обновляем статический текст
+            if(lang === 'ua') {
+                document.getElementById('t-name').innerHTML = 'Богдан <span>🎄</span>';
+                document.getElementById('t-info').innerText = '🎂 03.02 • 🇺🇦 Київ, Україна';
+            } else if (lang === 'ru') {
+                document.getElementById('t-name').innerHTML = 'Богдан <span>🎄</span>';
+                document.getElementById('t-info').innerText = '🎂 03.02 • 🇺🇦 Киев, Украина';
+            } else {
+                document.getElementById('t-name').innerHTML = 'Bohdan <span>🎄</span>';
+                document.getElementById('t-info').innerText = '🎂 03.02 • 🇺🇦 Kyiv, Ukraine';
+            }
         }
     </script>
 </body>
