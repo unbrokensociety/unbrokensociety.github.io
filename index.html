@@ -6,18 +6,17 @@
     <title>Bohdan | Winter 2026</title>
     <style>
         :root {
-            --bg-color: #0f1115;
+            --bg-color: #0a0c10;
             --text-color: #e6edf3;
-            --accent-red: #ff4757;
-            --accent-green: #2ed573;
-            --accent-gold: #ffa502;
-            --glass-bg: rgba(22, 27, 34, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-shine: rgba(255, 255, 255, 0.25);
+            --accent-red: #ff3e3e;
+            --accent-green: #1db954;
+            --accent-gold: #ffcc00;
+            --glass-bg: rgba(15, 20, 30, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -27,262 +26,211 @@
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            -webkit-user-select: none; user-select: none;
         }
 
-        /* --- ФОН (БОКЕ И МАНДАРИНКИ) --- */
-        .bokeh-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none; overflow: hidden;
+        /* --- ВЕРХНЕЕ МЕНЮ (ТРИ ТОЧКИ) --- */
+        .top-menu {
+            position: absolute; top: 20px; right: 20px; z-index: 100;
         }
-        .bokeh-blob {
-            position: absolute; border-radius: 50%;
-            filter: blur(80px); opacity: 0.3;
-            animation: float 15s infinite alternate ease-in-out;
+        .dots-btn {
+            font-size: 24px; cursor: pointer; color: white; opacity: 0.5; transition: 0.3s;
         }
-        .b1 { top: -10%; left: -10%; width: 400px; height: 400px; background: #3b82f6; }
-        .b2 { bottom: 10%; right: -10%; width: 350px; height: 350px; background: #2ed573; animation-delay: -5s; }
+        .dots-btn:hover { opacity: 1; transform: scale(1.1); }
         
-        /* Реалистичные мандаринки (Emoji с эффектами) */
-        .mandarin {
-            position: absolute; font-size: 40px; filter: drop-shadow(0 0 10px rgba(255, 165, 2, 0.5));
-            animation: float 10s infinite alternate ease-in-out; opacity: 0.6;
+        /* ГАЙД ИГРЫ */
+        #game-box {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 300px; height: 400px; background: var(--glass-bg); backdrop-filter: blur(20px);
+            border: 1px solid var(--accent-green); border-radius: 20px; z-index: 1000;
+            flex-direction: column; align-items: center; justify-content: space-around; padding: 20px;
         }
-
-        @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(40px, -50px) rotate(20deg); } }
+        #grinch {
+            font-size: 50px; cursor: pointer; position: absolute; transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
         /* --- ТАЙМЕР --- */
         .timer-container {
-            margin-top: 40px;
-            margin-bottom: -20px;
-            padding: 15px 30px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            text-align: center;
-            z-index: 5;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .timer-title {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent-gold);
-            margin-bottom: 8px;
-            font-weight: 800;
+            margin-top: 20px; padding: 12px 25px;
+            background: rgba(255, 62, 62, 0.1); backdrop-filter: blur(10px);
+            border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center; z-index: 5; box-shadow: 0 0 20px rgba(255, 62, 62, 0.2);
         }
         #countdown {
-            font-family: 'Monaco', monospace;
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #fff, var(--accent-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Courier New', monospace; font-size: 22px; font-weight: 800; color: #fff;
         }
+
+        /* --- ФОН --- */
+        .bokeh-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .mandarin { position: absolute; font-size: 35px; opacity: 0.4; animation: float 12s infinite linear; }
+        @keyframes float { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(-100vh) rotate(360deg); } }
 
         /* --- СНЕГ --- */
-        .snowflake {
-            position: fixed; top: -20px; color: #fff; font-size: 1.2em; opacity: 0.7;
-            pointer-events: none; z-index: 0; animation: fall linear infinite;
-        }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+        .snowflake { position: fixed; top: -10px; color: #fff; pointer-events: none; z-index: 0; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh); } }
 
-        /* --- ГИРЛЯНДА --- */
-        .garland {
-            position: fixed; top: -10px; left: 0; width: 100%;
-            display: flex; justify-content: space-around; pointer-events: none; z-index: 10;
-        }
-        .light {
-            width: 12px; height: 12px; border-radius: 50%; background: #fff;
-            position: relative; animation: flash 2s infinite alternate;
-        }
-        .light::before { content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 2px; height: 6px; background: #444; }
-        .light:nth-child(3n+1) { background: var(--accent-red); box-shadow: 0 0 15px var(--accent-red); }
-        .light:nth-child(3n+2) { background: var(--accent-gold); box-shadow: 0 0 15px var(--accent-gold); animation-delay: 0.5s; }
-        .light:nth-child(3n+3) { background: var(--accent-green); box-shadow: 0 0 15px var(--accent-green); animation-delay: 1s; }
-        @keyframes flash { 0% { opacity: 0.3; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.1); } }
-
-        /* --- КОНТЕЙНЕР --- */
-        .container {
-            width: 100%; max-width: 550px;
-            margin-top: 50px; z-index: 2;
-            display: flex; flex-direction: column; gap: 25px;
-        }
-
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
+        .container { width: 100%; max-width: 500px; margin-top: 30px; z-index: 2; }
         .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px) saturate(160%);
-            -webkit-backdrop-filter: blur(25px) saturate(160%);
-            border: 1px solid var(--glass-border);
-            border-top: 1px solid var(--glass-shine);
-            border-radius: 28px;
-            padding: 35px 25px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background: var(--glass-bg); backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border); border-radius: 30px;
+            padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center;
         }
 
-        /* Остальные стили из оригинала */
-        .lang-tabs { display: flex; justify-content: center; gap: 8px; background: rgba(0,0,0,0.25); padding: 6px; border-radius: 18px; width: fit-content; margin: 0 auto 25px; border: 1px solid rgba(255,255,255,0.05); }
-        .lang-btn { background: transparent; border: none; color: #8b949e; padding: 10px 24px; border-radius: 14px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s; }
-        .lang-btn.active { background: rgba(255, 255, 255, 0.15); color: #fff; transform: scale(1.05); }
-        .hero { text-align: center; }
-        .avatar-wrap { position: relative; width: 130px; height: 130px; margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; }
-        .avatar-ring { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, var(--accent-red), var(--accent-green), var(--accent-gold), #3b82f6); animation: spin 3s linear infinite; filter: blur(2px); }
+        .lang-tabs { display: flex; justify-content: center; gap: 5px; margin-bottom: 25px; }
+        .lang-btn { background: rgba(255,255,255,0.05); border: none; color: #fff; padding: 8px 15px; border-radius: 12px; cursor: pointer; font-size: 13px; }
+        .lang-btn.active { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
+
+        .avatar-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto 20px; }
+        .avatar-ring { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 3px dashed var(--accent-gold); animation: spin 10s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        .avatar-bg { position: absolute; width: 94%; height: 94%; background: #161b22; border-radius: 50%; z-index: 2; }
-        .avatar-img { position: relative; z-index: 3; width: 90%; height: 90%; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.1); }
-        h1 { margin: 0; font-size: 32px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .white-tree { filter: grayscale(100%) brightness(500%); font-size: 28px; }
-        .subtitle { color: #aebbc9; font-size: 14px; margin-top: 8px; margin-bottom: 30px; }
-        .actions { display: flex; flex-direction: column; gap: 14px; }
-        .btn { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 18px; border-radius: 18px; text-decoration: none; font-weight: 600; transition: transform 0.2s; }
-        .btn-tg { background: rgba(255,255,255,0.03); color: #79c0ff; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-donate { background: linear-gradient(90deg, #238636, #2ea043); color: white; border: none; }
-        .info-card { margin-top: 15px; background: rgba(0,0,0,0.2); border-radius: 18px; padding: 22px; border: 1px solid rgba(255,255,255,0.03); text-align: left; }
-        .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: var(--accent-gold); font-weight: 700; font-size: 13px; text-transform: uppercase; }
-        .info-text { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.85); }
-        .footer { text-align: center; margin-top: 10px; margin-bottom: 30px; font-size: 13px; color: rgba(255,255,255,0.3); }
-        .content-fade { transition: opacity 0.25s ease, transform 0.25s ease; }
-        .content-fade.hidden { opacity: 0; transform: translateY(10px); }
+        .avatar-img { width: 90%; height: 90%; margin: 5%; border-radius: 50%; object-fit: cover; background: #111; }
+
+        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: 15px; text-decoration: none; font-weight: 700; margin-bottom: 12px; transition: 0.3s; }
+        .btn-tg { background: rgba(255,255,255,0.05); color: #79c0ff; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-donate { background: linear-gradient(45deg, #d4145a, #fbab7e); color: #fff; }
+        .btn:hover { transform: translateY(-3px); }
+
+        .info-card { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; margin-top: 15px; text-align: left; border-left: 4px solid var(--accent-green); }
+        .rules-card { border-left-color: var(--accent-red); }
+        .card-header { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 5px; }
+        .info-text { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.5; }
+
+        .footer { margin-top: 20px; font-size: 12px; opacity: 0.4; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <div class="bokeh-bg">
-        <div class="bokeh-blob b1"></div><div class="bokeh-blob b2"></div>
-        <div class="mandarin" style="top: 20%; left: 10%; animation-delay: 0s;">🍊</div>
-        <div class="mandarin" style="top: 70%; left: 85%; animation-delay: -3s;">🍊</div>
-        <div class="mandarin" style="top: 10%; left: 80%; animation-delay: -6s;">🍊</div>
+    <div class="top-menu">
+        <div class="dots-btn" onclick="toggleGame()">•••</div>
     </div>
 
-    <div class="garland">
-        <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
-        <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
-        <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+    <div id="game-box">
+        <div style="font-weight: 800; color: var(--accent-green);">CATCH THE GRINCH!</div>
+        <div id="score">Score: 0</div>
+        <div id="grinch">🎄</div>
+        <button onclick="toggleGame()" style="background: none; border: 1px solid white; color: white; padding: 5px 10px; border-radius: 10px; cursor: pointer; margin-top: 150px;">Close</button>
     </div>
+
+    <div class="bokeh-bg" id="mandarin-field"></div>
 
     <div class="timer-container">
-        <div class="timer-title" id="t-timer-title">New Year Countdown</div>
-        <div id="countdown">00:00:00:00</div>
+        <div id="countdown">Loading...</div>
     </div>
 
-    <div class="container" id="main-container">
+    <div class="container">
         <div class="glass-panel">
             <div class="lang-tabs">
                 <button class="lang-btn active" onclick="setLang('en')" id="btn-en">English</button>
-                <button class="lang-btn" onclick="setLang('ua')" id="btn-ua">UA</button>
-                <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">RU</button>
+                <button class="lang-btn" onclick="setLang('ua')" id="btn-ua">Українська</button>
+                <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">Русский</button>
             </div>
 
-            <div class="hero">
-                <div class="avatar-wrap">
-                    <div class="avatar-ring"></div>
-                    <div class="avatar-bg"></div>
-                    <img src="avatar.jpg" alt="Avatar" class="avatar-img">
+            <div class="avatar-wrap">
+                <div class="avatar-ring"></div>
+                <img src="avatar.jpg" class="avatar-img" alt="Avatar">
+            </div>
+
+            <div id="content">
+                <h1 id="t-name" style="margin: 0; font-size: 28px;">Bohdan 🎄</h1>
+                <p id="t-info" style="color: #8b949e; font-size: 14px; margin-bottom: 25px;">🎂 03.02 • 🇺🇦 Kyiv, Ukraine</p>
+
+                <div class="actions">
+                    <a href="https://t.me/qelry" class="btn btn-tg">✈️ <span id="t-tg">@qelry</span></a>
+                    <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">🎁 <span id="t-donate">New Year Gift</span></a>
                 </div>
 
-                <div id="dynamic-content" class="content-fade">
-                    <h1 id="t-name">Bohdan <span class="white-tree">🎄</span></h1>
-                    <div class="subtitle" id="t-info">🎂 03.02 • 🇺🇦 Kyiv, Ukraine</div>
+                <div class="info-card">
+                    <div class="card-header" id="t-about-h">About Me</div>
+                    <div class="info-text" id="t-about-txt">I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.</div>
+                </div>
 
-                    <div class="actions">
-                        <a href="https://t.me/qelry" class="btn btn-tg">
-                            <span>✈️</span> <span id="t-tg">My only account: @qelry</span>
-                        </a>
-                        <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">
-                            <span>🎁</span> <span id="t-donate">Donate for Holidays</span>
-                        </a>
-                    </div>
-
-                    <div class="info-card">
-                        <div class="card-header"><span>👤</span> <span id="t-about-title">About Me</span></div>
-                        <div class="info-text" id="t-about-text">
-                            I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.
-                        </div>
-                    </div>
+                <div class="info-card rules-card">
+                    <div class="card-header" id="t-rules-h">Important Notice</div>
+                    <div class="info-text" id="t-rules-txt">I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.</div>
                 </div>
             </div>
         </div>
-
-        <div class="footer" id="t-footer">
-            Happy New Year 2026! © Filipov.
-        </div>
+        <div class="footer">Happy New Year 2026 • © Filipov</div>
     </div>
 
     <script>
-        // Снежинки
-        const snowContainer = document.body;
-        for(let i=0; i<35; i++) {
-            const el = document.createElement('div');
-            el.className = 'snowflake';
-            el.innerText = '❄';
-            el.style.left = Math.random()*100 + '%';
-            el.style.animationDuration = (Math.random()*5 + 5) + 's';
-            el.style.animationDelay = (Math.random()*5) + 's';
-            snowContainer.appendChild(el);
+        // --- СНЕГ И МАНДАРИНКИ ---
+        const field = document.getElementById('mandarin-field');
+        for(let i=0; i<15; i++) {
+            const m = document.createElement('div');
+            m.className = 'mandarin';
+            m.innerText = '🍊';
+            m.style.left = Math.random()*100 + '%';
+            m.style.top = Math.random()*100 + 'vh';
+            m.style.animationDelay = Math.random()*10 + 's';
+            field.appendChild(m);
         }
 
-        // Логика таймера
+        setInterval(() => {
+            const s = document.createElement('div');
+            s.className = 'snowflake';
+            s.innerText = '❄';
+            s.style.left = Math.random()*100 + '%';
+            s.style.fontSize = Math.random()*15 + 10 + 'px';
+            s.style.animationDuration = Math.random()*3 + 4 + 's';
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 7000);
+        }, 300);
+
+        // --- ТАЙМЕР ---
         function updateTimer() {
-            const now = new Date();
-            const nextYear = now.getFullYear() + (now.getMonth() === 0 && now.getDate() === 1 ? 0 : 1);
-            const target = new Date(`January 1, ${nextYear} 00:00:00`).getTime();
-            const diff = target - now.getTime();
-
-            if (diff <= 0) {
-                document.getElementById('countdown').innerText = "HAPPY NEW YEAR!";
-                return;
-            }
-
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('countdown').innerText = 
-                `${d}d ${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
+            const target = new Date("January 1, 2026 00:00:00").getTime();
+            const now = new Date().getTime();
+            const d = target - now;
+            const days = Math.floor(d / 86400000);
+            const hours = Math.floor((d % 86400000) / 3600000);
+            const minutes = Math.floor((d % 3600000) / 60000);
+            const seconds = Math.floor((d % 60000) / 1000);
+            document.getElementById('countdown').innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
         setInterval(updateTimer, 1000);
-        updateTimer();
 
-        // Переводы
-        const translations = {
-            en: {
-                timer: 'New Year Countdown',
-                donate: 'Donate for Holidays',
-                aboutTitle: 'About Me',
-                aboutText: 'I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.',
-                footer: 'Happy New Year 2026! © Filipov.'
-            },
-            ua: {
-                timer: 'До Нового Року залишилось',
-                donate: 'Донат на свята',
-                aboutTitle: 'Про мене',
-                aboutText: 'Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний спосіб життя.',
-                footer: 'З Новим Роком 2026! © Filipov.'
-            },
-            ru: {
-                timer: 'До Нового Года осталось',
-                donate: 'Донат на праздники',
-                aboutTitle: 'Обо мне',
-                aboutText: 'Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду честный образ жизни.',
-                footer: 'С Новым Годом 2026! © Filipov.'
-            }
+        // --- ИГРА ---
+        let score = 0;
+        const grinch = document.getElementById('grinch');
+        function moveGrinch() {
+            const x = Math.random() * 200;
+            const y = Math.random() * 200;
+            grinch.style.left = x + 'px';
+            grinch.style.top = y + 'px';
+        }
+        grinch.addEventListener('mouseover', () => {
+            score++;
+            document.getElementById('score').innerText = 'Score: ' + score;
+            grinch.innerText = '👿'; 
+            setTimeout(() => { grinch.innerText = '🎄'; moveGrinch(); }, 200);
+        });
+        function toggleGame() {
+            const box = document.getElementById('game-box');
+            box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
+            moveGrinch();
+        }
+
+        // --- ПЕРЕВОД ---
+        const langs = {
+            en: { name: "Bohdan 🎄", info: "🎂 03.02 • 🇺🇦 Kyiv, Ukraine", tg: "@qelry", donate: "New Year Gift", aboutH: "About Me", aboutTxt: "I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.", rulesH: "Important Notice", rulesTxt: "I am a compliant Telegram user who adheres to communication rules and shows respect to other participants." },
+            ua: { name: "Богдан 🎄", info: "🎂 03.02 • 🇺🇦 Київ, Україна", tg: "@qelry", donate: "Донат на свята", aboutH: "Про мене", aboutTxt: "Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя.", rulesH: "Важливе повідомлення", rulesTxt: "Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших." },
+            ru: { name: "Богдан 🎄", info: "🎂 03.02 • 🇺🇦 Киев, Украина", tg: "@qelry", donate: "Донат на праздники", aboutH: "Обо мне", aboutTxt: "Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду ответственный образ жизни.", rulesH: "Важное уведомление", rulesTxt: "Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение." }
         };
 
-        function setLang(lang) {
-            const data = translations[lang];
+        function setLang(l) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + lang).classList.add('active');
-            
-            document.getElementById('t-timer-title').innerText = data.timer;
-            document.getElementById('t-donate').innerText = data.donate;
-            document.getElementById('t-about-title').innerText = data.aboutTitle;
-            document.getElementById('t-about-text').innerText = data.aboutText;
-            document.getElementById('t-footer').innerText = data.footer;
+            document.getElementById('btn-' + l).classList.add('active');
+            const d = langs[l];
+            document.getElementById('t-name').innerText = d.name;
+            document.getElementById('t-info').innerText = d.info;
+            document.getElementById('t-tg').innerText = d.tg;
+            document.getElementById('t-donate').innerText = d.donate;
+            document.getElementById('t-about-h').innerText = d.aboutH;
+            document.getElementById('t-about-txt').innerText = d.aboutTxt;
+            document.getElementById('t-rules-h').innerText = d.rulesH;
+            document.getElementById('t-rules-txt').innerText = d.rulesTxt;
         }
     </script>
 </body>
