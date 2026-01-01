@@ -2,28 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bohdan | Profile</title>
     <style>
         :root {
-            --bg-color: #09090b;
-            --text-main: #ffffff;
-            --text-muted: #a1a1aa;
-            
-            /* Акцентные цвета (Градиент) */
-            --accent-primary: #6366f1; /* Indigo */
-            --accent-secondary: #a855f7; /* Purple */
-            --accent-glow: rgba(99, 102, 241, 0.4);
-
-            /* Стекло */
-            --glass-bg: rgba(24, 24, 27, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --bg-color: #f0f0f0;
+            --card-bg: #ffffff;
+            --ink: #1a1a1a;
+            --accent: #3b82f6; /* Яркий синий */
+            --accent-red: #ef4444;
+            --border: 3px solid var(--ink);
+            --shadow: 6px 6px 0px var(--ink);
+            --shadow-hover: 2px 2px 0px var(--ink);
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Courier New', Courier, monospace; /* Моноширинный шрифт для стиля */
             background-color: var(--bg-color);
-            color: var(--text-main);
+            /* Фон в точку (Grid pattern) */
+            background-image: radial-gradient(var(--ink) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--ink);
             margin: 0;
             padding: 20px;
             min-height: 100vh;
@@ -31,271 +30,266 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- АБСТРАКТНЫЙ ФОН --- */
-        .ambient-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; overflow: hidden; background: var(--bg-color);
-        }
-        .orb {
-            position: absolute; border-radius: 50%;
-            filter: blur(80px); opacity: 0.4;
-            animation: drift 20s infinite alternate ease-in-out;
-        }
-        .orb-1 { width: 400px; height: 400px; background: var(--accent-primary); top: -10%; left: -10%; }
-        .orb-2 { width: 300px; height: 300px; background: var(--accent-secondary); bottom: 10%; right: -5%; animation-delay: -5s; }
-        .orb-3 { width: 200px; height: 200px; background: #3b82f6; top: 40%; left: 40%; opacity: 0.2; animation-duration: 25s; }
-
-        @keyframes drift {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(40px, -60px); }
-        }
-
-        /* --- КАРТОЧКА ПРОФИЛЯ --- */
-        .profile-card {
-            width: 100%; max-width: 400px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 40px 25px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            text-align: center;
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
+        .main-card {
+            width: 100%;
+            max-width: 380px;
+            background: var(--card-bg);
+            border: var(--border);
+            box-shadow: var(--shadow);
+            padding: 0; /* Убрали паддинг контейнера, будем делать секциями */
+            transition: transform 0.2s;
             position: relative;
-            z-index: 10;
-            transition: transform 0.3s ease;
         }
-        
+
+        /* Верхняя шапка карточки */
+        .card-header {
+            background: var(--ink);
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: var(--border);
+        }
+
+        .content-padding {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         /* --- ЯЗЫКИ --- */
         .lang-switch {
-            display: flex; justify-content: center; gap: 5px; margin-bottom: 30px;
-            background: rgba(0,0,0,0.3); padding: 5px; border-radius: 100px;
-            width: fit-content; margin-left: auto; margin-right: auto;
-            border: 1px solid var(--glass-border);
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            width: 100%;
+            justify-content: center;
         }
         .lang-btn {
-            background: transparent; border: none; color: var(--text-muted);
-            padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 600;
-            cursor: pointer; transition: all 0.3s;
+            background: #fff;
+            border: 2px solid var(--ink);
+            padding: 5px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.1s;
+            font-family: inherit;
         }
         .lang-btn.active {
-            background: rgba(255,255,255,0.1); color: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            background: var(--ink);
+            color: #fff;
+        }
+        .lang-btn:hover:not(.active) {
+            transform: translate(2px, 2px); /* Эффект нажатия */
         }
 
-        /* --- АВАТАР --- */
-        .avatar-container {
-            position: relative; width: 120px; height: 120px; margin: 0 auto 20px;
+        /* --- АВАТАР И ИМЯ --- */
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border: var(--border);
+            object-fit: cover;
+            margin-bottom: 15px;
+            /* Квадратный аватар для брутализма */
+            border-radius: 0; 
         }
-        .avatar-glow {
-            position: absolute; inset: -3px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            opacity: 0.8; filter: blur(10px); animation: pulse 3s infinite;
-        }
-        .avatar-img {
-            position: relative; width: 100%; height: 100%; border-radius: 50%;
-            object-fit: cover; border: 2px solid rgba(255,255,255,0.1);
-            background: #111;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        /* --- ТЕКСТ --- */
         h1 {
-            margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;
-            background: linear-gradient(to right, #fff, #cbd5e1);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin: 0;
+            font-size: 32px;
+            text-transform: uppercase;
+            font-weight: 900;
+            font-family: 'Arial Black', sans-serif; /* Тяжелый шрифт */
+            letter-spacing: -1px;
         }
-        .bio-meta {
-            color: var(--text-muted); font-size: 14px; margin-top: 8px; margin-bottom: 30px;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
+        
+        .status {
+            font-size: 14px;
+            background: #e5e7eb;
+            padding: 4px 8px;
+            border: 2px solid var(--ink);
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: bold;
         }
-        .dot { width: 4px; height: 4px; background: var(--text-muted); border-radius: 50%; }
 
         /* --- КНОПКИ --- */
-        .actions { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
         .btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 16px; border-radius: 18px; text-decoration: none;
-            font-weight: 600; font-size: 15px; transition: all 0.2s;
-            position: relative; overflow: hidden;
-        }
-        .btn:active { transform: scale(0.98); }
-
-        /* Telegram Button */
-        .btn-primary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border); color: #fff;
-        }
-        .btn-primary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            text-decoration: none;
+            color: var(--ink);
+            font-weight: 900;
+            border: var(--border);
+            background: #fff;
+            box-shadow: 4px 4px 0px var(--ink);
+            transition: all 0.1s;
+            text-transform: uppercase;
+            font-size: 14px;
         }
 
-        /* Donate Button (Gradient) */
-        .btn-accent {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white; border: none;
-            box-shadow: 0 8px 20px -6px var(--accent-glow);
+        .btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px var(--ink);
         }
-        .btn-accent:hover { opacity: 0.9; box-shadow: 0 12px 30px -8px var(--accent-glow); }
 
-        /* --- ИНФО БЛОКИ --- */
-        .info-section {
-            margin-top: 30px; text-align: left;
-            display: flex; flex-direction: column; gap: 15px;
+        .btn-tg { background: #bfdbfe; } /* Светло-голубой */
+        .btn-donate { background: #bbf7d0; } /* Светло-зеленый */
+
+        /* --- ТЕКСТОВЫЕ БЛОКИ --- */
+        .text-box {
+            margin-top: 25px;
+            width: 100%;
+            text-align: left;
+            border-top: 2px dashed var(--ink);
+            padding-top: 20px;
         }
-        .info-item {
-            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.03);
-            border-radius: 20px; padding: 20px; transition: transform 0.2s;
+
+        .tb-title {
+            font-weight: 900;
+            background: var(--ink);
+            color: #fff;
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 12px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
         }
-        .info-item:hover { background: rgba(255,255,255,0.03); }
-        
-        .label {
-            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-            color: var(--accent-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+        .tb-title.red { background: var(--accent-red); }
+
+        .tb-content {
+            font-size: 14px;
+            line-height: 1.4;
+            font-weight: 600;
         }
-        .label.warning { color: #f43f5e; } /* Red for policy */
-        
-        .text { font-size: 14px; line-height: 1.6; color: #d4d4d8; }
 
         /* --- FOOTER --- */
         .footer {
-            margin-top: 30px; font-size: 13px; color: rgba(255,255,255,0.2);
-            font-weight: 500; letter-spacing: 0.5px;
+            margin-top: 40px;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="ambient-bg">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
-
-    <div class="profile-card">
+    <div class="main-card">
+        <div class="card-header">
+            User Profile
+        </div>
         
-        <div class="lang-switch">
-            <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
-            <button class="lang-btn" onclick="setLang('ua')" id="btn-ua">UA</button>
-            <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">RU</button>
-        </div>
-
-        <div class="avatar-container">
-            <div class="avatar-glow"></div>
-            <img src="avatar.jpg" alt="Profile" class="avatar-img">
-        </div>
-
-        <h1 id="t-name">Bohdan</h1>
-        <div class="bio-meta">
-            <span>03.02</span>
-            <span class="dot"></span>
-            <span id="t-location">Kyiv, Ukraine</span>
-        </div>
-
-        <div class="actions">
-            <a href="https://t.me/qelry" class="btn btn-primary">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
-                <span id="t-tg">Contact on Telegram</span>
-            </a>
-            <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-accent">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/></svg>
-                <span id="t-donate">Support Me</span>
-            </a>
-        </div>
-
-        <div class="info-section">
+        <div class="content-padding">
             
-            <div class="info-item">
-                <div class="label" id="t-about-label">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                    About Me
-                </div>
-                <div class="text" id="t-about-text">
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+                <button class="lang-btn" onclick="setLang('ua')" id="btn-ua">UA</button>
+                <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">RU</button>
+            </div>
+
+            <img src="avatar.jpg" alt="Ava" class="avatar">
+            
+            <h1 id="t-name">Bohdan</h1>
+            <div class="status" id="t-loc">KYIV, UKRAINE</div>
+
+            <div class="btn-group">
+                <a href="https://t.me/qelry" class="btn btn-tg">
+                    <span id="t-tg">TELEGRAM CONTACT</span>
+                </a>
+                <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">
+                    <span id="t-donate">SUPPORT ME</span>
+                </a>
+            </div>
+
+            <div class="text-box">
+                <div class="tb-title" id="t-about-h">ABOUT</div>
+                <div class="tb-content" id="t-about-txt">
                     I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.
                 </div>
             </div>
 
-            <div class="info-item">
-                <div class="label warning" id="t-policy-label">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    Telegram Policy
-                </div>
-                <div class="text" id="t-policy-text">
+            <div class="text-box" style="border-top: none; padding-top: 15px;">
+                <div class="tb-title red" id="t-rules-h">NOTICE</div>
+                <div class="tb-content" id="t-rules-txt">
                     I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.
                 </div>
             </div>
 
         </div>
-
     </div>
 
     <div class="footer">
-        © 2026 Filipov. All rights reserved.
+        © 2026 Filipov
     </div>
 
     <script>
-        // Данные для перевода (Без Нового Года)
-        const content = {
+        const data = {
             en: {
-                location: "Kyiv, Ukraine",
-                tg: "Contact on Telegram",
-                donate: "Support Me",
-                aboutH: "About Me",
+                loc: "KYIV, UKRAINE",
+                tg: "TELEGRAM CONTACT",
+                donate: "SUPPORT ME",
+                aboutH: "ABOUT",
                 aboutTxt: "I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.",
-                policyH: "Telegram Policy",
-                policyTxt: "I am a compliant Telegram user who adheres to communication rules and shows respect to other participants."
+                rulesH: "NOTICE",
+                rulesTxt: "I am a compliant Telegram user who adheres to communication rules and shows respect to other participants."
             },
             ua: {
-                location: "Київ, Україна",
-                tg: "Написати в Telegram",
-                donate: "Підтримати мене",
-                aboutH: "Про мене",
+                loc: "КИЇВ, УКРАЇНА",
+                tg: "НАПИСАТИ В TELEGRAM",
+                donate: "ПІДТРИМАТИ",
+                aboutH: "ПРО МЕНЕ",
                 aboutTxt: "Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя.",
-                policyH: "Правила Telegram",
-                policyTxt: "Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших."
+                rulesH: "УВАГА",
+                rulesTxt: "Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших."
             },
             ru: {
-                location: "Киев, Украина",
-                tg: "Написать в Telegram",
-                donate: "Поддержать меня",
-                aboutH: "Обо мне",
+                loc: "КИЕВ, УКРАИНА",
+                tg: "КОНТАКТ TELEGRAM",
+                donate: "ПОДДЕРЖАТЬ",
+                aboutH: "ОБО МНЕ",
                 aboutTxt: "Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду честный образ жизни.",
-                policyH: "Политика Telegram",
-                policyTxt: "Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение."
+                rulesH: "ВНИМАНИЕ",
+                rulesTxt: "Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение."
             }
         };
 
         function setLang(lang) {
-            // Смена активной кнопки
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('btn-' + lang).classList.add('active');
             
-            // Анимация текста
-            const card = document.querySelector('.profile-card');
+            const t = data[lang];
             
-            // Обновление текстов
-            const data = content[lang];
-            
-            // Имя меняем отдельно, если нужно транслитерировать
             if(lang === 'ua' || lang === 'ru') {
-                document.getElementById('t-name').innerText = "Богдан";
+                document.getElementById('t-name').innerText = "БОГДАН";
             } else {
-                document.getElementById('t-name').innerText = "Bohdan";
+                document.getElementById('t-name').innerText = "BOHDAN";
             }
 
-            document.getElementById('t-location').innerText = data.location;
-            document.getElementById('t-tg').innerText = data.tg;
-            document.getElementById('t-donate').innerText = data.donate;
-            document.getElementById('t-about-label').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> ${data.aboutH}`;
-            document.getElementById('t-about-text').innerText = data.aboutTxt;
-            document.getElementById('t-policy-label').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ${data.policyH}`;
-            document.getElementById('t-policy-text').innerText = data.policyTxt;
+            document.getElementById('t-loc').innerText = t.loc;
+            document.getElementById('t-tg').innerText = t.tg;
+            document.getElementById('t-donate').innerText = t.donate;
+            document.getElementById('t-about-h').innerText = t.aboutH;
+            document.getElementById('t-about-txt').innerText = t.aboutTxt;
+            document.getElementById('t-rules-h').innerText = t.rulesH;
+            document.getElementById('t-rules-txt').innerText = t.rulesTxt;
         }
     </script>
 </body>
