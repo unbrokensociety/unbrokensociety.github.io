@@ -5,292 +5,618 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bohdan | Profile</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
-            --bg-color: #f0f0f0;
-            --card-bg: #ffffff;
-            --ink: #1a1a1a;
-            --accent: #3b82f6; /* Яркий синий */
-            --accent-red: #ef4444;
-            --border: 3px solid var(--ink);
-            --shadow: 6px 6px 0px var(--ink);
-            --shadow-hover: 2px 2px 0px var(--ink);
+            --bg-dark: #0e0e0e;
+            --bg-secondary: #1c1c1e;
+            --bg-tertiary: #2c2c2e;
+            --bg-elevated: #3a3a3c;
+            --tg-blue: #0088cc;
+            --tg-blue-light: #64b5f6;
+            --tg-green: #34c759;
+            --separator: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --text-tertiary: rgba(255, 255, 255, 0.4);
         }
 
         body {
-            font-family: 'Courier New', Courier, monospace; /* Моноширинный шрифт для стиля */
-            background-color: var(--bg-color);
-            /* Фон в точку (Grid pattern) */
-            background-image: radial-gradient(var(--ink) 1px, transparent 1px);
-            background-size: 20px 20px;
-            color: var(--ink);
-            margin: 0;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
-        .main-card {
-            width: 100%;
-            max-width: 380px;
-            background: var(--card-bg);
-            border: var(--border);
-            box-shadow: var(--shadow);
-            padding: 0; /* Убрали паддинг контейнера, будем делать секциями */
-            transition: transform 0.2s;
-            position: relative;
-        }
-
-        /* Верхняя шапка карточки */
-        .card-header {
-            background: var(--ink);
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: var(--border);
-        }
-
-        .content-padding {
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* --- ЯЗЫКИ --- */
-        .lang-switch {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            width: 100%;
-            justify-content: center;
-        }
-        .lang-btn {
-            background: #fff;
-            border: 2px solid var(--ink);
-            padding: 5px 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.1s;
-            font-family: inherit;
-        }
-        .lang-btn.active {
-            background: var(--ink);
-            color: #fff;
-        }
-        .lang-btn:hover:not(.active) {
-            transform: translate(2px, 2px); /* Эффект нажатия */
-        }
-
-        /* --- АВАТАР И ИМЯ --- */
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border: var(--border);
-            object-fit: cover;
-            margin-bottom: 15px;
-            /* Квадратный аватар для брутализма */
-            border-radius: 0; 
-        }
-
-        h1 {
+            padding: 0;
             margin: 0;
-            font-size: 32px;
-            text-transform: uppercase;
-            font-weight: 900;
-            font-family: 'Arial Black', sans-serif; /* Тяжелый шрифт */
-            letter-spacing: -1px;
-        }
-        
-        .status {
-            font-size: 14px;
-            background: #e5e7eb;
-            padding: 4px 8px;
-            border: 2px solid var(--ink);
-            margin-top: 10px;
-            margin-bottom: 25px;
-            font-weight: bold;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow-x: hidden;
         }
 
-        /* --- КНОПКИ --- */
-        .btn-group {
+        /* Защита от копирования */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .selectable {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+        }
+
+        /* Container */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 20px;
+            min-height: 100vh;
+        }
+
+        /* Left Side - Game */
+        .game-section {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            width: 100%;
         }
 
-        .btn {
+        .game-header {
+            padding: 20px 25px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--separator);
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            padding: 15px;
-            text-decoration: none;
-            color: var(--ink);
-            font-weight: 900;
-            border: var(--border);
-            background: #fff;
-            box-shadow: 4px 4px 0px var(--ink);
-            transition: all 0.1s;
-            text-transform: uppercase;
-            font-size: 14px;
         }
 
-        .btn:active {
-            transform: translate(4px, 4px);
-            box-shadow: 0px 0px 0px var(--ink);
+        .game-title {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
         }
 
-        .btn-tg { background: #bfdbfe; } /* Светло-голубой */
-        .btn-donate { background: #bbf7d0; } /* Светло-зеленый */
-
-        /* --- ТЕКСТОВЫЕ БЛОКИ --- */
-        .text-box {
-            margin-top: 25px;
-            width: 100%;
-            text-align: left;
-            border-top: 2px dashed var(--ink);
-            padding-top: 20px;
-        }
-
-        .tb-title {
-            font-weight: 900;
-            background: var(--ink);
-            color: #fff;
-            display: inline-block;
-            padding: 2px 6px;
-            font-size: 12px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-        .tb-title.red { background: var(--accent-red); }
-
-        .tb-content {
-            font-size: 14px;
-            line-height: 1.4;
+        .game-score {
+            background: var(--tg-blue);
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 600;
         }
 
-        /* --- FOOTER --- */
-        .footer {
-            margin-top: 40px;
-            font-size: 12px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.7;
+        .game-canvas-container {
+            flex: 1;
+            position: relative;
+            min-height: 500px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1e 100%);
         }
 
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .game-controls {
+            padding: 20px 25px;
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--separator);
+            display: flex;
+            gap: 12px;
+        }
+
+        .game-btn {
+            flex: 1;
+            padding: 14px;
+            background: var(--tg-blue);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .game-btn:hover {
+            background: var(--tg-blue-light);
+            transform: scale(1.02);
+        }
+
+        .game-btn:active {
+            transform: scale(0.98);
+        }
+
+        .game-btn.secondary {
+            background: var(--bg-elevated);
+        }
+
+        .game-btn.secondary:hover {
+            background: #4a4a4c;
+        }
+
+        /* Right Side - Profile */
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Header Card */
+        .profile-header {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(135deg, var(--tg-blue), var(--tg-green));
+            opacity: 0.15;
+            filter: blur(40px);
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--bg-secondary);
+            box-shadow: 0 8px 30px rgba(0, 136, 204, 0.3);
+        }
+
+        .online-badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 22px;
+            height: 22px;
+            background: var(--tg-green);
+            border-radius: 50%;
+            border: 3px solid var(--bg-secondary);
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .profile-username {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .profile-location {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Language Selector */
+        .lang-card {
+            background: var(--bg-secondary);
+            border-radius: 14px;
+            padding: 4px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .lang-btn.active {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: var(--bg-secondary);
+            border-radius: 14px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .action-btn:active {
+            transform: scale(0.98);
+            background: var(--bg-tertiary);
+        }
+
+        .action-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .action-icon.blue {
+            background: var(--tg-blue);
+        }
+
+        .action-icon.green {
+            background: var(--tg-green);
+        }
+
+        .action-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .action-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .action-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Info Cards */
+        .info-card {
+            background: var(--bg-secondary);
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .info-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        .copy-btn {
+            background: var(--bg-elevated);
+            border: none;
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: var(--tg-blue);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-btn:hover {
+            background: #4a4a4c;
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .copy-btn.copied {
+            color: var(--tg-green);
+        }
+
+        .info-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        .info-card.notice {
+            background: linear-gradient(135deg, rgba(255, 59, 48, 0.1), rgba(255, 149, 0, 0.1));
+            border: 1px solid rgba(255, 59, 48, 0.2);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--bg-elevated);
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            background: var(--tg-green);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+
+            .game-section {
+                order: 2;
+            }
+
+            .profile-section {
+                order: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-container {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .profile-header {
+                padding: 20px;
+            }
+
+            .game-canvas-container {
+                min-height: 400px;
+            }
+        }
+
+        /* Game UI Overlays */
+        .game-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .game-stat {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            pointer-events: auto;
+        }
+
+        .game-stat.highlight {
+            background: var(--tg-blue);
+        }
     </style>
 </head>
 <body>
 
-    <div class="main-card">
-        <div class="card-header">
-            User Profile
-        </div>
-        
-        <div class="content-padding">
+    <div class="app-container">
+        <!-- Game Section -->
+        <div class="game-section">
+            <div class="game-header">
+                <div class="game-title">🎮 Gravity Ball Challenge</div>
+                <div class="game-score">Score: <span id="scoreDisplay">0</span></div>
+            </div>
             
-            <div class="lang-switch">
+            <div class="game-canvas-container">
+                <canvas id="gameCanvas"></canvas>
+                <div class="game-overlay">
+                    <div class="game-stat">⚡ Power: <span id="powerDisplay">100</span>%</div>
+                    <div class="game-stat highlight">🎯 Combo: <span id="comboDisplay">0</span>x</div>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button class="game-btn" onclick="game.shoot()">🚀 Launch Ball</button>
+                <button class="game-btn secondary" onclick="game.reset()">🔄 Reset</button>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="avatar-wrapper">
+                    <img src="avatar.jpg" alt="Avatar" class="avatar">
+                    <div class="online-badge"></div>
+                </div>
+                <div class="profile-name" id="t-name">Bohdan</div>
+                <div class="profile-username">@qelry</div>
+                <div class="profile-location">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <span id="t-loc">Kyiv, Ukraine</span>
+                </div>
+            </div>
+
+            <!-- Language Selector -->
+            <div class="lang-card">
                 <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
                 <button class="lang-btn" onclick="setLang('ua')" id="btn-ua">UA</button>
                 <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">RU</button>
             </div>
 
-            <img src="avatar.jpg" alt="Ava" class="avatar">
-            
-            <h1 id="t-name">Bohdan</h1>
-            <div class="status" id="t-loc">KYIV, UKRAINE</div>
-
-            <div class="btn-group">
-                <a href="https://t.me/qelry" class="btn btn-tg">
-                    <span id="t-tg">TELEGRAM CONTACT</span>
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="https://t.me/qelry" class="action-btn">
+                    <div class="action-icon blue">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                        </svg>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title" id="t-tg">Telegram Contact</div>
+                        <div class="action-subtitle">Send a message</div>
+                    </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--text-tertiary)">
+                        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                    </svg>
                 </a>
-                <a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn btn-donate">
-                    <span id="t-donate">SUPPORT ME</span>
+
+                <a href="http://t.me/send?start=IVCGgKxsSiZa" class="action-btn">
+                    <div class="action-icon green">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>
+                        </svg>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title" id="t-donate">Support Me</div>
+                        <div class="action-subtitle">Send a donation</div>
+                    </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--text-tertiary)">
+                        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                    </svg>
                 </a>
             </div>
 
-            <div class="text-box">
-                <div class="tb-title" id="t-about-h">ABOUT</div>
-                <div class="tb-content" id="t-about-txt">
+            <!-- Info Card - About -->
+            <div class="info-card">
+                <div class="info-header">
+                    <div class="info-title" id="t-about-h">About Me</div>
+                    <button class="copy-btn" onclick="copyText('t-about-txt', this)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span class="copy-text" id="copy-text-1">Copy</span>
+                    </button>
+                </div>
+                <div class="info-text selectable" id="t-about-txt">
                     I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.
                 </div>
             </div>
 
-            <div class="text-box" style="border-top: none; padding-top: 15px;">
-                <div class="tb-title red" id="t-rules-h">NOTICE</div>
-                <div class="tb-content" id="t-rules-txt">
+            <!-- Info Card - Notice -->
+            <div class="info-card notice">
+                <div class="info-header">
+                    <div class="info-title" id="t-rules-h" style="color: #ff453a;">⚠️ Notice</div>
+                    <button class="copy-btn" onclick="copyText('t-rules-txt', this)" style="color: #ff453a;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span class="copy-text" id="copy-text-2">Copy</span>
+                    </button>
+                </div>
+                <div class="info-text selectable" id="t-rules-txt">
                     I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.
                 </div>
             </div>
 
+            <!-- Footer -->
+            <div class="footer">
+                © 2026 Filipov • Made with ♥
+            </div>
         </div>
     </div>
 
-    <div class="footer">
-        © 2026 Filipov
-    </div>
+    <!-- Notification -->
+    <div class="notification" id="notification">Copied!</div>
 
     <script>
+        // Защита от копирования
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('copy', e => {
+            if (!e.target.closest('.selectable')) {
+                e.preventDefault();
+            }
+        });
+        document.addEventListener('selectstart', e => {
+            if (!e.target.closest('.selectable')) {
+                e.preventDefault();
+            }
+        });
+
+        // Языковые данные
         const data = {
             en: {
-                loc: "KYIV, UKRAINE",
-                tg: "TELEGRAM CONTACT",
-                donate: "SUPPORT ME",
-                aboutH: "ABOUT",
+                name: "Bohdan",
+                loc: "Kyiv, Ukraine",
+                tg: "Telegram Contact",
+                donate: "Support Me",
+                aboutH: "About Me",
                 aboutTxt: "I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.",
-                rulesH: "NOTICE",
-                rulesTxt: "I am a compliant Telegram user who adheres to communication rules and shows respect to other participants."
-            },
-            ua: {
-                loc: "КИЇВ, УКРАЇНА",
-                tg: "НАПИСАТИ В TELEGRAM",
-                donate: "ПІДТРИМАТИ",
-                aboutH: "ПРО МЕНЕ",
-                aboutTxt: "Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя.",
-                rulesH: "УВАГА",
-                rulesTxt: "Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших."
-            },
-            ru: {
-                loc: "КИЕВ, УКРАИНА",
-                tg: "КОНТАКТ TELEGRAM",
-                donate: "ПОДДЕРЖАТЬ",
-                aboutH: "ОБО МНЕ",
-                aboutTxt: "Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду честный образ жизни.",
-                rulesH: "ВНИМАНИЕ",
-                rulesTxt: "Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение."
-            }
-        };
-
-        function setLang(lang) {
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + lang).classList.add('active');
-            
-            const t = data[lang];
-            
-            if(lang === 'ua' || lang === 'ru') {
-                document.getElementById('t-name').innerText = "БОГДАН";
-            } else {
-                document.getElementById('t-name').innerText = "BOHDAN";
-            }
-
-            document.getElementById('t-loc').innerText = t.loc;
-            document.getElementById('t-tg').innerText = t.tg;
-            document.getElementById('t-donate').innerText = t.donate;
-            document.getElementById('t-about-h').innerText = t.aboutH;
-            document.getElementById('t-about-txt').innerText = t.aboutTxt;
-            document.getElementById('t-rules-h').innerText = t.rulesH;
-            document.getElementById('t-rules-txt').innerText = t.rulesTxt;
-        }
-    </script>
-</body>
-</html>
+                rulesH: "⚠️ Notice",
+                rulesTxt: "I am a compliant Telegram user who adheres to communication rules and shows respect to other participant
