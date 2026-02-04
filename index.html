@@ -1,622 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bohdan | Profile</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-dark: #0e0e0e;
-            --bg-secondary: #1c1c1e;
-            --bg-tertiary: #2c2c2e;
-            --bg-elevated: #3a3a3c;
-            --tg-blue: #0088cc;
-            --tg-blue-light: #64b5f6;
-            --tg-green: #34c759;
-            --separator: rgba(255, 255, 255, 0.1);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.6);
-            --text-tertiary: rgba(255, 255, 255, 0.4);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 0;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            user-select: none;
-            -webkit-user-select: none;
-            overflow-x: hidden;
-        }
-
-        /* Защита от копирования */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        .selectable {
-            user-select: text !important;
-            -webkit-user-select: text !important;
-        }
-
-        /* Container */
-        .app-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 20px;
-            min-height: 100vh;
-        }
-
-        /* Left Side - Game */
-        .game-section {
-            background: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 0;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .game-header {
-            padding: 20px 25px;
-            background: var(--bg-tertiary);
-            border-bottom: 1px solid var(--separator);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .game-title {
-            font-size: 20px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .game-score {
-            background: var(--tg-blue);
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .game-canvas-container {
-            flex: 1;
-            position: relative;
-            min-height: 500px;
-            background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1e 100%);
-        }
-
-        #gameCanvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        .game-controls {
-            padding: 20px 25px;
-            background: var(--bg-tertiary);
-            border-top: 1px solid var(--separator);
-            display: flex;
-            gap: 12px;
-        }
-
-        .game-btn {
-            flex: 1;
-            padding: 14px;
-            background: var(--tg-blue);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .game-btn:hover {
-            background: var(--tg-blue-light);
-            transform: scale(1.02);
-        }
-
-        .game-btn:active {
-            transform: scale(0.98);
-        }
-
-        .game-btn.secondary {
-            background: var(--bg-elevated);
-        }
-
-        .game-btn.secondary:hover {
-            background: #4a4a4c;
-        }
-
-        /* Right Side - Profile */
-        .profile-section {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        /* Header Card */
-        .profile-header {
-            background: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .profile-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: linear-gradient(135deg, var(--tg-blue), var(--tg-green));
-            opacity: 0.15;
-            filter: blur(40px);
-        }
-
-        .avatar-wrapper {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px;
-        }
-
-        .avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--bg-secondary);
-            box-shadow: 0 8px 30px rgba(0, 136, 204, 0.3);
-        }
-
-        .online-badge {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: 22px;
-            height: 22px;
-            background: var(--tg-green);
-            border-radius: 50%;
-            border: 3px solid var(--bg-secondary);
-        }
-
-        .profile-name {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 6px;
-        }
-
-        .profile-username {
-            font-size: 15px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-
-        .profile-location {
-            font-size: 13px;
-            color: var(--text-tertiary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        /* Language Selector */
-        .lang-card {
-            background: var(--bg-secondary);
-            border-radius: 14px;
-            padding: 4px;
-            display: flex;
-            gap: 4px;
-        }
-
-        .lang-btn {
-            flex: 1;
-            padding: 10px;
-            background: transparent;
-            border: none;
-            border-radius: 10px;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: inherit;
-        }
-
-        .lang-btn.active {
-            background: var(--bg-elevated);
-            color: var(--text-primary);
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .action-btn {
-            background: var(--bg-secondary);
-            border-radius: 14px;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            text-decoration: none;
-            color: var(--text-primary);
-            transition: all 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .action-btn:active {
-            transform: scale(0.98);
-            background: var(--bg-tertiary);
-        }
-
-        .action-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .action-icon.blue {
-            background: var(--tg-blue);
-        }
-
-        .action-icon.green {
-            background: var(--tg-green);
-        }
-
-        .action-content {
-            flex: 1;
-            text-align: left;
-        }
-
-        .action-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .action-subtitle {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        /* Info Cards */
-        .info-card {
-            background: var(--bg-secondary);
-            border-radius: 14px;
-            padding: 20px;
-            position: relative;
-        }
-
-        .info-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .info-title {
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-secondary);
-        }
-
-        .copy-btn {
-            background: var(--bg-elevated);
-            border: none;
-            border-radius: 8px;
-            padding: 6px 12px;
-            color: var(--tg-blue);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .copy-btn:hover {
-            background: #4a4a4c;
-        }
-
-        .copy-btn:active {
-            transform: scale(0.95);
-        }
-
-        .copy-btn.copied {
-            color: var(--tg-green);
-        }
-
-        .info-text {
-            font-size: 15px;
-            line-height: 1.5;
-            color: var(--text-primary);
-        }
-
-        .info-card.notice {
-            background: linear-gradient(135deg, rgba(255, 59, 48, 0.1), rgba(255, 149, 0, 0.1));
-            border: 1px solid rgba(255, 59, 48, 0.2);
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 13px;
-            color: var(--text-tertiary);
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: var(--bg-elevated);
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 500;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            z-index: 10000;
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .notification.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        .notification.success {
-            background: var(--tg-green);
-            color: white;
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .app-container {
-                grid-template-columns: 1fr;
-            }
-
-            .game-section {
-                order: 2;
-            }
-
-            .profile-section {
-                order: 1;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .app-container {
-                padding: 12px;
-                gap: 12px;
-            }
-
-            .profile-header {
-                padding: 20px;
-            }
-
-            .game-canvas-container {
-                min-height: 400px;
-            }
-        }
-
-        /* Game UI Overlays */
-        .game-overlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            display: flex;
-            justify-content: space-between;
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .game-stat {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 10px 16px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            color: white;
-            pointer-events: auto;
-        }
-
-        .game-stat.highlight {
-            background: var(--tg-blue);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bohdan | Profile</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0e0e0e;--bg2:#1c1c1e;--bg3:#2c2c2e;--bg4:#3a3a3c;--blue:#0088cc;--blue2:#64b5f6;--green:#34c759;--sep:rgba(255,255,255,.1);--txt:#fff;--txt2:rgba(255,255,255,.6);--txt3:rgba(255,255,255,.4)}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999}
+.selectable{user-select:text!important;-webkit-user-select:text!important}
+.app{max-width:1400px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 380px;gap:20px;min-height:100vh}
+.game{background:var(--bg2);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+.g-header{padding:20px 25px;background:var(--bg3);border-bottom:1px solid var(--sep);display:flex;justify-content:space-between;align-items:center}
+.g-title{font-size:20px;font-weight:600;letter-spacing:-.3px}
+.g-score{background:var(--blue);padding:6px 14px;border-radius:12px;font-size:15px;font-weight:600}
+.g-canvas{flex:1;position:relative;min-height:500px;background:linear-gradient(180deg,#1a1a2e 0%,#0f0f1e 100%)}
+#c{width:100%;height:100%;display:block}
+.g-controls{padding:20px 25px;background:var(--bg3);border-top:1px solid var(--sep);display:flex;gap:12px}
+.g-btn{flex:1;padding:14px;background:var(--blue);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;transition:.2s}
+.g-btn:hover{background:var(--blue2);transform:scale(1.02)}
+.g-btn:active{transform:scale(.98)}
+.g-btn.sec{background:var(--bg4)}
+.g-btn.sec:hover{background:#4a4a4c}
+.profile{display:flex;flex-direction:column;gap:12px}
+.p-header{background:var(--bg2);border-radius:20px;padding:30px;text-align:center;position:relative;overflow:hidden}
+.p-header::before{content:'';position:absolute;top:0;left:0;right:0;height:100px;background:linear-gradient(135deg,var(--blue),var(--green));opacity:.15;filter:blur(40px)}
+.avatar-w{position:relative;width:100px;height:100px;margin:0 auto 20px}
+.avatar{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid var(--bg2);box-shadow:0 8px 30px rgba(0,136,204,.3)}
+.online{position:absolute;bottom:2px;right:2px;width:22px;height:22px;background:var(--green);border-radius:50%;border:3px solid var(--bg2)}
+.p-name{font-size:28px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px}
+.p-user{font-size:15px;color:var(--txt2);margin-bottom:4px}
+.p-loc{font-size:13px;color:var(--txt3);display:flex;align-items:center;justify-content:center;gap:6px}
+.lang{background:var(--bg2);border-radius:14px;padding:4px;display:flex;gap:4px}
+.lang-btn{flex:1;padding:10px;background:transparent;border:none;border-radius:10px;color:var(--txt2);font-size:14px;font-weight:600;cursor:pointer;transition:.3s;font-family:inherit}
+.lang-btn.active{background:var(--bg4);color:var(--txt)}
+.actions{display:flex;flex-direction:column;gap:8px}
+.act-btn{background:var(--bg2);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:16px;text-decoration:none;color:var(--txt);transition:.2s;border:none;cursor:pointer}
+.act-btn:active{transform:scale(.98);background:var(--bg3)}
+.act-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.act-icon.blue{background:var(--blue)}
+.act-icon.green{background:var(--green)}
+.act-content{flex:1;text-align:left}
+.act-title{font-size:16px;font-weight:600;margin-bottom:2px}
+.act-sub{font-size:13px;color:var(--txt2)}
+.info{background:var(--bg2);border-radius:14px;padding:20px}
+.info-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.info-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2)}
+.copy-btn{background:var(--bg4);border:none;border-radius:8px;padding:6px 12px;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:6px}
+.copy-btn:hover{background:#4a4a4c}
+.copy-btn:active{transform:scale(.95)}
+.copy-btn.copied{color:var(--green)}
+.info-txt{font-size:15px;line-height:1.5;color:var(--txt)}
+.info.notice{background:linear-gradient(135deg,rgba(255,59,48,.1),rgba(255,149,0,.1));border:1px solid rgba(255,59,48,.2)}
+.footer{text-align:center;padding:20px;font-size:13px;color:var(--txt3)}
+.notif{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--bg4);padding:14px 24px;border-radius:12px;font-size:15px;font-weight:500;box-shadow:0 10px 40px rgba(0,0,0,.5);z-index:10000;opacity:0;transition:.3s}
+.notif.show{transform:translateX(-50%) translateY(0);opacity:1}
+.notif.ok{background:var(--green);color:#fff}
+.g-overlay{position:absolute;top:20px;left:20px;right:20px;display:flex;justify-content:space-between;pointer-events:none;z-index:10}
+.g-stat{background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;color:#fff;pointer-events:auto}
+.g-stat.hl{background:var(--blue)}
+@media(max-width:1024px){.app{grid-template-columns:1fr}.game{order:2}.profile{order:1}}
+@media(max-width:480px){.app{padding:12px;gap:12px}.p-header{padding:20px}.g-canvas{min-height:400px}}
+</style>
 </head>
 <body>
-
-    <div class="app-container">
-        <!-- Game Section -->
-        <div class="game-section">
-            <div class="game-header">
-                <div class="game-title">🎮 Gravity Ball Challenge</div>
-                <div class="game-score">Score: <span id="scoreDisplay">0</span></div>
-            </div>
-            
-            <div class="game-canvas-container">
-                <canvas id="gameCanvas"></canvas>
-                <div class="game-overlay">
-                    <div class="game-stat">⚡ Power: <span id="powerDisplay">100</span>%</div>
-                    <div class="game-stat highlight">🎯 Combo: <span id="comboDisplay">0</span>x</div>
-                </div>
-            </div>
-
-            <div class="game-controls">
-                <button class="game-btn" onclick="game.shoot()">🚀 Launch Ball</button>
-                <button class="game-btn secondary" onclick="game.reset()">🔄 Reset</button>
-            </div>
-        </div>
-
-        <!-- Profile Section -->
-        <div class="profile-section">
-            <!-- Profile Header -->
-            <div class="profile-header">
-                <div class="avatar-wrapper">
-                    <img src="avatar.jpg" alt="Avatar" class="avatar">
-                    <div class="online-badge"></div>
-                </div>
-                <div class="profile-name" id="t-name">Bohdan</div>
-                <div class="profile-username">@qelry</div>
-                <div class="profile-location">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </svg>
-                    <span id="t-loc">Kyiv, Ukraine</span>
-                </div>
-            </div>
-
-            <!-- Language Selector -->
-            <div class="lang-card">
-                <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
-                <button class="lang-btn" onclick="setLang('ua')" id="btn-ua">UA</button>
-                <button class="lang-btn" onclick="setLang('ru')" id="btn-ru">RU</button>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <a href="https://t.me/qelry" class="action-btn">
-                    <div class="action-icon blue">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                        </svg>
-                    </div>
-                    <div class="action-content">
-                        <div class="action-title" id="t-tg">Telegram Contact</div>
-                        <div class="action-subtitle">Send a message</div>
-                    </div>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--text-tertiary)">
-                        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                    </svg>
-                </a>
-
-                <a href="http://t.me/send?start=IVCGgKxsSiZa" class="action-btn">
-                    <div class="action-icon green">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>
-                        </svg>
-                    </div>
-                    <div class="action-content">
-                        <div class="action-title" id="t-donate">Support Me</div>
-                        <div class="action-subtitle">Send a donation</div>
-                    </div>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--text-tertiary)">
-                        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                    </svg>
-                </a>
-            </div>
-
-            <!-- Info Card - About -->
-            <div class="info-card">
-                <div class="info-header">
-                    <div class="info-title" id="t-about-h">About Me</div>
-                    <button class="copy-btn" onclick="copyText('t-about-txt', this)">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        <span class="copy-text" id="copy-text-1">Copy</span>
-                    </button>
-                </div>
-                <div class="info-text selectable" id="t-about-txt">
-                    I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.
-                </div>
-            </div>
-
-            <!-- Info Card - Notice -->
-            <div class="info-card notice">
-                <div class="info-header">
-                    <div class="info-title" id="t-rules-h" style="color: #ff453a;">⚠️ Notice</div>
-                    <button class="copy-btn" onclick="copyText('t-rules-txt', this)" style="color: #ff453a;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        <span class="copy-text" id="copy-text-2">Copy</span>
-                    </button>
-                </div>
-                <div class="info-text selectable" id="t-rules-txt">
-                    I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="footer">
-                © 2026 Filipov • Made with ♥
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification -->
-    <div class="notification" id="notification">Copied!</div>
-
-    <script>
-        // Защита от копирования
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => {
-            if (!e.target.closest('.selectable')) {
-                e.preventDefault();
-            }
-        });
-        document.addEventListener('selectstart', e => {
-            if (!e.target.closest('.selectable')) {
-                e.preventDefault();
-            }
-        });
-
-        // Языковые данные
-        const data = {
-            en: {
-                name: "Bohdan",
-                loc: "Kyiv, Ukraine",
-                tg: "Telegram Contact",
-                donate: "Support Me",
-                aboutH: "About Me",
-                aboutTxt: "I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.",
-                rulesH: "⚠️ Notice",
-                rulesTxt: "I am a compliant Telegram user who adheres to communication rules and shows respect to other participant
+<div class="app">
+<div class="game">
+<div class="g-header">
+<div class="g-title">🎮 Gravity Ball Challenge</div>
+<div class="g-score">Score: <span id="s">0</span></div>
+</div>
+<div class="g-canvas">
+<canvas id="c"></canvas>
+<div class="g-overlay">
+<div class="g-stat">⚡ Power: <span id="pw">100</span>%</div>
+<div class="g-stat hl">🎯 Combo: <span id="co">0</span>x</div>
+</div>
+</div>
+<div class="g-controls">
+<button class="g-btn" onclick="G.shoot()">🚀 Launch Ball</button>
+<button class="g-btn sec" onclick="G.reset()">🔄 Reset</button>
+</div>
+</div>
+<div class="profile">
+<div class="p-header">
+<div class="avatar-w">
+<img src="avatar.jpg" alt="Avatar" class="avatar">
+<div class="online"></div>
+</div>
+<div class="p-name" id="n">Bohdan</div>
+<div class="p-user">@qelry</div>
+<div class="p-loc">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+<span id="loc">Kyiv, Ukraine</span>
+</div>
+</div>
+<div class="lang">
+<button class="lang-btn active" onclick="setLang('en')" id="b-en">EN</button>
+<button class="lang-btn" onclick="setLang('ua')" id="b-ua">UA</button>
+<button class="lang-btn" onclick="setLang('ru')" id="b-ru">RU</button>
+</div>
+<div class="actions">
+<a href="https://t.me/qelry" class="act-btn">
+<div class="act-icon blue">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+</div>
+<div class="act-content">
+<div class="act-title" id="tg">Telegram Contact</div>
+<div class="act-sub">Send a message</div>
+</div>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="var(--txt3)"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+</a>
+<a href="http://t.me/send?start=IVCGgKxsSiZa" class="act-btn">
+<div class="act-icon green">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg>
+</div>
+<div class="act-content">
+<div class="act-title" id="don">Support Me</div>
+<div class="act-sub">Send a donation</div>
+</div>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="var(--txt3)"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+</a>
+</div>
+<div class="info">
+<div class="info-header">
+<div class="info-title" id="ah">About Me</div>
+<button class="copy-btn" onclick="copy('at',this)">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+<span class="cp-txt">Copy</span>
+</button>
+</div>
+<div class="info-txt selectable" id="at">I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.</div>
+</div>
+<div class="info notice">
+<div class="info-header">
+<div class="info-title" id="rh" style="color:#ff453a">⚠️ Notice</div>
+<button class="copy-btn" onclick="copy('rt',this)" style="color:#ff453a">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+<span class="cp-txt">Copy</span>
+</button>
+</div>
+<div class="info-txt selectable" id="rt">I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.</div>
+</div>
+<div class="footer">© 2026 Filipov • Made with ♥</div>
+</div>
+</div>
+<div class="notif" id="notif">Copied!</div>
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('copy',e=>{if(!e.target.closest('.selectable'))e.preventDefault()});
+document.addEventListener('selectstart',e=>{if(!e.target.closest('.selectable'))e.preventDefault()});
+const D={en:{name:"Bohdan",loc:"Kyiv, Ukraine",tg:"Telegram Contact",don:"Support Me",ah:"About Me",at:"I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.",rh:"⚠️ Notice",rt:"I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.",cb:"Copy",cd:"Copied!"},ua:{name:"Богдан",loc:"Київ, Україна",tg:"Написати в Telegram",don:"Підтримати",ah:"Про мене",at:"Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя.",rh:"⚠️ Увага",rt:"Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших.",cb:"Копіювати",cd:"Скопійовано!"},ru:{name:"Богдан",loc:"Киев, Украина",tg:"Контакт Telegram",don:"Поддержать",ah:"Обо мне",at:"Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду честный образ жизни.",rh:"⚠️ Внимание",rt:"Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение.",cb:"Копировать",cd:"Скопировано!"}};
+let L='en';
+function setLang(l){L=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('b-'+l).classList.add('active');const t=D[l];document.getElementById('n').innerText=t.name;document.getElementById('loc').innerText=t.loc;document.getElementById('tg').innerText=t.tg;document.getElementById('don').innerText=t.don;document.getElementById('ah').innerText=t.ah;document.getElementById('at').innerText=t.at;document.getElementById('rh').innerText=t.rh;document.getElementById('rt').innerText=t.rt;document.querySelectorAll('.cp-txt').forEach(e=>{if(!e.closest('.copy-btn').classList.contains('copied'))e.innerText=t.cb})}
+function copy(id,btn){const el=document.getElementById(id);navigator.clipboard.writeText(el.innerText).then(()=>{const txt=btn.querySelector('.cp-txt');btn.classList.add('copied');txt.innerText='✓';notify(D[L].cd);setTimeout(()=>{btn.classList.remove('copied');txt.innerText=D[L].cb},2000)})}
+function notify(m){const n=document.getElementById('notif');n.innerText=m;n.classList.add('show','ok');setTimeout(()=>n.classList.remove('show','ok'),2000)}
+class Game{constructor(){this.c=document.getElementById('c');this.x=this.c.getContext('2d');this.resize();window.addEventListener('resize',()=>this.resize());this.sc=0;this.pw=100;this.co=0;this.balls=[];this.tgts=[];this.parts=[];this.run=true;this.g=.4;this.f=.99;this.r=.7;this.initTgts();this.anim();this.c.addEventListener('click',e=>{const rc=this.c.getBoundingClientRect();this.shootAt(e.clientX-rc.left,e.clientY-rc.top)})}
+resize(){this.c.width=this.c.offsetWidth;this.c.height=this.c.offsetHeight}
+initTgts(){this.tgts=[];const sp=60,sx=(this.c.width-(4*sp))/2,sy=80,cols=['#0088cc','#34c759','#ff453a','#ff9f0a','#bf5af2','#00d4aa'];for(let r=0;r<3;r++)for(let cl=0;cl<5;cl++)this.tgts.push({x:sx+cl*sp,y:sy+r*sp,rad:20,act:true,col:cols[Math.floor(Math.random()*cols.length)],pts:Math.floor(Math.random()*50)+10})}
+shoot(){if(this.pw<20)return;const a=Math.random()*Math.PI-Math.PI/2,sp=15;this.balls.push({x:this.c.width/2,y:this.c.height-50,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,rad:12,col:'#fff',tr:[]});this.pw=Math.max(0,this.pw-20);this.upd()}
+shootAt(tx,ty){if(this.pw<20)return;const sx=this.c.width/2,sy=this.c.height-50,dx=tx-sx,dy=ty-sy,d=Math.sqrt(dx*dx+dy*dy),sp=20;this.balls.push({x:sx,y:sy,vx:(dx/d)*sp,vy:(dy/d)*sp,rad:12,col:'#fff',tr:[]});this.pw=Math.max(0,this.pw-20);this.upd()}
+mkParts(x,y,col){for(let i=0;i<20;i++){const a=(Math.PI*2*i)/20,sp=Math.random()*5+2;this.parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,rad:Math.random()*3+1,col,life:1})}}
+chkCol(b,t){const dx=b.x-t.x,dy=b.y-t.y;return Math.sqrt(dx*dx+dy*dy)<b.rad+t.rad}
+updt(){this.balls.forEach((b,bi)=>{b.vy+=this.g;b.vx*=this.f;b.vy*=this.f;b.x+=b.vx;b.y+=b.vy;b.tr.push({x:b.x,y:b.y});if(b.tr.length>10)b.tr.shift();if(b.x-b.rad<0||b.x+b.rad>this.c.width){b.vx*=-this.r;b.x=b.x-b.rad<0?b.rad:this.c.width-b.rad}if(b.y-b.rad<0){b.vy*=-this.r;b.y=b.rad}if(b.y+b.rad>this.c.height){b.vy*=-this.r;b.y=this.c.height-b.rad;if(Math.abs(b.vy)<.5&&Math.abs(b.vx)<.5)this.balls.splice(bi,1)}this.tgts.forEach(t=>{if(t.act&&this.chkCol(b,t)){t.act=false;this.sc+=t.pts;this.co++;this.mkParts(t.x,t.y,t.col);this.upd();const dx=b.x-t.x,dy=b.y-t.y,d=Math.sqrt(dx*dx+dy*dy);b.vx=(dx/d)*10;b.vy=(dy/d)*10}})});this.parts.forEach((p,i)=>{p.vy+=this.g*.5;p.x+=p.vx;p.y+=p.vy;p.life-=.02;if(p.life<=0)this.parts.splice(i,1)});if(this.pw<100){this.pw+=.3;this.upd()}const act=this.tgts.filter(t=>t.act).length;if(act===0&&this.balls.length===0)setTimeout(()=>{this.sc+=this.co*100;this.initTgts();this.upd()},1000)}
+drw(){this.x.fillStyle='#1a1a2e';this.x.fillRect(0,0,this.c.width,this.c.height);this.x.fillStyle='rgba(255,255,255,.1)';for(let i=0;i<50;i++){const x=(i*137.5)%this.c.width,y=(i*197.3)%this.c.height;this.x.fillRect(x,y,2,2)}this.tgts.forEach(t=>{if(t.act){const g=this.x.createRadialGradient(t.x,t.y,0,t.x,t.y,t.rad*2);g.addColorStop(0,t.col+'40');g.addColorStop(1,'transparent');this.x.fillStyle=g;this.x.beginPath();this.x.arc(t.x,t.y,t.rad*2,0,Math.PI*2);this.x.fill();this.x.fillStyle=t.col;this.x.beginPath();this.x.arc(t.x,t.y,t.rad,0,Math.PI*2);this.x.fill();this.x.fillStyle='#fff';this.x.font='bold 12px sans-serif';this.x.textAlign='center';this.x.textBaseline='middle';this.x.fillText(t.pts,t.x,t.y)}});this.parts.forEach(p=>{this.x.globalAlpha=p.life;this.x.fillStyle=p.col;this.x.beginPath();this.x.arc(p.x,p.y,p.rad,0,Math.PI*2);this.x.fill()});this.x.globalAlpha=1;this.balls.forEach(b=>{this.x.strokeStyle='rgba(255,255,255,.3)';this.x.lineWidth=2;this.x.beginPath();b.tr.forEach((p,i)=>{if(i===0)this.x.moveTo(p.x,p.y);else this.x.lineTo(p.x,p.y)});this.x.stroke();const g=this.x.createRadialGradient(b.x,b.y,0,b.x,b.y,b.rad*2);g.addColorStop(0,'rgba(255,255,255,.8)');g.addColorStop(1,'transparent');this.x.fillStyle=g;this.x.beginPath();this.x.arc(b.x,b.y,b.rad*2,0,Math.PI*2);this.x.fill();this.x.fillStyle=b.col;this.x.beginPath();this.x.arc(b.x,b.y,b.rad,0,Math.PI*2);this.x.fill();this.x.fillStyle='rgba(255,255,255,.6)';this.x.beginPath();this.x.arc(b.x-4,b.y-4,b.rad/3,0,Math.PI*2);this.x.fill()});this.x.fillStyle='#0088cc';this.x.beginPath();this.x.arc(this.c.width/2,this.c.height-50,15,0,Math.PI*2);this.x.fill()}
+anim(){if(this.run){this.updt();this.drw();requestAnimationFrame(()=>this.anim())}}
+upd(){document.getElementById('s').innerText=this.sc;document.getElementById('pw').innerText=Math.floor(this.pw);document.getElementById('co').innerText=this.co}
+reset(){this.sc=0;this.pw=100;this.co=0;this.balls=[];this.parts=[];this.initTgts();this.upd()}}
+const G=new Game();
+</script>
+</body>
+</html>
