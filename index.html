@@ -5,71 +5,149 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bohdan | Profile</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0e0e0e;--bg2:#1c1c1e;--bg3:#2c2c2e;--bg4:#3a3a3c;--blue:#0088cc;--blue2:#64b5f6;--green:#34c759;--sep:rgba(255,255,255,.1);--txt:#fff;--txt2:rgba(255,255,255,.6);--txt3:rgba(255,255,255,.4)}
-body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999}
-.selectable{user-select:text!important;-webkit-user-select:text!important}
-.app{max-width:1400px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 380px;gap:20px;min-height:100vh}
-.game{background:var(--bg2);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
-.g-header{padding:20px 25px;background:var(--bg3);border-bottom:1px solid var(--sep);display:flex;justify-content:space-between;align-items:center}
-.g-title{font-size:20px;font-weight:600;letter-spacing:-.3px}
-.g-score{background:var(--blue);padding:6px 14px;border-radius:12px;font-size:15px;font-weight:600}
-.g-canvas{flex:1;position:relative;min-height:500px;background:linear-gradient(180deg,#1a1a2e 0%,#0f0f1e 100%)}
-#c{width:100%;height:100%;display:block}
-.g-controls{padding:20px 25px;background:var(--bg3);border-top:1px solid var(--sep);display:flex;gap:12px}
-.g-btn{flex:1;padding:14px;background:var(--blue);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;transition:.2s}
-.g-btn:hover{background:var(--blue2);transform:scale(1.02)}
-.g-btn:active{transform:scale(.98)}
-.g-btn.sec{background:var(--bg4)}
-.g-btn.sec:hover{background:#4a4a4c}
-.profile{display:flex;flex-direction:column;gap:12px}
-.p-header{background:var(--bg2);border-radius:20px;padding:30px;text-align:center;position:relative;overflow:hidden}
-.p-header::before{content:'';position:absolute;top:0;left:0;right:0;height:100px;background:linear-gradient(135deg,var(--blue),var(--green));opacity:.15;filter:blur(40px)}
-.avatar-w{position:relative;width:100px;height:100px;margin:0 auto 20px}
-.avatar{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid var(--bg2);box-shadow:0 8px 30px rgba(0,136,204,.3)}
-.online{position:absolute;bottom:2px;right:2px;width:22px;height:22px;background:var(--green);border-radius:50%;border:3px solid var(--bg2)}
-.p-name{font-size:28px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px}
-.p-user{font-size:15px;color:var(--txt2);margin-bottom:4px}
-.p-loc{font-size:13px;color:var(--txt3);display:flex;align-items:center;justify-content:center;gap:6px}
-.lang{background:var(--bg2);border-radius:14px;padding:4px;display:flex;gap:4px}
-.lang-btn{flex:1;padding:10px;background:transparent;border:none;border-radius:10px;color:var(--txt2);font-size:14px;font-weight:600;cursor:pointer;transition:.3s;font-family:inherit}
-.lang-btn.active{background:var(--bg4);color:var(--txt)}
-.actions{display:flex;flex-direction:column;gap:8px}
-.act-btn{background:var(--bg2);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:16px;text-decoration:none;color:var(--txt);transition:.2s;border:none;cursor:pointer}
-.act-btn:active{transform:scale(.98);background:var(--bg3)}
-.act-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.act-icon.blue{background:var(--blue)}
-.act-icon.green{background:var(--green)}
-.act-content{flex:1;text-align:left}
-.act-title{font-size:16px;font-weight:600;margin-bottom:2px}
-.act-sub{font-size:13px;color:var(--txt2)}
-.info{background:var(--bg2);border-radius:14px;padding:20px}
-.info-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.info-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2)}
-.copy-btn{background:var(--bg4);border:none;border-radius:8px;padding:6px 12px;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:6px}
-.copy-btn:hover{background:#4a4a4c}
+*{margin:0;padding:0;box-sizing:border-box;transition:opacity .5s ease,transform .5s ease}
+:root{--bg:#000;--glass:rgba(28,28,30,.7);--glass-light:rgba(58,58,60,.5);--glass-dark:rgba(20,20,22,.8);--blue:#0a84ff;--green:#30d158;--txt:#fff;--txt2:rgba(255,255,255,.6);--txt3:rgba(255,255,255,.35)}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased;user-select:none;overflow-x:hidden;position:relative}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 30% 20%,rgba(10,132,255,.15),transparent 50%),radial-gradient(circle at 70% 80%,rgba(48,209,88,.1),transparent 50%);pointer-events:none}
+.selectable{user-select:text!important}
+.container{max-width:480px;margin:0 auto;padding:20px;position:relative;z-index:1}
+.card{background:var(--glass);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border-radius:20px;border:1px solid rgba(255,255,255,.08);margin-bottom:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.1)}
+.profile-header{padding:40px 24px 24px;text-align:center;position:relative}
+.profile-header::before{content:'';position:absolute;top:0;left:0;right:0;height:120px;background:linear-gradient(180deg,var(--blue),transparent);opacity:.15;filter:blur(60px)}
+.avatar-wrap{position:relative;width:100px;height:100px;margin:0 auto 16px}
+.avatar{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.15);box-shadow:0 8px 24px rgba(10,132,255,.3)}
+.online{position:absolute;bottom:2px;right:2px;width:24px;height:24px;background:var(--green);border-radius:50%;border:3px solid var(--bg);box-shadow:0 0 0 2px rgba(48,209,88,.3)}
+.name{font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px;opacity:1}
+.username{font-size:15px;color:var(--txt2);margin-bottom:8px;opacity:1}
+.location{font-size:13px;color:var(--txt3);display:flex;align-items:center;justify-content:center;gap:6px;opacity:1}
+.lang-wrap{background:var(--glass-light);backdrop-filter:blur(20px);border-radius:16px;padding:3px;display:flex;gap:4px}
+.lang-btn{flex:1;padding:9px;background:transparent;border:none;border-radius:13px;color:var(--txt3);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;position:relative}
+.lang-btn.active{background:var(--glass-dark);color:var(--txt);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.lang-indicator{position:absolute;inset:0;border-radius:13px;background:var(--glass-dark);transform:translateX(0);transition:transform .4s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:-1}
+.btn-group{display:flex;flex-direction:column;gap:8px}
+.btn{background:var(--glass);backdrop-filter:blur(30px);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--txt);border:1px solid rgba(255,255,255,.06);cursor:pointer}
+.btn:active{transform:scale(.97);opacity:.8}
+.icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.icon.blue{background:var(--blue);box-shadow:0 4px 12px rgba(10,132,255,.4)}
+.icon.green{background:var(--green);box-shadow:0 4px 12px rgba(48,209,88,.4)}
+.icon.purple{background:#bf5af2;box-shadow:0 4px 12px rgba(191,90,242,.4)}
+.btn-content{flex:1;text-align:left}
+.btn-title{font-size:16px;font-weight:600;margin-bottom:2px;opacity:1}
+.btn-sub{font-size:13px;color:var(--txt2);opacity:1}
+.info-card{background:var(--glass);backdrop-filter:blur(30px);border-radius:16px;padding:18px;border:1px solid rgba(255,255,255,.06)}
+.info-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.info-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--txt3);opacity:1}
+.copy-btn{background:var(--glass-light);backdrop-filter:blur(20px);border:none;border-radius:10px;padding:6px 12px;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
 .copy-btn:active{transform:scale(.95)}
 .copy-btn.copied{color:var(--green)}
-.info-txt{font-size:15px;line-height:1.5;color:var(--txt)}
-.info.notice{background:linear-gradient(135deg,rgba(255,59,48,.1),rgba(255,149,0,.1));border:1px solid rgba(255,59,48,.2)}
-.footer{text-align:center;padding:20px;font-size:13px;color:var(--txt3)}
-.notif{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--bg4);padding:14px 24px;border-radius:12px;font-size:15px;font-weight:500;box-shadow:0 10px 40px rgba(0,0,0,.5);z-index:10000;opacity:0;transition:.3s}
+.info-text{font-size:15px;line-height:1.5;color:var(--txt);opacity:1}
+.notice{border:1px solid rgba(255,69,58,.15);background:linear-gradient(135deg,rgba(255,69,58,.08),rgba(255,159,10,.05))}
+.footer{text-align:center;padding:24px;font-size:13px;color:var(--txt3);opacity:1}
+.notif{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--glass-dark);backdrop-filter:blur(40px);padding:16px 28px;border-radius:16px;font-size:15px;font-weight:600;box-shadow:0 12px 40px rgba(0,0,0,.6);z-index:10000;opacity:0;border:1px solid rgba(255,255,255,.1)}
 .notif.show{transform:translateX(-50%) translateY(0);opacity:1}
-.notif.ok{background:var(--green);color:#fff}
-.g-overlay{position:absolute;top:20px;left:20px;right:20px;display:flex;justify-content:space-between;pointer-events:none;z-index:10}
-.g-stat{background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;color:#fff;pointer-events:auto}
-.g-stat.hl{background:var(--blue)}
-@media(max-width:1024px){.app{grid-template-columns:1fr}.game{order:2}.profile{order:1}}
-@media(max-width:480px){.app{padding:12px;gap:12px}.p-header{padding:20px}.g-canvas{min-height:400px}}
+.notif.ok{background:var(--green);color:#fff;border:none}
+.game-modal{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none}
+.game-modal.show{opacity:1;pointer-events:auto}
+.game-wrap{width:100%;max-width:800px;background:var(--glass-dark);backdrop-filter:blur(60px);border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.8);transform:scale(.9);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.game-modal.show .game-wrap{transform:scale(1)}
+.g-header{padding:20px 24px;background:rgba(0,0,0,.4);border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.g-title{font-size:18px;font-weight:700;letter-spacing:-.3px}
+.g-score{background:var(--blue);padding:6px 14px;border-radius:10px;font-size:14px;font-weight:700}
+.g-close{background:var(--glass-light);border:none;width:32px;height:32px;border-radius:50%;color:var(--txt);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px}
+.g-close:active{transform:scale(.9)}
+.g-canvas{position:relative;height:500px;background:linear-gradient(180deg,#1a1a2e,#0f0f1e)}
+#c{width:100%;height:100%;display:block}
+.g-overlay{position:absolute;top:16px;left:16px;right:16px;display:flex;justify-content:space-between;pointer-events:none;z-index:10}
+.g-stat{background:rgba(0,0,0,.7);backdrop-filter:blur(15px);padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;color:#fff;border:1px solid rgba(255,255,255,.1)}
+.g-stat.hl{background:var(--blue);border:none}
+.g-controls{padding:16px;background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.08);display:flex;gap:10px}
+.g-btn{flex:1;padding:14px;background:var(--blue);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(10,132,255,.4)}
+.g-btn:active{transform:scale(.97)}
+.g-btn.sec{background:var(--glass-light);color:var(--txt);box-shadow:none}
+@media(max-width:600px){.g-canvas{height:400px}.game-wrap{border-radius:0}}
 </style>
 </head>
 <body>
-<div class="app">
-<div class="game">
+<div class="container">
+<div class="card">
+<div class="profile-header">
+<div class="avatar-wrap">
+<img src="avatar.jpg" alt="Avatar" class="avatar">
+<div class="online"></div>
+</div>
+<div class="name" id="n">Bohdan</div>
+<div class="username">@qelry</div>
+<div class="location">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+<span id="loc">Kyiv, Ukraine</span>
+</div>
+</div>
+</div>
+<div class="card lang-wrap">
+<button class="lang-btn active" onclick="setLang('en')" id="b-en">EN</button>
+<button class="lang-btn" onclick="setLang('ua')" id="b-ua">UA</button>
+<button class="lang-btn" onclick="setLang('ru')" id="b-ru">RU</button>
+</div>
+<div class="card btn-group">
+<a href="https://t.me/qelry" class="btn">
+<div class="icon blue">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+</div>
+<div class="btn-content">
+<div class="btn-title" id="tg">Telegram Contact</div>
+<div class="btn-sub">Send a message</div>
+</div>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="var(--txt3)"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+</a>
+<a href="http://t.me/send?start=IVCGgKxsSiZa" class="btn">
+<div class="icon green">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg>
+</div>
+<div class="btn-content">
+<div class="btn-title" id="don">Support Me</div>
+<div class="btn-sub">Send a donation</div>
+</div>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="var(--txt3)"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+</a>
+<button class="btn" onclick="openGame()">
+<div class="icon purple">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M21.58 16.09l-1.09-7.66A3.996 3.996 0 0016.53 5H7.47C5.48 5 3.79 6.46 3.51 8.43l-1.09 7.66C2.2 17.63 3.39 19 4.94 19c.68 0 1.32-.27 1.8-.75L9 16h6l2.25 2.25c.48.48 1.13.75 1.8.75 1.56 0 2.75-1.37 2.53-2.91zM11 11H9v2H8v-2H6v-1h2V8h1v2h2v1zm4-1c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm2 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+</div>
+<div class="btn-content">
+<div class="btn-title">Play Game</div>
+<div class="btn-sub">Gravity Ball Challenge</div>
+</div>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="var(--txt3)"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+</button>
+</div>
+<div class="card info-card">
+<div class="info-header">
+<div class="info-label" id="ah">About Me</div>
+<button class="copy-btn" onclick="copy('at',this)">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+<span class="cp-txt">Copy</span>
+</button>
+</div>
+<div class="info-text selectable" id="at">I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.</div>
+</div>
+<div class="card info-card notice">
+<div class="info-header">
+<div class="info-label" id="rh" style="color:#ff453a">⚠️ Notice</div>
+<button class="copy-btn" onclick="copy('rt',this)" style="color:#ff453a">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+<span class="cp-txt">Copy</span>
+</button>
+</div>
+<div class="info-text selectable" id="rt">I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.</div>
+</div>
+<div class="footer">© 2026 Filipov • Made with ♥</div>
+</div>
+<div class="game-modal" id="gm">
+<div class="game-wrap">
 <div class="g-header">
 <div class="g-title">🎮 Gravity Ball Challenge</div>
 <div class="g-score">Score: <span id="s">0</span></div>
+<button class="g-close" onclick="closeGame()">×</button>
 </div>
 <div class="g-canvas">
 <canvas id="c"></canvas>
@@ -83,68 +161,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999}
 <button class="g-btn sec" onclick="G.reset()">🔄 Reset</button>
 </div>
 </div>
-<div class="profile">
-<div class="p-header">
-<div class="avatar-w">
-<img src="avatar.jpg" alt="Avatar" class="avatar">
-<div class="online"></div>
-</div>
-<div class="p-name" id="n">Bohdan</div>
-<div class="p-user">@qelry</div>
-<div class="p-loc">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-<span id="loc">Kyiv, Ukraine</span>
-</div>
-</div>
-<div class="lang">
-<button class="lang-btn active" onclick="setLang('en')" id="b-en">EN</button>
-<button class="lang-btn" onclick="setLang('ua')" id="b-ua">UA</button>
-<button class="lang-btn" onclick="setLang('ru')" id="b-ru">RU</button>
-</div>
-<div class="actions">
-<a href="https://t.me/qelry" class="act-btn">
-<div class="act-icon blue">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
-</div>
-<div class="act-content">
-<div class="act-title" id="tg">Telegram Contact</div>
-<div class="act-sub">Send a message</div>
-</div>
-<svg width="20" height="20" viewBox="0 0 24 24" fill="var(--txt3)"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-</a>
-<a href="http://t.me/send?start=IVCGgKxsSiZa" class="act-btn">
-<div class="act-icon green">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg>
-</div>
-<div class="act-content">
-<div class="act-title" id="don">Support Me</div>
-<div class="act-sub">Send a donation</div>
-</div>
-<svg width="20" height="20" viewBox="0 0 24 24" fill="var(--txt3)"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-</a>
-</div>
-<div class="info">
-<div class="info-header">
-<div class="info-title" id="ah">About Me</div>
-<button class="copy-btn" onclick="copy('at',this)">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-<span class="cp-txt">Copy</span>
-</button>
-</div>
-<div class="info-txt selectable" id="at">I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.</div>
-</div>
-<div class="info notice">
-<div class="info-header">
-<div class="info-title" id="rh" style="color:#ff453a">⚠️ Notice</div>
-<button class="copy-btn" onclick="copy('rt',this)" style="color:#ff453a">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-<span class="cp-txt">Copy</span>
-</button>
-</div>
-<div class="info-txt selectable" id="rt">I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.</div>
-</div>
-<div class="footer">© 2026 Filipov • Made with ♥</div>
-</div>
 </div>
 <div class="notif" id="notif">Copied!</div>
 <script>
@@ -153,22 +169,24 @@ document.addEventListener('copy',e=>{if(!e.target.closest('.selectable'))e.preve
 document.addEventListener('selectstart',e=>{if(!e.target.closest('.selectable'))e.preventDefault()});
 const D={en:{name:"Bohdan",loc:"Kyiv, Ukraine",tg:"Telegram Contact",don:"Support Me",ah:"About Me",at:"I am a law-abiding citizen of Ukraine, respecting the laws of my country and leading a responsible, honest life.",rh:"⚠️ Notice",rt:"I am a compliant Telegram user who adheres to communication rules and shows respect to other participants.",cb:"Copy",cd:"Copied!"},ua:{name:"Богдан",loc:"Київ, Україна",tg:"Написати в Telegram",don:"Підтримати",ah:"Про мене",at:"Я є законослухняним громадянином України, дотримуюся законів своєї країни та веду відповідальний, чесний спосіб життя.",rh:"⚠️ Увага",rt:"Я є слухняним користувачем Telegram, який дотримується правил спілкування та демонструє повагу до інших.",cb:"Копіювати",cd:"Скопійовано!"},ru:{name:"Богдан",loc:"Киев, Украина",tg:"Контакт Telegram",don:"Поддержать",ah:"Обо мне",at:"Я являюсь законопослушным гражданином Украины, соблюдаю законы своей страны и веду честный образ жизни.",rh:"⚠️ Внимание",rt:"Я являюсь послушным пользователем Telegram, придерживающимся правил общения и демонстрирующим уважение.",cb:"Копировать",cd:"Скопировано!"}};
 let L='en';
-function setLang(l){L=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('b-'+l).classList.add('active');const t=D[l];document.getElementById('n').innerText=t.name;document.getElementById('loc').innerText=t.loc;document.getElementById('tg').innerText=t.tg;document.getElementById('don').innerText=t.don;document.getElementById('ah').innerText=t.ah;document.getElementById('at').innerText=t.at;document.getElementById('rh').innerText=t.rh;document.getElementById('rt').innerText=t.rt;document.querySelectorAll('.cp-txt').forEach(e=>{if(!e.closest('.copy-btn').classList.contains('copied'))e.innerText=t.cb})}
+function setLang(l){L=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));const btn=document.getElementById('b-'+l);btn.classList.add('active');const t=D[l];fadeUpdate('n',t.name);fadeUpdate('loc',t.loc);fadeUpdate('tg',t.tg);fadeUpdate('don',t.don);fadeUpdate('ah',t.ah);fadeUpdate('at',t.at);fadeUpdate('rh',t.rh);fadeUpdate('rt',t.rt);document.querySelectorAll('.cp-txt').forEach(e=>{if(!e.closest('.copy-btn').classList.contains('copied'))e.innerText=t.cb})}
+function fadeUpdate(id,txt){const el=document.getElementById(id);el.style.opacity='0';setTimeout(()=>{el.innerText=txt;el.style.opacity='1'},250)}
 function copy(id,btn){const el=document.getElementById(id);navigator.clipboard.writeText(el.innerText).then(()=>{const txt=btn.querySelector('.cp-txt');btn.classList.add('copied');txt.innerText='✓';notify(D[L].cd);setTimeout(()=>{btn.classList.remove('copied');txt.innerText=D[L].cb},2000)})}
 function notify(m){const n=document.getElementById('notif');n.innerText=m;n.classList.add('show','ok');setTimeout(()=>n.classList.remove('show','ok'),2000)}
+function openGame(){document.getElementById('gm').classList.add('show');document.body.style.overflow='hidden';if(!window.G)window.G=new Game()}
+function closeGame(){document.getElementById('gm').classList.remove('show');document.body.style.overflow=''}
 class Game{constructor(){this.c=document.getElementById('c');this.x=this.c.getContext('2d');this.resize();window.addEventListener('resize',()=>this.resize());this.sc=0;this.pw=100;this.co=0;this.balls=[];this.tgts=[];this.parts=[];this.run=true;this.g=.4;this.f=.99;this.r=.7;this.initTgts();this.anim();this.c.addEventListener('click',e=>{const rc=this.c.getBoundingClientRect();this.shootAt(e.clientX-rc.left,e.clientY-rc.top)})}
 resize(){this.c.width=this.c.offsetWidth;this.c.height=this.c.offsetHeight}
-initTgts(){this.tgts=[];const sp=60,sx=(this.c.width-(4*sp))/2,sy=80,cols=['#0088cc','#34c759','#ff453a','#ff9f0a','#bf5af2','#00d4aa'];for(let r=0;r<3;r++)for(let cl=0;cl<5;cl++)this.tgts.push({x:sx+cl*sp,y:sy+r*sp,rad:20,act:true,col:cols[Math.floor(Math.random()*cols.length)],pts:Math.floor(Math.random()*50)+10})}
+initTgts(){this.tgts=[];const sp=60,sx=(this.c.width-(4*sp))/2,sy=80,cols=['#0a84ff','#30d158','#ff453a','#ff9f0a','#bf5af2','#64d2ff'];for(let r=0;r<3;r++)for(let cl=0;cl<5;cl++)this.tgts.push({x:sx+cl*sp,y:sy+r*sp,rad:20,act:true,col:cols[Math.floor(Math.random()*cols.length)],pts:Math.floor(Math.random()*50)+10})}
 shoot(){if(this.pw<20)return;const a=Math.random()*Math.PI-Math.PI/2,sp=15;this.balls.push({x:this.c.width/2,y:this.c.height-50,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,rad:12,col:'#fff',tr:[]});this.pw=Math.max(0,this.pw-20);this.upd()}
 shootAt(tx,ty){if(this.pw<20)return;const sx=this.c.width/2,sy=this.c.height-50,dx=tx-sx,dy=ty-sy,d=Math.sqrt(dx*dx+dy*dy),sp=20;this.balls.push({x:sx,y:sy,vx:(dx/d)*sp,vy:(dy/d)*sp,rad:12,col:'#fff',tr:[]});this.pw=Math.max(0,this.pw-20);this.upd()}
 mkParts(x,y,col){for(let i=0;i<20;i++){const a=(Math.PI*2*i)/20,sp=Math.random()*5+2;this.parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,rad:Math.random()*3+1,col,life:1})}}
 chkCol(b,t){const dx=b.x-t.x,dy=b.y-t.y;return Math.sqrt(dx*dx+dy*dy)<b.rad+t.rad}
 updt(){this.balls.forEach((b,bi)=>{b.vy+=this.g;b.vx*=this.f;b.vy*=this.f;b.x+=b.vx;b.y+=b.vy;b.tr.push({x:b.x,y:b.y});if(b.tr.length>10)b.tr.shift();if(b.x-b.rad<0||b.x+b.rad>this.c.width){b.vx*=-this.r;b.x=b.x-b.rad<0?b.rad:this.c.width-b.rad}if(b.y-b.rad<0){b.vy*=-this.r;b.y=b.rad}if(b.y+b.rad>this.c.height){b.vy*=-this.r;b.y=this.c.height-b.rad;if(Math.abs(b.vy)<.5&&Math.abs(b.vx)<.5)this.balls.splice(bi,1)}this.tgts.forEach(t=>{if(t.act&&this.chkCol(b,t)){t.act=false;this.sc+=t.pts;this.co++;this.mkParts(t.x,t.y,t.col);this.upd();const dx=b.x-t.x,dy=b.y-t.y,d=Math.sqrt(dx*dx+dy*dy);b.vx=(dx/d)*10;b.vy=(dy/d)*10}})});this.parts.forEach((p,i)=>{p.vy+=this.g*.5;p.x+=p.vx;p.y+=p.vy;p.life-=.02;if(p.life<=0)this.parts.splice(i,1)});if(this.pw<100){this.pw+=.3;this.upd()}const act=this.tgts.filter(t=>t.act).length;if(act===0&&this.balls.length===0)setTimeout(()=>{this.sc+=this.co*100;this.initTgts();this.upd()},1000)}
-drw(){this.x.fillStyle='#1a1a2e';this.x.fillRect(0,0,this.c.width,this.c.height);this.x.fillStyle='rgba(255,255,255,.1)';for(let i=0;i<50;i++){const x=(i*137.5)%this.c.width,y=(i*197.3)%this.c.height;this.x.fillRect(x,y,2,2)}this.tgts.forEach(t=>{if(t.act){const g=this.x.createRadialGradient(t.x,t.y,0,t.x,t.y,t.rad*2);g.addColorStop(0,t.col+'40');g.addColorStop(1,'transparent');this.x.fillStyle=g;this.x.beginPath();this.x.arc(t.x,t.y,t.rad*2,0,Math.PI*2);this.x.fill();this.x.fillStyle=t.col;this.x.beginPath();this.x.arc(t.x,t.y,t.rad,0,Math.PI*2);this.x.fill();this.x.fillStyle='#fff';this.x.font='bold 12px sans-serif';this.x.textAlign='center';this.x.textBaseline='middle';this.x.fillText(t.pts,t.x,t.y)}});this.parts.forEach(p=>{this.x.globalAlpha=p.life;this.x.fillStyle=p.col;this.x.beginPath();this.x.arc(p.x,p.y,p.rad,0,Math.PI*2);this.x.fill()});this.x.globalAlpha=1;this.balls.forEach(b=>{this.x.strokeStyle='rgba(255,255,255,.3)';this.x.lineWidth=2;this.x.beginPath();b.tr.forEach((p,i)=>{if(i===0)this.x.moveTo(p.x,p.y);else this.x.lineTo(p.x,p.y)});this.x.stroke();const g=this.x.createRadialGradient(b.x,b.y,0,b.x,b.y,b.rad*2);g.addColorStop(0,'rgba(255,255,255,.8)');g.addColorStop(1,'transparent');this.x.fillStyle=g;this.x.beginPath();this.x.arc(b.x,b.y,b.rad*2,0,Math.PI*2);this.x.fill();this.x.fillStyle=b.col;this.x.beginPath();this.x.arc(b.x,b.y,b.rad,0,Math.PI*2);this.x.fill();this.x.fillStyle='rgba(255,255,255,.6)';this.x.beginPath();this.x.arc(b.x-4,b.y-4,b.rad/3,0,Math.PI*2);this.x.fill()});this.x.fillStyle='#0088cc';this.x.beginPath();this.x.arc(this.c.width/2,this.c.height-50,15,0,Math.PI*2);this.x.fill()}
+drw(){this.x.fillStyle='#1a1a2e';this.x.fillRect(0,0,this.c.width,this.c.height);this.x.fillStyle='rgba(255,255,255,.08)';for(let i=0;i<50;i++){const x=(i*137.5)%this.c.width,y=(i*197.3)%this.c.height;this.x.fillRect(x,y,2,2)}this.tgts.forEach(t=>{if(t.act){const g=this.x.createRadialGradient(t.x,t.y,0,t.x,t.y,t.rad*2);g.addColorStop(0,t.col+'40');g.addColorStop(1,'transparent');this.x.fillStyle=g;this.x.beginPath();this.x.arc(t.x,t.y,t.rad*2,0,Math.PI*2);this.x.fill();this.x.fillStyle=t.col;this.x.beginPath();this.x.arc(t.x,t.y,t.rad,0,Math.PI*2);this.x.fill();this.x.fillStyle='#fff';this.x.font='bold 12px sans-serif';this.x.textAlign='center';this.x.textBaseline='middle';this.x.fillText(t.pts,t.x,t.y)}});this.parts.forEach(p=>{this.x.globalAlpha=p.life;this.x.fillStyle=p.col;this.x.beginPath();this.x.arc(p.x,p.y,p.rad,0,Math.PI*2);this.x.fill()});this.x.globalAlpha=1;this.balls.forEach(b=>{this.x.strokeStyle='rgba(255,255,255,.3)';this.x.lineWidth=2;this.x.beginPath();b.tr.forEach((p,i)=>{if(i===0)this.x.moveTo(p.x,p.y);else this.x.lineTo(p.x,p.y)});this.x.stroke();const g=this.x.createRadialGradient(b.x,b.y,0,b.x,b.y,b.rad*2);g.addColorStop(0,'rgba(255,255,255,.8)');g.addColorStop(1,'transparent');this.x.fillStyle=g;this.x.beginPath();this.x.arc(b.x,b.y,b.rad*2,0,Math.PI*2);this.x.fill();this.x.fillStyle=b.col;this.x.beginPath();this.x.arc(b.x,b.y,b.rad,0,Math.PI*2);this.x.fill();this.x.fillStyle='rgba(255,255,255,.6)';this.x.beginPath();this.x.arc(b.x-4,b.y-4,b.rad/3,0,Math.PI*2);this.x.fill()});this.x.fillStyle='#0a84ff';this.x.beginPath();this.x.arc(this.c.width/2,this.c.height-50,15,0,Math.PI*2);this.x.fill()}
 anim(){if(this.run){this.updt();this.drw();requestAnimationFrame(()=>this.anim())}}
 upd(){document.getElementById('s').innerText=this.sc;document.getElementById('pw').innerText=Math.floor(this.pw);document.getElementById('co').innerText=this.co}
 reset(){this.sc=0;this.pw=100;this.co=0;this.balls=[];this.parts=[];this.initTgts();this.upd()}}
-const G=new Game();
 </script>
 </body>
 </html>
